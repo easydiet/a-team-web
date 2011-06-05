@@ -1,0 +1,572 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+        "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+        "http://www.hibernate.org/dtd/hibernate-mapping-3.0.dtd">
+<hibernate-mapping package="at.easydiet.model">
+	<class name="Gender">
+		<meta attribute="is-enum">true</meta>
+		<id name="name" column="Name" type="string">
+			<meta attribute="use-in-tostring">true</meta>
+		</id>
+	</class>
+	
+	<class name="FamilyStatus">
+		<meta attribute="is-enum">true</meta>
+		<id name="status" column="Status" type="string">
+			<meta attribute="use-in-tostring">true</meta>
+		</id>
+	</class>
+	
+	<class name="Illness">
+		<id name="illnessId" column="IllnessId" type="long">
+			<generator class="native" />
+		</id>
+		
+		<property name="Name" type="string" not-null="true" />
+	</class>
+
+	<class name="Patient">
+		<id name="patientId" column="PatientId" type="long">
+			<generator class="native" />
+		</id>
+
+		<property name="insuranceNumber" column="InsuranceNumber" type="string" unique="false" not-null="false" />
+		<property name="forename" column="Forename" type="string" not-null="true" />
+		<property name="lastname" column="Lastname" type="string" not-null="true" />
+		<property name="title" column="Title" type="string" not-null="false" />
+		<property name="street" column="Street" type="string" not-null="false" />
+		<property name="zip" column="Zip" type="string" not-null="false" />
+		<property name="place" column="Place" type="string" not-null="false" />
+		<!-- ISO 3166 ALPHA-3 -->
+		<property name="country" column="Country" type="string" not-null="false" />
+		<property name="birthday" column="Birthday" type="timestamp" not-null="false" />
+		<property name="job" column="Job" type="string" />
+		<property name="religion" column="Religion" type="string" />
+		<property name="regime" column="Regime" type="clob" />
+		<property name="notice" column="Notice" type="clob" />
+
+		<many-to-one class="Gender" name="gender" column="Gender"
+			not-null="true" />
+			
+		<!-- Standard: ledig -->
+		<many-to-one class="FamilyStatus" name="familyStatus" column="FamilyStatus"
+			not-null="false" />
+
+		<set name="illnesses" table="PatientIllness">
+			<key column="PatientId" not-null="true" />
+			<many-to-many class="Illness" column="IllnessId" />
+		</set>
+		
+		<set name="familyanamnesis" lazy="true" cascade="all,delete-orphan">
+			<key column="PatientId" not-null="true" />
+			<one-to-many class="FamilyAnamnesis" />
+		</set>
+
+		<set name="patientStates" lazy="true" inverse="true" cascade="all,delete-orphan">
+			<key column="PatientId" not-null="true" />
+			<one-to-many class="PatientState" />
+		</set>
+
+		<set name="laborReports" lazy="true" inverse="true" cascade="all,delete-orphan">
+			<key column="PatientId" not-null="true" />
+			<one-to-many class="LaborReport" />
+		</set>
+		
+		<set name="treatments" lazy="true" inverse="true" cascade="all,delete-orphan">
+			<key column="PatientId" />
+			<one-to-many class="DietTreatment" />
+		</set>
+
+		<set name="likes" lazy="true" inverse="true" cascade="all,delete-orphan">
+			<key column="PatientId" />
+			<one-to-many class="PatientLike" />
+		</set>
+		
+	</class>
+	
+	<class name="PatientLike">
+		<id name="patientLikeId" column="PatientLikeId" type="long">
+			<generator class="native" />
+		</id>
+		
+		<!-- Bidirectional assoc to patient -->
+		<many-to-one name="patient" column="PatientId" class="Patient" not-null="true" insert="true" update="true"/>
+		
+		<property name="blsPattern" column="BlsPattern" type="string" not-null="true" />
+		<many-to-one class="PatientLikeGrade" name="grade" column="Grade"
+			not-null="true" />
+		
+		<property name="notice" column="Notice" type="string" />
+	</class>
+	
+	<class name="PatientLikeGrade">
+		<id name="patientLikeGradeId" column="PatientLikeGradeId" type="long" />
+		<property name="name" column="Name" type="string" not-null="true" />
+	</class>
+
+	<class name="FamilyAnamnesis">
+		<id name="familyAnamnesisId" column="FamilyAnamnesisId" type="long">
+			<generator class="native" />
+		</id>
+		<property name="person" column="Person" type="string" not-null="true" />
+		
+		<set name="illnesses" table="FamilyAnamnesisIllness" cascade="all,delete-orphan">
+			<key column="FamilyAnamnesisId" not-null="true" />
+			<many-to-many class="Illness" column="IllnessId" />
+		</set>
+	</class>
+
+	<class name="SystemUser">
+		<id name="systemUserId" column="SystemUserId" type="long">
+			<generator class="native" />
+		</id>
+		<property name="username" column="Username" type="string" not-null="true" unique="true" />
+		<property name="password" column="Password" type="string" not-null="true" />
+		<property name="name" column="Name" type="string" not-null="true" />
+		<property name="email" column="Email" type="string" not-null="true" unique="true" />
+		<property name="directDial" column="DirectDial" type="string" />
+		<property name="department" column="Department" type="string" />
+		<property name="job" column="Job" type="string" />
+
+		<!-- No Lazy loading: we often will need the user rights, so it's good we have them always -->
+		<set name="rights" table="SystemUserRight">
+			<key column="SystemUserId" not-null="true" />
+			<many-to-many class="UserRight" column="UserRightId" />
+		</set>
+	</class>
+
+	<class name="UserRight">
+		<id name="name" column="Name" type="string">
+			<meta attribute="use-in-tostring">true</meta>
+		</id>
+	</class>
+
+	<class name="ContactJournal">
+		<id name="contactJournalId" column="ContactJournalId" type="long">
+			<generator class="native" />
+		</id>
+		<property name="date" column="Date" type="timestamp" not-null="true" />
+		<property name="description" column="Description" type="clob" />		
+		<many-to-one class="SystemUser" name="createdBy" column="CreatedBy" not-null="true" />
+		<many-to-one class="ContactType" name="contactType" column="ContactType" not-null="true" />
+		<!-- Bidirectional assoc to treatment -->
+		<many-to-one name="dietTreatment" column="DietTreatmentId" class="DietTreatment" not-null="true" insert="true" update="true"/>
+	</class>
+
+	<class name="ContactType">
+		<meta attribute="is-enum">true</meta>
+		<id name="name" column="Name" type="string">
+			<meta attribute="use-in-tostring">true</meta>
+		</id>
+	</class>
+	
+	<class name="ParameterDefinition">
+		<id name="parameterDefinitionId" column="ParameterDefinitionId"
+			type="long">
+			<generator class="native" />
+		</id>
+		<property name="name" column="Name" type="string" not-null="true" unique="true" />
+		<property name="checkPattern" column="CheckPattern" type="string" />	
+        
+        <!-- No lazy loading, we will need units always -->
+        <set name="units" table="ParameterDefinitionUnits" lazy="true">
+			<key column="ParameterDefinitionId" not-null="true" />
+			<many-to-many class="ParameterDefinitionUnit" column="ParameterDefinitionUnitId" />
+		</set>        
+	</class>
+
+	<class name="ParameterDefinitionDataType">
+		<meta attribute="is-enum">true</meta>
+		<id name="name" column="Name" type="string">
+			<meta attribute="use-in-tostring">true</meta>
+		</id>
+	</class>
+
+    
+    <class name="ParameterDefinitionUnit">
+        <id name="parameterDefinitionUnitId" column="ParameterDefinitionUnitId" type="long">
+			<generator class="native" />
+		</id>
+		<property name="name" column="Name" type="string" unique="true" not-null="true" />
+        <many-to-one name="type" column="Type" class="ParameterDefinitionDataType" not-null="true" />
+	</class>
+
+	<class name="DietTreatment">
+		<id name="dietTreatmentId" column="DietTreatmentId" type="long">
+			<generator class="native" />
+		</id>
+		<property name="start" column="Start" type="timestamp" not-null="true" />
+		<property name="duration" column="Duration" type="int" not-null="true" />
+		<property name="name" column="Name" type="string" not-null="true" />
+		<property name="shortDescription" column="ShortDescription" type="string" not-null="false" />
+		<set name="nutritionProtocols" lazy="true" inverse="true">
+			<key column="DietTreatmentId" not-null="true"/>
+			<one-to-many class="NutritionProtocol" />
+		</set>		
+		<set name="dietPlans" lazy="true" cascade="all,delete-orphan" inverse="true">
+			<key column="DietTreatmentId" />
+			<one-to-many class="DietPlan" />
+		</set> 		
+
+		<set name="dietParameters" table="DietTreatmentDietParameter" lazy="true"  cascade="all,delete-orphan">
+			<key column="DietTreatmentId" not-null="true" />
+			<many-to-many class="DietParameter" column="DietParameterId"  unique="true" />
+		</set>		
+		<set name="patientStates" table="DietTreatmentPatientState" lazy="true">
+			<key column="DietTreatmentId" not-null="true" />
+			<many-to-many class="PatientState" column="PatientStateId"/>
+		</set>
+		
+		<set name="systemUsers" lazy="true">
+			<key column="DietTreatmentId" not-null="true" />
+			<one-to-many class="DietTreatmentSystemUser" />
+		</set>
+
+		<set name="contactJournals" lazy="true" inverse="true">
+			<key column="DietTreatmentId" not-null="true" />
+			<one-to-many class="ContactJournal" />
+		</set>
+
+		<many-to-one name="treatmentState" column="TreatmentState" class="TreatmentState" not-null="true"/>
+		
+		<!-- Not needed, Templates are DietTreatments without a patient assigned		
+		<joined-subclass name="DietTreatmentTemplate">
+			<key column="DietTreatmentId" />
+		</joined-subclass>-->
+		
+		<!-- Bidirectional assoc to patient -->
+		<many-to-one name="patient" column="PatientId" class="Patient" not-null="true" insert="true" update="true"/>
+	</class>
+
+	<class name="DietTreatmentSystemUser">
+		<id name="dietTreatmentSystemUserId" column="DietTreatmentSystemUserId" type="long">
+			<generator class="native" />
+		</id>
+		<many-to-one name="systemUser" class="SystemUser" column="SystemUserId" not-null="true" />
+		<many-to-one name="function" class="SystemUserFunction" column="Function" not-null="true" />
+	</class>
+
+	<class name="SystemUserFunction">
+		<meta attribute="is-enum">true</meta>
+		<id name="name" column="Name" type="string">
+			<meta attribute="use-in-tostring">true</meta>
+		</id>
+	</class>
+
+	<class name="TreatmentState">
+		<meta attribute="is-enum">true</meta>
+		<id name="name" column="Name" type="string">
+			<meta attribute="use-in-tostring">true</meta>
+		</id>
+	</class>
+
+	<class name="DietPlan">
+		<id name="dietPlanId" column="DietPlanId" type="long">
+			<generator class="native" />
+		</id>
+		<property name="name" column="Name" type="string" not-null="true" />
+		<property name="createdOn" column="CreatedOn" type="timestamp" not-null="true" />
+
+		<many-to-one class="PlanType" name="planType" column="PlanType" not-null="true" />
+	
+		<!-- Bidirectional assoc to treatment -->
+		<many-to-one name="dietTreatment" column="DietTreatmentId" class="DietTreatment" not-null="true" insert="true" update="true"/>
+
+		<set name="dietParameters" table="DietPlanDietParameter" lazy="true" cascade="all,delete-orphan">
+			<key column="DietPlanId" not-null="true" />
+			<many-to-many class="DietParameter" column="DietParameterId" unique="true" />
+		</set>	
+
+		<many-to-one class="SystemUser" name="creator" column="Creator" not-null="true" />	
+
+		<set name="timeSpans" lazy="true" cascade="all,delete-orphan" inverse="true">
+			<key column="DietPlanId" not-null="true" />
+			<one-to-many class="TimeSpan" />
+		</set>		
+		
+		<joined-subclass name="NutritionProtocol">
+			<key column="DietPlanId" />
+			
+			<property name="date" column="Date" type="timestamp" not-null="true" />
+			<property name="contact" column="Contact" type="string" />
+			<property name="notice" column="Notice" type="clob" />	
+		</joined-subclass>
+		
+	</class>
+
+	<class name="PlanType">
+		<meta attribute="is-enum">true</meta>
+		<id name="name" column="Name" type="string">
+			<meta attribute="use-in-tostring">true</meta>
+		</id>
+	</class>
+
+	<class name="TimeSpan">
+		<id name="timeSpanId" column="TimeSpanId" type="long">
+			<generator class="native" />
+		</id>
+		<property name="start" column="Start" type="timestamp" not-null="true" />
+		<property name="duration" column="Duration" type="int" not-null="true" />
+
+		<!-- Bidirectional assoc to plan -->
+		<many-to-one name="dietPlan" column="DietPlanId" class="DietPlan" not-null="true" insert="true" update="true"/>
+
+		<set name="dietParameters" table="TimeSpanDietParameter" lazy="true" cascade="all,delete-orphan" >
+			<key column="TimeSpanId" not-null="true" />
+			<many-to-many class="DietParameter" column="DietParameterId" unique="true" />
+		</set>
+
+		<list name="meals" cascade="all,delete-orphan" inverse="false">
+			<key column="TimeSpanId" not-null="true" />
+            <index column="Idx"/>
+			<one-to-many class="Meal" />
+		</list>
+		
+	</class>
+
+	<class name="Meal">
+		<id name="mealId" column="MealId" type="long">
+			<generator class="native" />
+		</id>
+		<property name="code" column="Code" type="string" not-null="true" />
+		<property name="name" column="Name" type="string" not-null="true" />
+		
+		<!-- Bidirectional assoc to timespan -->
+		<many-to-one name="timeSpan" column="TimeSpanId" class="TimeSpan" not-null="true" insert="false" update="false"/>
+
+		<set name="dietParameters" table="MealDietParameter" lazy="true" cascade="all,delete-orphan" >
+			<key column="MealId" not-null="true" />
+			<many-to-many class="DietParameter" column="DietParameterId" unique="true" />
+		</set>
+ 
+		<list name="mealLines" cascade="all,delete-orphan" inverse="false">
+			<key column="MealId" not-null="true" />
+            <index column="Idx"/>
+			<one-to-many class="MealLine" />
+		</list>
+	</class>
+
+	<class name="MealLine">
+		<id name="mealLineId" column="MealLineId" type="long">
+			<generator class="native" />
+		</id>
+		<property name="quantity" column="Quantity" type="float" not-null="true" />
+		<property name="info" column="Info" type="clob" />
+
+		<list name="alternatives" cascade="all" >
+			<key column="ParentMealLineId" />
+			<index column="Idx"/>
+			<one-to-many class="MealLine"  />
+		</list>
+
+		<many-to-one class="Recipe" name="recipe" not-null="true" />
+		<many-to-one class="ParameterDefinitionUnit" name="unit" not-null="true" />
+		
+		<!-- Bidirectional assoc to parent mealLine -->
+		<many-to-one name="parent" column="ParentMealLineId" class="MealLine"/>
+
+		<!-- Bidirectional assoc to meal -->
+		<many-to-one name="meal" column="MealId" class="Meal" not-null="true" insert="false" update="false"/>
+
+	</class>
+
+	<class name="Recipe">
+		<id name="recipeId" column="RecipeId" type="long">
+			<generator class="native" />
+		</id>
+		<property name="name" column="Name" type="string" />
+		<property name="blsCode" column="BlsCode" type="string" />
+		<property name="difficulty" column="Difficulty" type="int" not-null="true" />
+		<property name="description" column="Description" type="clob" />
+		<property name="benefits" column="Benefits" type="clob" />
+		<property name="cookInstructions" column="CookInstructions" type="clob" />
+		
+		<!-- Used for NutrimentParameter calculations -->
+		<property name="amount" column="Amount" type="float" />
+		<many-to-one name="unit" column="ParameterDefinitionUnitId" class="ParameterDefinitionUnit" />
+
+		<set name="ingredients" inverse="true" lazy="true" cascade="all,delete-orphan" >
+			<key column="RecipeId" not-null="true" />
+			<one-to-many class="RecipeIngredient" />
+		</set>
+
+		<set name="nutrimentParameters" lazy="true" cascade="all,delete-orphan" >
+			<key column="RecipeId" not-null="true" />
+			<one-to-many class="NutrimentParameter" />
+		</set>
+	</class>
+	
+	<class name="RecipeIngredient">
+		<id name="recipeIngredientId" column="RecipeIngredientId" type="long">
+			<generator class="native" />
+		</id>
+		
+		<!-- Used for NutrimentParameter assignemnts -->
+		<property name="amount" column="Amount" type="float" />
+		
+		<many-to-one name="ingredient" column="IngredientId" class="Recipe" />
+		
+		<!-- Bidirectional assoc to recipe -->
+		<many-to-one name="recipe" column="RecipeId" class="Recipe" not-null="true" insert="true" update="true"/>
+
+	</class>
+
+	<class name="NutrimentParameter">
+		<id name="nutrimentParameterId" column="NutrimentParameterId" type="long">
+			<generator class="native" />
+		</id>
+		<property name="value" column="Value" type="string" not-null="true" />
+
+		<many-to-one name="parameterDefinition" column="ParameterDefinitionId" class="ParameterDefinition" not-null="true"/>
+		<many-to-one name="unit" column="ParameterDefinitionUnitId" class="ParameterDefinitionUnit" />
+	</class>
+
+	<class name="PatientStateType">
+		<meta attribute="is-enum">true</meta>
+		<id name="name" column="Name" type="string">
+			<meta attribute="use-in-tostring">true</meta>
+		</id>
+	</class>
+
+	<class name="PatientState">
+
+		<id name="patientStateId" column="PatientStateId" type="long">
+			<generator class="native" />
+		</id>
+
+		<property name="date" column="Date" type="timestamp" not-null="true" />
+		<property name="anamnesis" column="Anamnesis" type="clob" />
+		<property name="weight" column="Weight" type="int" />
+		<property name="weightPercentile" column="WeightPercentile"
+			type="float" />
+		<property name="height" column="Height" type="int" />
+		<property name="heightPercentile" column="HeightPercentile"
+			type="float" />
+		<property name="compliance" column="Compliance" type="int" />
+		<property name="motivation" column="Motivation" type="int" />
+		
+		<many-to-one class="PatientStateType" name="type" column="Type" not-null="true" />
+
+		<many-to-one class="SystemUser" name="creator" column="SystemUserId" not-null="true" />
+
+		<set name="laborReports" table="PatientStateLaborReports" lazy="true">
+			<key column="PatientStateId" not-null="true" />
+			<many-to-many class="LaborReport" column="LaborReportId" /> 
+		</set>
+		
+		<set name="dietTreatments" table="DietTreatmentPatientState" lazy="true">
+			<key column="PatientStateId" not-null="false" />
+			<many-to-many class="DietTreatment" column="DietTreatmentId" />
+		</set>
+		
+		<!-- Bidirectional assoc to patient -->
+		<many-to-one name="patient" column="PatientId" class="Patient" not-null="true" insert="true" update="true"/>
+
+	</class>
+
+	<class name="LaborReport">
+		<id name="laborReportId" column="LaborReportId" type="long">
+			<generator class="native" />
+		</id>
+
+		<property name="date" column="Date" type="timestamp" not-null="true" />
+		<property name="notice" column="Notice" type="clob" />
+
+		<many-to-one class="SystemUser" name="creator" column="Creator" not-null="true" />
+
+		
+		<set name="laborParameters" inverse="true" cascade="all,delete-orphan">
+			<key column="LaborReportId" not-null="true" />
+
+			<one-to-many class="LaborParameter" />
+		</set>
+	
+		<many-to-one class="LaborReportType" name="laborReportType" column="LaborReportTypeId" />
+		
+		
+	
+		<!-- Bidirectional assoc to patient -->
+		<many-to-one name="patient" column="PatientId" class="Patient" not-null="true" insert="true" update="true"/>
+
+	</class>
+	
+	<class name="LaborParameter">
+		<id name="laborParameterId" column="LaborParameterId" type="long">
+			<generator class="native" />
+		</id>
+		
+		<property name="Value" type="string" not-null="true" />
+		
+		<many-to-one class="ParameterDefinitionUnit" name="parameterDefinitionUnit" column="ParameterDefinitionUnitId" not-null="true" />
+		<many-to-one class="CheckOperator" name="checkOperator" column="CheckOperatorId" not-null="true" />  
+		<many-to-one class="ParameterDefinition" name="parameterDefinition" column="ParameterDefinitionId" not-null="true" />
+		
+		<many-to-one class="LaborReport" name="laborReport" column="LaborReportId" />
+		
+		
+	</class>
+	
+	<class name="LaborReportType">
+		<id name="laborReportTypeId" column="LaborReportTypeId" type="long">
+			<generator class="native" />
+		</id>
+		
+		<property name="Name" type="string" not-null="true" />
+		
+		<set name="parameterDefinitions" table="LaborReportTypeParameterDefinition" lazy="true" >
+			<key column="LaborReportTypeId" not-null="true" />
+			<many-to-many class="ParameterDefinition" column="ParameterDefinitionId"  unique="true" />
+		</set>	
+		
+	</class>
+
+	<class name="DietParameterTemplate">
+		<id name="dietParameterTemplateId" column="DietParameterTemplateId"
+			type="long">
+			<generator class="native" />
+		</id>
+
+		<many-to-one class="CheckOperator" name="checkOperator" column="CheckOperator" not-null="true" />
+		<property name="duration" column="Duration" type="int" />
+		<property name="value" column="Value" type="string" />
+
+		<many-to-one class="ParameterDefinitionUnit" name="parameterDefinitionUnit" column="ParameterDefinitionUnitId" not-null="true" />
+		<many-to-one class="DietParameterType" name="dietParameterType" column="DietParameterType" not-null="true" />  
+		<many-to-one class="ParameterDefinition" name="parameterDefinition" column="ParameterDefinitionId" not-null="true" />
+
+		<!-- Bidirectional assoc to set -->
+		<many-to-one name="dietParameterSet" column="DietParameterSetId" class="DietParameterSet" insert="true" update="true"/>
+
+		<joined-subclass name="DietParameter">
+			<key column="DietParameterTemplateId" not-null="true" />
+			<property name="start" column="Start" type="timestamp" />
+		</joined-subclass>
+	</class>
+
+	<class name="CheckOperator">
+		<meta attribute="is-enum">true</meta>
+		<id name="name" column="Name" type="string">
+			<meta attribute="use-in-tostring">true</meta>
+		</id>
+	</class>
+
+	<class name="DietParameterSet">
+		<id name="dietParameterSetId" column="DietParameterSetId" type="long">
+			<generator class="native" />
+		</id>
+
+		<property name="name" column="Name" type="string" not-null="true" unique="true" />
+
+		<set name="dietParameterTemplates" lazy="true" cascade="all,delete-orphan">
+			<key column="DietParameterSetId" />
+			<one-to-many class="DietParameterTemplate" />
+		</set>
+	</class>
+
+	<class name="DietParameterType">
+		<meta attribute="is-enum">true</meta>
+		<id name="name" column="Name" type="string">
+			<meta attribute="use-in-tostring">true</meta>
+		</id>
+	</class>
+</hibernate-mapping>
