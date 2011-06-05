@@ -9,6 +9,15 @@
 	<title>Ernaehrungsprotokoll anlegen</title>
 </h:head>
 <h:body>
-      <p:spinner />  
+	<h:form>
+		<p:breadCrumb>
+			<p:menuitem value="Dashboard" action="dashboard" />
+			<p:menuitem value="#{patientDetailViewBean.patientName}" action="patientDetailView" />
+			<p:menuitem value="#{dietTreatmentDetailViewBean.treatmentName}" action="dietTreatmentDetailView "/>
+			<p:menuitem value="Neues Ernährungsprotokoll" />
+		</p:breadCrumb>
+		<h1>Ernährungsprotokoll anlegen</h1>
+		TODO: A lot of work
+	</h:form>
 </h:body>
 </html>

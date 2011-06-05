@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Patientendetailansicht</title>
+</h:head>
+<h:body>
+	<h:form>
+		<p:breadCrumb>
+			<p:menuitem value="Dashboard" action="dashboard" />
+			<p:menuitem value="#{patientDetailViewBean.patientName}" url="#" />
+		</p:breadCrumb>
+		<h1>Diätbehandlungen von <h:outputText value="#{patientDetailViewBean.patientName}" /></h1>
+		<p:dataTable var="dietTreatment" value="#{patientDetailViewBean.dietTreatments}" 
+			selectionMode="single" rowSelectListener="#{patientDetailViewBean.onDietTreatmentSelect}"
+			paginator="true" rows="10"
+			emptyMessage="Keine Diätbehandlungen gefunden">
+
+			<p:column headerText="Name" sortBy="#{dietTreatment.name}">
+				<h:outputText value="#{dietTreatment.name}" />
+			</p:column>
+			
+			<p:column headerText="Start" sortBy="#{dietTreatment.start}">
+				<h:outputText value="#{dietTreatment.start}">
+	             	<f:convertDateTime pattern="dd.MM.yyyy"/>
+				</h:outputText>
+			</p:column>
+			
+			<p:column headerText="Ende" sortBy="#{dietTreatment.end}">
+				<h:outputText value="#{dietTreatment.end}">
+	             	<f:convertDateTime pattern="dd.MM.yyyy"/>
+				</h:outputText>
+			</p:column>
+			
+			<p:column headerText="Status" sortBy="#{dietTreatment.treatmentState}">
+				<h:outputText value="#{dietTreatment.treatmentState}" />
+			</p:column>
+
+		</p:dataTable>
+	</h:form>
+
+</h:body>
+</html>

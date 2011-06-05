@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf13072881987771" configfile="/a-diet-web/WebContent/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="Global" x="122" y="370" id="pf13072882757283" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf13072882757284 pf13072923855466" path="*"/>
+  <nodes xsi:type="pageflow:PFPage" name="PatientDetailView.xhtml" x="338" y="178" id="pf13072882757285" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf13072882757284" path="/DashboardView.xhtml"/>
+  <nodes xsi:type="pageflow:PFPage" name="PatientDetailView.xhtml" x="338" y="562" id="pf13072923855467" referenceLink="//@navigationRule.0/@navigationCase.1/@toViewId|" inlinks="pf13072923855466" path="/PatientDetailView.xhtml"/>
+  <links id="pf13072882757284" target="pf13072882757285" source="pf13072882757283" outcome="dashboard" redirect="true"/>
+  <links id="pf13072923855466" target="pf13072923855467" source="pf13072882757283" outcome="patientDetailView" redirect="true"/>
+</pageflow:Pageflow>

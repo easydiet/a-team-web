@@ -1,0 +1,39 @@
+package at.easydiet.view.beans;
+
+import javax.faces.bean.ManagedBean;
+import javax.faces.bean.SessionScoped;
+
+import at.easydiet.businessobjects.NutritionProtocolBO;
+
+/**
+ * This bean handles the communication between the UI and the controller for creating new nutritionprocotols
+ * @author Daniel
+ *
+ */
+@ManagedBean
+@SessionScoped
+public class CreateNutritionProtocolBean
+{
+    public static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
+                                                            .getLogger(CreateNutritionProtocolBean.class);
+    
+    public CreateNutritionProtocolBean()
+    {
+        createNewProtocol();
+    }
+    
+    public NutritionProtocolBO getNutritionProtocol()
+    {
+        if(ControllerBean.getCreateNutritionProtocolController().getDietPlan() == null)
+        {
+            createNewProtocol();
+        }
+        return ControllerBean.getCreateNutritionProtocolController().getDietPlan();
+    }
+
+    private void createNewProtocol()
+    {
+        ControllerBean.getCreateNutritionProtocolController().createNew(ControllerBean.getDietTreatmentDetailViewController().getDietTreatment());
+        ControllerBean.getCreateNutritionProtocolController().refresh();
+    }
+}

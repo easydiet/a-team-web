@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Diätbehandlungsdetailansicht</title>
+</h:head>
+<h:body>
+	<h:form>
+		<p:breadCrumb>
+			<p:menuitem value="Dashboard" action="dashboard" />
+			<p:menuitem value="#{patientDetailViewBean.patientName}" action="patientDetailView" />
+			<p:menuitem value="#{dietTreatmentDetailViewBean.treatmentName}" />
+		</p:breadCrumb>
+		<h1>Diätbehandlung  <h:outputText value="#{dietTreatmentDetailViewBean.treatmentName}" /> von <h:outputText value="#{patientDetailViewBean.patientName}" /></h1>
+
+		<h2>Ernährungsprotokolle:</h2>
+		<p:commandButton action="#{dietTreatmentDetailViewBean.createNutritionProtocol}" value="Ernährungsprotokoll anlegen" />
+		<p:dataTable var="nutritionProtocol" value="#{dietTreatmentDetailViewBean.nutritionProtocols}" selectionMode="single"
+			rowSelectListener="#{dashboardBean.onNutritionProcotolSelect}"
+			paginator="true" rows="10"
+			emptyMessage="Keine Ernährungsprotokolle gefunden">
+
+			<p:column headerText="Angelegt am" sortBy="#{nutritionProtocol.createOn}">
+				<h:outputText value="#{nutritionProtocol.createdOn}" />
+			</p:column>
+			
+			<p:column headerText="Zeitraum" sortBy="#{nutritionProtocol.start}">
+				<h:outputText value="#{nutritionProtocol}">
+					<!-- add a Converter which renders the timerange depending on TimeSpans (11.10.2011 - 12.10.2011) -->
+				</h:outputText>
+			</p:column>
+			
+			<p:column headerText="Name" sortBy="#{nutritionProtocol.name}">
+				<h:outputText value="#{nutritionProtocol.name}" />
+			</p:column>
+			
+		</p:dataTable>
+		
+	</h:form>
+
+</h:body>
+</html>

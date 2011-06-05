@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Dashboard</title>
+</h:head>
+<h:body>
+	<h:form>
+		<p:breadCrumb>
+			<p:menuitem value="Dashboard" url="#" />
+		</p:breadCrumb>
+		<h1>Patienten:</h1>
+
+		<p:dataTable var="patient" value="#{dashboardBean.patients}"
+			selectionMode="single"
+			rowSelectListener="#{dashboardBean.onPatientSelect}" paginator="true"
+			rows="10" emptyMessage="Keine Patienten gefunden">
+
+			<p:column headerText="SzvNr." sortBy="#{patient.insuranceNumber}">
+				<h:outputText value="#{patient.insuranceNumber}" />
+			</p:column>
+
+			<p:column headerText="Vorname" sortBy="#{patient.forename}">
+				<h:outputText value="#{patient.forename}" />
+			</p:column>
+
+			<p:column headerText="Nachname" sortBy="#{patient.lastname}">
+				<h:outputText value="#{patient.lastname}" />
+			</p:column>
+
+		</p:dataTable>
+
+	</h:form>
+
+</h:body>
+</html>
