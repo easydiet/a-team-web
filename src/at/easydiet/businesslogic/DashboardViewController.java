@@ -12,7 +12,7 @@ import at.easydiet.util.StringUtils;
 /**
  * Provides data and actions for the {@link DashboardView}.
  */
-public class DashboardViewController
+public class DashboardViewController extends BusinessLogicController
 {
     /**
      * Logger for debugging purposes
@@ -34,18 +34,18 @@ public class DashboardViewController
      * Gets a new instance of this class.
      * @return a new instance for the current thread.
      */
-    static DashboardViewController newInstance()
+    static DashboardViewController newInstance(BusinessLogicProvider provider)
     {
-        return new DashboardViewController();
+        return new DashboardViewController(provider);
     }
 
     /**
      * Initializes a new instance of the
      * {@link DashboardViewController} class.
      */
-    protected DashboardViewController()
+    protected DashboardViewController(BusinessLogicProvider provider)
     {
-        // hidden
+        super(provider);
     }
 
     /**
