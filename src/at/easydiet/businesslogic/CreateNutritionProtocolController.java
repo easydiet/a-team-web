@@ -3,6 +3,7 @@ package at.easydiet.businesslogic;
 import at.easydiet.businessobjects.DietPlanBO;
 import at.easydiet.businessobjects.DietTreatmentBO;
 import at.easydiet.businessobjects.NutritionProtocolBO;
+import at.easydiet.domainlogic.RecipeSearchController;
 
 /**
  * This Controller handles the Creation of NutritionProtocols
@@ -15,6 +16,8 @@ public class CreateNutritionProtocolController extends
 {
     public static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
                                                             .getLogger(CreateNutritionProtocolController.class);
+    
+    private RecipeSearchController _recipeSearchController;
 
     /**
      * Gets a new instance of this class.
@@ -31,6 +34,7 @@ public class CreateNutritionProtocolController extends
      */
     protected CreateNutritionProtocolController()
     {
+        _recipeSearchController = new RecipeSearchController();
         // hidden
     }
 
@@ -52,5 +56,10 @@ public class CreateNutritionProtocolController extends
     public NutritionProtocolBO getDietPlan()
     {
         return (NutritionProtocolBO) super.getDietPlan();
+    }
+
+    public RecipeSearchController getRecipeSearchController()
+    {
+        return _recipeSearchController;
     }
 }
