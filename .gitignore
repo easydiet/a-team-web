@@ -4,7 +4,6 @@
 /build/classes/*
 /srcgen
 /dist 
-/.settings
 
 # ignore project files
 
