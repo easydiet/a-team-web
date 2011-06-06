@@ -16,7 +16,7 @@ import at.easydiet.dao.PatientDAO;
 /**
  * Provides data and actions for the {@link PatientDetailView}.
  */
-public class PatientDetailViewController
+public class PatientDetailViewController extends BusinessLogicController
 {
     /**
      * Logger for debugging purposes
@@ -48,18 +48,18 @@ public class PatientDetailViewController
      * Gets a new instance of this class.
      * @return a new instance for the current thread.
      */
-    static PatientDetailViewController newInstance()
+    static PatientDetailViewController newInstance(BusinessLogicProvider provider)
     {
-        return new PatientDetailViewController();
+        return new PatientDetailViewController(provider);
     }
 
     /**
      * Initializes a new instance of the {@link PatientDetailViewController}
      * class.
      */
-    protected PatientDetailViewController()
+    protected PatientDetailViewController(BusinessLogicProvider provider)
     {
-        // hidden
+        super(provider);
     }
 
     /**

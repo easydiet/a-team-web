@@ -8,7 +8,7 @@ import at.easydiet.dao.DietTreatmentDAO;
  * This controller provides data and functions for the
  * {@link DietTreatmentDetailView}
  */
-public class DietTreatmentDetailViewController
+public class DietTreatmentDetailViewController extends BusinessLogicController 
 {
     /**
      * Logger for debugging
@@ -25,18 +25,18 @@ public class DietTreatmentDetailViewController
      * Gets a new instance of this class.
      * @return a new instance for the current thread.
      */
-    static DietTreatmentDetailViewController newInstance()
+    static DietTreatmentDetailViewController newInstance(BusinessLogicProvider provider)
     {
-        return new DietTreatmentDetailViewController();
+        return new DietTreatmentDetailViewController(provider);
     }
 
     /**
      * Initializes a new instance of the
      * {@link DietTreatmentDetailViewController} class.
      */
-    protected DietTreatmentDetailViewController()
+    protected DietTreatmentDetailViewController(BusinessLogicProvider provider)
     {
-        // hidden
+        super(provider);
     }
 
     /**

@@ -7,9 +7,12 @@
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Ernaehrungsprotokoll anlegen</title>
+	<link rel="stylesheet" href="styles.css" />
 </h:head>
 <h:body>
-	<h:form prependId="false">
+	<h:form>
+		<strong>Hallo <h:outputText value="#{userBean.user.name}" />
+		</strong>,  <p:commandLink action="${userBean.doLogout}" value="Ausloggen" />
 		<p:breadCrumb>
 			<p:menuitem value="Dashboard" action="dashboard" />
 			<p:menuitem value="#{patientDetailViewBean.patientName}"
@@ -24,27 +27,15 @@
 			action="#{createNutritionProtocolBean.addNewTimespan}"
 			update="timespans" />
 		
-		<c:foreach var="timespan" id="timespans"
+		 var="timespan" id="timespans"
 			value="#{createNutritionProtocolBean.timeSpans}">
 			<h:outputLabel for="from" value="Von" />
-			<p:calendar showOn="button" value="#{timespan.start}"></p:calendar>
-			<h:outputLabel for="to" value="Bis" />
-			<p:calendar showOn="button" value="#{timespan.end}"></p:calendar>
-			<h:outputText value="#{timepan.duration}"></h:outputText>
-			<p:button value="neue Mahlzeit hinzufügen"></p:button>
+		<p:calendar showOn="button" value="#{timespan.start}"></p:calendar>
+		<h:outputLabel for="to" value="Bis" />
+		<p:calendar showOn="button" value="#{timespan.end}"></p:calendar>
+		<h:outputText value="#{timepan.duration}"></h:outputText>
+		<p:button value="neue Mahlzeit hinzufügen"></p:button>
 		</c:foreach>
-		
-
-
-
-
-
-
-
-
-
-
-
 
 	</h:form>
 </h:body>

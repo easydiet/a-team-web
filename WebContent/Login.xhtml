@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://java.sun.com/jsf/core"
+	xmlns:h="http://java.sun.com/jsf/html"
+	xmlns:p="http://primefaces.prime.com.tr/ui">
+<h:head>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+	<title>Einloggen</title>
+	<link rel="stylesheet" href="styles.css" />
+</h:head>
+<h:body>
+
+	<h:form id="loginform">
+		<p:messages />
+	    <h:outputLabel for="username">Benutzername:</h:outputLabel>
+	    <p:inputText id="username" value="#{userBean.username}" required="true" requiredMessage="Sie müssen einen Benutzernamen angeben!" />
+	    <p:message for="username" />
+	    <br />
+	    <h:outputLabel for="password">Passwort:</h:outputLabel>
+	    <p:password id="password" value="#{userBean.password}"  required="true" requiredMessage="Sie müssen ein Passwort angeben!" />
+   	    <p:message for="password" />
+	    <br />
+	    <p:commandButton value="Login" action="#{userBean.doLogin}" update="loginform" />
+	</h:form>
+
+</h:body>
+</html>

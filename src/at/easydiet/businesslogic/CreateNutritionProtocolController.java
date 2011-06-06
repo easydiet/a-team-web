@@ -21,18 +21,19 @@ public class CreateNutritionProtocolController extends
      * Gets a new instance of this class.
      * @return a new instance for the current thread.
      */
-    static CreateNutritionProtocolController newInstance()
+    static CreateNutritionProtocolController newInstance(BusinessLogicProvider currentProvider)
     {
-        return new CreateNutritionProtocolController();
+        return new CreateNutritionProtocolController(currentProvider);
     }
-
-    /**
-     * Initializes a new instance of the
-     * {@link CreateNutritionProtocolController} class.
+    
+    /** 
+     * Initializes a new instance of the {@link CreateNutritionProtocolController} class. 
+     * @param currentProvider
      */
-    protected CreateNutritionProtocolController()
+    private CreateNutritionProtocolController(
+            BusinessLogicProvider currentProvider)
     {
-        // hidden
+        super(currentProvider);
     }
 
     @Override
