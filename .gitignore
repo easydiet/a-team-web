@@ -7,7 +7,6 @@
 /.settings
 
 # ignore project files
-.project
 
 # ignore temp files
 .DS_Store 
