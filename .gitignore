@@ -7,7 +7,6 @@
 /.settings
 
 # ignore project files
-.classpath
 .project
 
 # ignore temp files
