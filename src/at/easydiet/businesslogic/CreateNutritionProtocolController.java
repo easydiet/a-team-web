@@ -3,6 +3,7 @@ package at.easydiet.businesslogic;
 import at.easydiet.businessobjects.DietPlanBO;
 import at.easydiet.businessobjects.DietTreatmentBO;
 import at.easydiet.businessobjects.NutritionProtocolBO;
+import at.easydiet.businessobjects.TimeSpanBO;
 
 /**
  * This Controller handles the Creation of NutritionProtocols
@@ -46,6 +47,13 @@ public class CreateNutritionProtocolController extends
         DietPlanBO dietPlan = new NutritionProtocolBO();
         dietPlan.setDietTreatment(dietTreatment);
         setDietPlan(dietPlan);
+    }
+    
+    public void createNewTimeSpan(DietPlanBO dietPlan)
+    {
+        TimeSpanBO span = new TimeSpanBO();
+        span.setDietPlan(dietPlan);
+        
     }
     
     @Override
