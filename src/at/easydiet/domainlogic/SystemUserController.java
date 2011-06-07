@@ -1,5 +1,7 @@
 package at.easydiet.domainlogic;
 
+import java.math.BigInteger;
+import java.security.MessageDigest;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -21,22 +23,12 @@ public class SystemUserController
                                                              .getLogger(SystemUserController.class);
 
     /**
-     * This is a unique instance, it is stored as this singleton
+     * Gets a new instance of this class.
+     * @return a new instance for the current thread.
      */
-    private static SystemUserController          _singleton;
-
-    /**
-     * Get a Instance of this {@link SystemUserController}
-     * 
-     * @return The instance of this {@link SystemUserController}
-     */
-    public static SystemUserController getInstance()
+    static SystemUserController newInstance()
     {
-        if (_singleton == null)
-        {
-            _singleton = new SystemUserController();
-        }
-        return _singleton;
+        return new SystemUserController();
     }
 
     /**
@@ -59,11 +51,7 @@ public class SystemUserController
      */
     private SystemUserController()
     {
-        // load default user
-        SystemUserDAO dao = DAOFactory.getInstance().getSystemUserDAO();
-        _currentUser = new SystemUserBO(dao.findAll().get(0));
     }
-
     /**
      * Get all registered {@link SystemUserBO}s
      * 
@@ -81,5 +69,54 @@ public class SystemUserController
         }
 
         return list;
+    }
+
+    public SystemUserBO getSystemUserByUsername(String username)
+    {
+        SystemUserDAO dao = DAOFactory.getInstance().getSystemUserDAO();
+        SystemUser user = dao.findByUsername(username);
+        return user == null ? null : new SystemUserBO(user);
+    }
+
+    public void login(String username, String password) throws InvalidPasswordException, UserNotFoundException
+    {
+        SystemUserBO user = getSystemUserByUsername(username);
+        if(user == null)
+        { 
+            throw new UserNotFoundException();
+        }
+        
+        if(!md5(password).equalsIgnoreCase(user.getPassword()))
+        {
+            throw new InvalidPasswordException();
+        }
+        
+        _currentUser = user;
+    }
+
+    private static String md5(String input)
+    {
+        try
+        {
+            MessageDigest m = MessageDigest.getInstance("MD5");
+            byte[] data = input.getBytes();
+            m.update(data, 0, data.length);
+            BigInteger i = new BigInteger(1, m.digest());
+            return String.format("%1$032X", i);
+        }
+        catch (Exception e)
+        {
+            return "00000000000000000000000000000000";
+        }
+    }
+
+    public void logout(String username, String password)
+    {
+        _currentUser = null;
+    }
+
+    public boolean isAuthenticated()
+    {
+        return _currentUser != null;
     }
 }

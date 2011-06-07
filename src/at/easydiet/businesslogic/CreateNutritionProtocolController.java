@@ -16,24 +16,30 @@ public class CreateNutritionProtocolController extends
 {
     public static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
                                                             .getLogger(CreateNutritionProtocolController.class);
-    
-    private RecipeSearchController _recipeSearchController;
+
+    private RecipeSearchController              _recipeSearchController;
 
     /**
      * Gets a new instance of this class.
+     * 
      * @return a new instance for the current thread.
      */
-    static CreateNutritionProtocolController newInstance()
+    static CreateNutritionProtocolController newInstance(
+            BusinessLogicProvider currentProvider)
     {
-        return new CreateNutritionProtocolController();
+        return new CreateNutritionProtocolController(currentProvider);
     }
 
     /**
      * Initializes a new instance of the
      * {@link CreateNutritionProtocolController} class.
+     * 
+     * @param currentProvider
      */
-    protected CreateNutritionProtocolController()
+    private CreateNutritionProtocolController(
+            BusinessLogicProvider currentProvider)
     {
+        super(currentProvider);
         _recipeSearchController = new RecipeSearchController();
         // hidden
     }
@@ -51,7 +57,7 @@ public class CreateNutritionProtocolController extends
         dietPlan.setDietTreatment(dietTreatment);
         setDietPlan(dietPlan);
     }
-    
+
     @Override
     public NutritionProtocolBO getDietPlan()
     {

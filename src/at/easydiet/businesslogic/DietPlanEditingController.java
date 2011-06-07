@@ -23,7 +23,6 @@ import at.easydiet.dao.DietPlanDAO;
 import at.easydiet.dao.HibernateUtil;
 import at.easydiet.dao.MealDAO;
 import at.easydiet.domainlogic.DietParameterController;
-import at.easydiet.domainlogic.SystemUserController;
 import at.easydiet.domainlogic.TimeSpanController;
 import at.easydiet.domainlogic.DietParameterController.ValidationResult;
 import at.easydiet.util.StringUtils;
@@ -32,7 +31,7 @@ import at.easydiet.validation.ParameterTemplateValidator;
 /**
  * Provides data and methods for the {@link DietPlanManagementView}
  */
-public class DietPlanEditingController
+public class DietPlanEditingController extends BusinessLogicController
 {
     /**
      * Logger for debugging purposes
@@ -97,9 +96,9 @@ public class DietPlanEditingController
      * Gets a new instance of this class.
      * @return a new instance for the current thread.
      */
-    static DietPlanEditingController newInstance()
+    static DietPlanEditingController newInstance(BusinessLogicProvider provider)
     {
-        return new DietPlanEditingController();
+        return new DietPlanEditingController(provider);
     }
 
     /**
@@ -216,8 +215,7 @@ public class DietPlanEditingController
         }
 
         // update creator
-        _dietPlan.setCreator(SystemUserController.getInstance()
-                .getCurrentUser());
+        _dietPlan.setCreator(getRootProvider().getSystemUserController().getCurrentUser());
 
         try
         {
@@ -474,12 +472,13 @@ public class DietPlanEditingController
         }
     }
 
-    /**
-     * Initializes a new instance of the {@link DietPlanEditingController}
-     * class.
+    /** 
+     * Initializes a new instance of the {@link DietPlanEditingController} class. 
+     * @param currentProvider
      */
-    protected DietPlanEditingController()
+    protected DietPlanEditingController(BusinessLogicProvider currentProvider)
     {
+        super(currentProvider);
         _errors = new ArrayList<String>();
     }
 

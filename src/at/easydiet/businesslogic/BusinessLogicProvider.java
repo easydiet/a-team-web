@@ -1,15 +1,28 @@
 package at.easydiet.businesslogic;
 
-public class ControllerProvider
+import at.easydiet.ControllerProvider;
+import at.easydiet.ControllerProviderBase;
+
+public class BusinessLogicProvider extends ControllerProviderBase
 {
     public static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
-                                                            .getLogger(ControllerProvider.class);
+                                                            .getLogger(BusinessLogicProvider.class);
 
     private CreateNutritionProtocolController   _createNutritionProtocolController;
     private DashboardViewController             _dashboardViewController;
     private DietPlanEditingController           _dietPlanEditingController;
     private DietTreatmentDetailViewController   _dietTreatmentDetailViewController;
     private PatientDetailViewController         _patientDetailViewController;
+    
+
+    /** 
+     * Initializes a new instance of the {@link BusinessLogicProvider} class. 
+     * @param rootProvider
+     */
+    public BusinessLogicProvider(ControllerProvider rootProvider)
+    {
+        super(rootProvider);
+    }
 
     /**
      * Gets the createNutritionProtocolController.
@@ -20,7 +33,7 @@ public class ControllerProvider
     {
         if(_createNutritionProtocolController == null)
         {
-            _createNutritionProtocolController = CreateNutritionProtocolController.newInstance();
+            _createNutritionProtocolController = CreateNutritionProtocolController.newInstance(this);
         }
         return _createNutritionProtocolController;
     }
@@ -34,7 +47,7 @@ public class ControllerProvider
     {
         if(_dashboardViewController == null)
         {
-            _dashboardViewController = DashboardViewController.newInstance();
+            _dashboardViewController = DashboardViewController.newInstance(this);
         }
         return _dashboardViewController;
     }
@@ -48,7 +61,7 @@ public class ControllerProvider
     {
         if(_dietPlanEditingController == null)
         {
-            _dietPlanEditingController = DietPlanEditingController.newInstance();
+            _dietPlanEditingController = DietPlanEditingController.newInstance(this);
         }
         return _dietPlanEditingController;
     }
@@ -62,7 +75,7 @@ public class ControllerProvider
     {
         if(_dietTreatmentDetailViewController == null)
         {
-            _dietTreatmentDetailViewController = DietTreatmentDetailViewController.newInstance();
+            _dietTreatmentDetailViewController = DietTreatmentDetailViewController.newInstance(this);
         }
         return _dietTreatmentDetailViewController;
     }
@@ -76,7 +89,7 @@ public class ControllerProvider
     {
         if(_patientDetailViewController == null)
         {
-            _patientDetailViewController = PatientDetailViewController.newInstance();
+            _patientDetailViewController = PatientDetailViewController.newInstance(this);
         }
         return _patientDetailViewController;
     }

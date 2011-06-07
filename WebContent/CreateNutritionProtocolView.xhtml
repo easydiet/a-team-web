@@ -7,9 +7,11 @@
 <h:head>
 	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
 	<title>Ernaehrungsprotokoll anlegen</title>
+	<link rel="stylesheet" href="styles.css" />
 </h:head>
 <h:body>
 	<h:form>
+		<strong>Hallo <h:outputText value="#{userBean.user.name}" /></strong>,  <p:commandLink action="${userBean.doLogout}" value="Ausloggen" />
 		<p:breadCrumb>
 			<p:menuitem value="Dashboard" action="dashboard" />
 			<p:menuitem value="#{patientDetailViewBean.patientName}" action="patientDetailView" />
