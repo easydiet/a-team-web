@@ -15,7 +15,7 @@ import at.easydiet.model.ParameterDefinitionUnit;
 /**
  * Converts the units of the parameters
  */
-public class DietParameterUnitController
+public class DietParameterUnitController extends DomainLogicController
 {
     /**
      * Logger for debugging purposes
@@ -110,22 +110,13 @@ public class DietParameterUnitController
     }
 
     /**
-     * This is a unique instance, it is stored as this singleton
-     */
-    private static DietParameterUnitController     _singleton;
-
-    /**
-     * Get the instance of this {@link DietParameterUnitController}
+     * Get a instance of this controller
      * 
-     * @return Instance of {@link DietParameterUnitController}
+     * @return Instance of {@link DietParameterController}
      */
-    public static DietParameterUnitController getInstance()
+    static DietParameterUnitController newInstance(DomainLogicProvider provider)
     {
-        if (_singleton == null)
-        {
-            _singleton = new DietParameterUnitController();
-        }
-        return _singleton;
+        return new DietParameterUnitController(provider);
     }
 
     /**
@@ -143,8 +134,9 @@ public class DietParameterUnitController
      * Initializes a new instance of the {@link DietParameterUnitController}
      * class.
      */
-    private DietParameterUnitController()
+    private DietParameterUnitController(DomainLogicProvider provider)
     {
+        super(provider);
         _unitConverters = new HashMap<ParameterDefinitionUnitBO, Map<ParameterDefinitionUnitBO, Float>>();
 
         // store a set of all units accessible by name for later

@@ -1,17 +1,12 @@
 package at.easydiet.businessobjects;
 
 import java.sql.Clob;
-import java.util.HashMap;
-import java.util.Map;
-
-import javax.naming.OperationNotSupportedException;
-
-import org.apache.log4j.Logger;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.log4j.Logger;
+
 import at.easydiet.dao.DAOFactory;
-import at.easydiet.domainlogic.DietParameterUnitController;
 import at.easydiet.model.NutrimentParameter;
 import at.easydiet.model.Recipe;
 import at.easydiet.model.RecipeIngredient;
@@ -21,6 +16,7 @@ import at.easydiet.model.RecipeIngredient;
  */
 public class RecipeBO implements IDietParameterizable
 {
+    @SuppressWarnings("unused")
     private static final Logger   LOG = Logger.getLogger(RecipeBO.class);
 
     private Recipe                _model;
@@ -370,7 +366,7 @@ public class RecipeBO implements IDietParameterizable
         _model.getNutrimentParameters().remove(nutrimentParameters.getModel());
     }
     
-    private void clearNutrimentParameters()
+    public void clearNutrimentParameters()
     {
         while(getNutrimentParameters().size() > 0)
         {
@@ -415,156 +411,156 @@ public class RecipeBO implements IDietParameterizable
         _dietParameters.remove((DietParameterBO) parameter);
     }
 
-    public void calcParameters()
-    {
-        // mapping of the special parameter to its sum value class
-        Map<Long, NutrimentParameterBO> summedIngredientParameter = new HashMap<Long, NutrimentParameterBO>();
-
-        long currParameterdefid;
-        float sumValue;
-
-        // reset and calculate new weight
-        setAmount(0);
-
-        // calculate new parameter values
-        for (RecipeIngredientBO recipeIngredient : getIngredients())
-        {
-            // add amount to recipe
-            float amountInRecipeUnit;
-
-            // convert if needed
-            if (getUnit().equals(recipeIngredient.getIngredient().getUnit()))
-            {
-                amountInRecipeUnit = recipeIngredient.getAmount();
-            }
-            else
-            {
-                float amountInIngredientUnit = recipeIngredient.getAmount();
-
-                try
-                {
-                    amountInRecipeUnit = DietParameterUnitController
-                            .getInstance().convert(
-                                    recipeIngredient.getIngredient().getUnit(),
-                                    getUnit(), amountInIngredientUnit);
-                }
-                catch (OperationNotSupportedException e)
-                {
-                    // TODO: warning - could not add ungredient
-                    amountInRecipeUnit = 0;
-                }
-            }
-            setAmount(getAmount() + amountInRecipeUnit);
-        }
-        // calculate new parameter values
-        for (RecipeIngredientBO recipeIngredient : getIngredients())
-        {
-            // all ingredients
-
-            // recipeIngredient.getIngredient().getAmount()  has X kcal
-            // recipeIngredient.getAmount() has n kcal
-            
-            // n = X * brtaifactor
-            float brtaifactor = (recipeIngredient.getAmount() / recipeIngredient
-                    .getIngredient().getAmount());// baserecipe to as
-                                              // ingredient factor for
-                                              // absolute units
-            
-            // 100g has X kcal
-            // recipeIngredient.getAmount() has n kcal
-            
-            // n = X * fractionOfRecipe
-            float fractionofrecipe = recipeIngredient.getIngredient().getAmount() / getAmount();// fractionofrecipe
-                                                                                // needed
-                                                                                // to
-                                                                                // get
-                                                                                // the
-                                                                                // right
-                                                                                // fractins
-                                                                                // of
-                                                                                // relative
-                                                                                // units
-
-            for (NutrimentParameterBO parameter : recipeIngredient
-                    .getIngredient().getNutrimentParameters())
-            {
-                currParameterdefid = parameter.getParameterDefinition()
-                        .getParameterDefinitionId();
-                if (summedIngredientParameter.containsKey(currParameterdefid))
-                {
-                    // if parameter already exists
-                    NutrimentParameterBO sum = summedIngredientParameter
-                            .get(currParameterdefid);
-
-                    ParameterDefinitionUnitBO target = sum.getUnit();
-                    ParameterDefinitionUnitBO source = parameter.getUnit();
-
-                    try
-                    {// converting the type and then sum it
-
-                        sumValue = DietParameterUnitController.getInstance()
-                                .convert(source, target,
-                                        Float.parseFloat(parameter.getValue()));
-
-                        if (target.getName().contains("/"))
-                        {
-                            sum.setValue(sum.getFloatValue()
-                                    + (sumValue * fractionofrecipe));
-                        }
-                        else
-                        {
-                            sum.setValue(sum.getFloatValue()
-                                    + (sumValue * brtaifactor));
-                        }
-
-                    }
-                    catch (NumberFormatException e)
-                    {
-                        LOG.debug(e);
-                    }
-                    catch (OperationNotSupportedException e)
-                    {
-                        LOG.debug(e);
-                    }
-                }
-                else
-                {
-                    // check if the parameter has a unit (some bls specific
-                    // parameters which don't need to be summed)
-                    if (parameter.getUnit().getParameterDefinitionUnitId() != 0)
-                    {
-                        NutrimentParameterBO validSum = new NutrimentParameterBO();
-                        validSum.setUnit(parameter.getUnit());
-                        validSum.setParameterDefinition(parameter.getParameterDefinition());
-                        
-                        summedIngredientParameter.put(currParameterdefid,
-                                validSum);
-
-                        if (validSum.getUnit().getName().contains("/"))
-                        {
-                            validSum.setValue(parameter.getFloatValue()
-                                    * fractionofrecipe);
-                        }
-                        else
-                        {
-                            validSum.setValue(parameter.getFloatValue()
-                                    * brtaifactor);
-                        }
-                    }
-                }
-
-            }
-        }
-
-        
-        clearNutrimentParameters();
-        // all recipes with the correct sum and unit will be added to the recipe
-        for (NutrimentParameterBO parameter : summedIngredientParameter
-                .values())
-        {
-            addNutrimentParameters(parameter);
-        }
-    }
+//    public void calcParameters()
+//    {
+//        // mapping of the special parameter to its sum value class
+//        Map<Long, NutrimentParameterBO> summedIngredientParameter = new HashMap<Long, NutrimentParameterBO>();
+//
+//        long currParameterdefid;
+//        float sumValue;
+//
+//        // reset and calculate new weight
+//        setAmount(0);
+//
+//        // calculate new parameter values
+//        for (RecipeIngredientBO recipeIngredient : getIngredients())
+//        {
+//            // add amount to recipe
+//            float amountInRecipeUnit;
+//
+//            // convert if needed
+//            if (getUnit().equals(recipeIngredient.getIngredient().getUnit()))
+//            {
+//                amountInRecipeUnit = recipeIngredient.getAmount();
+//            }
+//            else
+//            {
+//                float amountInIngredientUnit = recipeIngredient.getAmount();
+//
+//                try
+//                {
+//                    amountInRecipeUnit = DietParameterUnitController
+//                            .getInstance().convert(
+//                                    recipeIngredient.getIngredient().getUnit(),
+//                                    getUnit(), amountInIngredientUnit);
+//                }
+//                catch (OperationNotSupportedException e)
+//                {
+//                    // TODO: warning - could not add ungredient
+//                    amountInRecipeUnit = 0;
+//                }
+//            }
+//            setAmount(getAmount() + amountInRecipeUnit);
+//        }
+//        // calculate new parameter values
+//        for (RecipeIngredientBO recipeIngredient : getIngredients())
+//        {
+//            // all ingredients
+//
+//            // recipeIngredient.getIngredient().getAmount()  has X kcal
+//            // recipeIngredient.getAmount() has n kcal
+//            
+//            // n = X * brtaifactor
+//            float brtaifactor = (recipeIngredient.getAmount() / recipeIngredient
+//                    .getIngredient().getAmount());// baserecipe to as
+//                                              // ingredient factor for
+//                                              // absolute units
+//            
+//            // 100g has X kcal
+//            // recipeIngredient.getAmount() has n kcal
+//            
+//            // n = X * fractionOfRecipe
+//            float fractionofrecipe = recipeIngredient.getIngredient().getAmount() / getAmount();// fractionofrecipe
+//                                                                                // needed
+//                                                                                // to
+//                                                                                // get
+//                                                                                // the
+//                                                                                // right
+//                                                                                // fractins
+//                                                                                // of
+//                                                                                // relative
+//                                                                                // units
+//
+//            for (NutrimentParameterBO parameter : recipeIngredient
+//                    .getIngredient().getNutrimentParameters())
+//            {
+//                currParameterdefid = parameter.getParameterDefinition()
+//                        .getParameterDefinitionId();
+//                if (summedIngredientParameter.containsKey(currParameterdefid))
+//                {
+//                    // if parameter already exists
+//                    NutrimentParameterBO sum = summedIngredientParameter
+//                            .get(currParameterdefid);
+//
+//                    ParameterDefinitionUnitBO target = sum.getUnit();
+//                    ParameterDefinitionUnitBO source = parameter.getUnit();
+//
+//                    try
+//                    {// converting the type and then sum it
+//
+//                        sumValue = DietParameterUnitController.getInstance()
+//                                .convert(source, target,
+//                                        Float.parseFloat(parameter.getValue()));
+//
+//                        if (target.getName().contains("/"))
+//                        {
+//                            sum.setValue(sum.getFloatValue()
+//                                    + (sumValue * fractionofrecipe));
+//                        }
+//                        else
+//                        {
+//                            sum.setValue(sum.getFloatValue()
+//                                    + (sumValue * brtaifactor));
+//                        }
+//
+//                    }
+//                    catch (NumberFormatException e)
+//                    {
+//                        LOG.debug(e);
+//                    }
+//                    catch (OperationNotSupportedException e)
+//                    {
+//                        LOG.debug(e);
+//                    }
+//                }
+//                else
+//                {
+//                    // check if the parameter has a unit (some bls specific
+//                    // parameters which don't need to be summed)
+//                    if (parameter.getUnit().getParameterDefinitionUnitId() != 0)
+//                    {
+//                        NutrimentParameterBO validSum = new NutrimentParameterBO();
+//                        validSum.setUnit(parameter.getUnit());
+//                        validSum.setParameterDefinition(parameter.getParameterDefinition());
+//                        
+//                        summedIngredientParameter.put(currParameterdefid,
+//                                validSum);
+//
+//                        if (validSum.getUnit().getName().contains("/"))
+//                        {
+//                            validSum.setValue(parameter.getFloatValue()
+//                                    * fractionofrecipe);
+//                        }
+//                        else
+//                        {
+//                            validSum.setValue(parameter.getFloatValue()
+//                                    * brtaifactor);
+//                        }
+//                    }
+//                }
+//
+//            }
+//        }
+//
+//        
+//        clearNutrimentParameters();
+//        // all recipes with the correct sum and unit will be added to the recipe
+//        for (NutrimentParameterBO parameter : summedIngredientParameter
+//                .values())
+//        {
+//            addNutrimentParameters(parameter);
+//        }
+//    }
 
    
     public NutrimentParameterBO getNutrimentParameter(

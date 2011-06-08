@@ -15,16 +15,17 @@ import at.easydiet.businessobjects.SystemUserBO;
 @SessionScoped
 public class UserBean
 {
+    @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(UserBean.class);
 
     public SystemUserBO getUser()
     {
         return ControllerBean.getSystemUserController().getCurrentUser();
     }
-    
+
     private String _username;
     private String _password;
-    
+
     /**
      * Gets the username.
      * @return the username
@@ -60,24 +61,39 @@ public class UserBean
     {
         _password = password;
     }
-    
+
     public String doLogin()
     {
         try
         {
-            ControllerBean.getSystemUserController().login(getUsername(), getPassword());
-            return "dashboardView";
+            ControllerBean.getSystemUserController().login(getUsername(),
+                    getPassword());
+            setPassword("");
+            setUsername("");
+
+            if (ControllerBean.getPatientDetailViewController().getPatient() != null)
+            {
+                return "patientDetailView";
+            }
+            else
+            {
+                return "dashboardView";
+            }
         }
         catch (AuthenticationException e)
         {
-            FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_ERROR, "Login Fehler", "Ungültiger Benutzername oder Passwort"));
+            FacesContext.getCurrentInstance().addMessage(
+                    null,
+                    new FacesMessage(FacesMessage.SEVERITY_ERROR,
+                            "Login Fehler",
+                            "Ungültiger Benutzername oder Passwort"));
             return "login";
         }
     }
 
     public String doLogout() throws ServletException
     {
-        ControllerBean.getSystemUserController().logout(getUsername(), getPassword());
+        ControllerBean.getSystemUserController().logout();
         FacesContext.getCurrentInstance().getExternalContext()
                 .invalidateSession();
         return "login";
