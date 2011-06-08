@@ -11,7 +11,8 @@
 </h:head>
 <h:body>
 	<h:form>
-		<strong>Hallo <h:outputText value="#{userBean.user.name}" /></strong>,  <p:commandLink action="${userBean.doLogout}" value="Ausloggen" />
+		<strong>Hallo <h:outputText value="#{userBean.user.name}" />
+		</strong>,  <p:commandLink action="${userBean.doLogout}" value="Ausloggen" />
 		<p:breadCrumb>
 			<p:menuitem value="Dashboard" url="#" />
 		</p:breadCrumb>

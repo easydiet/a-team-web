@@ -22,21 +22,43 @@
 			<p:menuitem value="Neues Ernährungsprotokoll" />
 		</p:breadCrumb>
 		<h1>Ernährungsprotokoll anlegen</h1>
+		<p:commandButton value="neuen Zeitraum hinzufügen"
+			action="#{createNutritionProtocolBean.addNewTimespan}"
+			update="timespans" />
+		<p:dataGrid var="timespan" id="timespans" 
+			value="#{createNutritionProtocolBean.timeSpans}" columns="1">
+			<p:column>
+				<h:outputLabel value="Von" />
+				<p:calendar showOn="button" value="#{timespan.start}"></p:calendar>
+				<h:outputLabel value="Bis" />
+				<p:calendar showOn="button" value="#{timespan.end}"></p:calendar>
+				<h:outputText value="#{timepan.duration}"></h:outputText>
+				<br />
+				<p:commandButton value="neue Mahlzeit hinzufügen"
+					actionListener="#{createNutritionProtocolBean.addNewMeal}" update="timespans">
+					<f:attribute name="timespan" value="#{timespan}"/>	
+				</p:commandButton>
+				<p:dataGrid var="meal" id="meals"
+					value="#{timespan.meals}" columns="1">
+					<p:column>
+						<h:outputLabel value="Code"/>
+						<p:inputText size="2" value="#{meal.code}"></p:inputText>
+						<h:outputLabel value="Bezeichnung"/>
+						<p:inputText value="#{meal.name}"></p:inputText>
+						
+					</p:column>
+				</p:dataGrid>
+	
+			</p:column>
+			
+
+		</p:dataGrid>
 
 		<p:commandButton value="neuen Zeitraum hinzufügen"
 			action="#{createNutritionProtocolBean.addNewTimespan}"
 			update="timespans" />
-		
-		 var="timespan" id="timespans"
-			value="#{createNutritionProtocolBean.timeSpans}">
-			<h:outputLabel for="from" value="Von" />
-		<p:calendar showOn="button" value="#{timespan.start}"></p:calendar>
-		<h:outputLabel for="to" value="Bis" />
-		<p:calendar showOn="button" value="#{timespan.end}"></p:calendar>
-		<h:outputText value="#{timepan.duration}"></h:outputText>
-		<p:button value="neue Mahlzeit hinzufügen"></p:button>
-		</c:foreach>
 
+	
 	</h:form>
 </h:body>
 </html>
