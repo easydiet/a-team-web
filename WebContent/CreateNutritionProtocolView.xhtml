@@ -16,6 +16,8 @@
 	</script>
 </h:head>
 <h:body>
+	<h:form id="frm">
+		<strong>Hallo <h:outputText value="#{userBean.user.name}" /></strong>,  <p:commandLink action="${userBean.doLogout}" value="Ausloggen" />
 	<h:form>
 		<strong>Hallo <h:outputText value="#{userBean.user.name}" />
 		</strong>,  <p:commandLink action="${userBean.doLogout}" value="Ausloggen" />
@@ -28,6 +30,13 @@
 			<p:menuitem value="Neues Ernährungsprotokoll" />
 		</p:breadCrumb>
 		<h1>Ernährungsprotokoll anlegen</h1>
+		<h2>Aus Diaetplan uebernehmen</h2>
+		Am: 
+		<p:calendar value="#{createNutritionProtocolBean.date}" mode="inline">
+			<p:ajax event="dateSelect" listener="#{createNutritionProtocolBean.addTimeSpanByDate}" update="frm" />  
+		</p:calendar>
+		<p:commandButton action="#{createNutritionProtocolBean.searchDietPlanMenues}" value="Suchen" />
+		
 		<p:commandButton value="neuen Zeitraum hinzufügen"
 			action="#{createNutritionProtocolBean.addNewTimespan}"
 			update="timespans" />
@@ -54,69 +63,74 @@
 							<p:inputText size="2" value="#{meal.code}" />
 							<h:outputLabel value="Bezeichnung" />
 							<p:inputText value="#{meal.name}" />
-							<p:commandButton value="Rezept hinzufügen" oncomplete="dlg1.show();" update="dlg1">
-								<f:setPropertyActionListener value="#{meal}"   
-	                                target="#{createNutritionProtocolBean.currentMeal}" /> 	
+							<p:commandButton value="Rezept hinzufügen"
+								oncomplete="dlg1.show();" update="dlg1">
+								<f:setPropertyActionListener value="#{meal}"
+									target="#{createNutritionProtocolBean.currentMeal}" />
 							</p:commandButton>
-							
+
 
 							<p:dataTable var="selRecipe" scrollable="true" height="300"
-								emptyMessage="Bitte fügen Sie die Rezepte hinzu" id="selTable">
+								emptyMessage="Bitte fügen Sie die Rezepte hinzu" id="selTable"
+								value="#{meal.mealLines}">
 								<p:column headerText="Menge" style="width:50px;">
-									<h:outputText value="#{selRecipe.blsCode}" />
+									<h:outputText value="#{selRecipe.quantity}" />
 								</p:column>
 
-								<p:column headerText="BLS Code" sortBy="#{selRecipe.blsCode}"
-									style="width:100px;">
-									<h:outputText value="#{selRecipe.blsCode}" />
+								<p:column headerText="BLS Code"
+									sortBy="#{selRecipe.recipe.blsCode}" style="width:100px;">
+									<h:outputText value="#{selRecipe.recipe.blsCode}" />
 								</p:column>
 
-								<p:column headerText="Name" sortBy="#{selRecipe.name}"
+								<p:column headerText="Name" sortBy="#{selRecipe.recipe.name}"
 									style="width:300px;">
-									<h:outputText value="#{selRecipe.name}" />
+									<h:outputText value="#{selRecipe.recipe.name}" />
 								</p:column>
 							</p:dataTable>
-
-
-
 						</p:panel>
 					</p:column>
 				</p:dataGrid>
 			</p:column>
 		</p:dataGrid>
-		
+
 		<p:dialog header="Rezept hinzufügen" widgetVar="dlg1" id="dlg1">
-		<h:outputText value="Geben Sie einen Suchbegriff ein:" />
-		<h:inputText value="#{createNutritionProtocolBean.recipeSearch.queryString}"
-			onkeypress="return preventSubmit(event)">
-			<p:ajax event="keyup" update="recipeResult"
-				listener="#{createNutritionProtocolBean.recipeSearch.doSearch}" />
-		</h:inputText>
-		<p:panel id="recipeResult" style="width:500px;">
-			<p:dataTable var="recipe" value="#{createNutritionProtocolBean.recipeSearch.recipes}"
-				selectionMode="multiple"
-				selection="#{createNutritionProtocolBean.selectedRecipes}"
-				scrollable="true" height="150"
-				style="width:500px;min-width:500px;"
-				emptyMessage="Bitte verwenden Sie die Suchfunktion."
-				id="table">
+			<h:outputText value="Geben Sie einen Suchbegriff ein:" />
+			<h:inputText
+				value="#{createNutritionProtocolBean.recipeSearch.queryString}"
+				onkeypress="return preventSubmit(event)">
+				<p:ajax event="keyup" update="recipeResult"
+					listener="#{createNutritionProtocolBean.recipeSearch.doSearch}" />
+			</h:inputText>
+			<p:panel id="recipeResult" style="width:500px;">
+				<p:dataTable var="recipe"
+					value="#{createNutritionProtocolBean.recipeSearch.recipes}"
+					selectionMode="multiple"
+					selection="#{createNutritionProtocolBean.selectedRecipes}"
+					scrollable="true" height="150" style="width:500px;min-width:500px;"
+					emptyMessage="Bitte verwenden Sie die Suchfunktion." id="table">
 
-				<p:column headerText="BLS Code" sortBy="#{recipe.blsCode}"
-					style="width:100px;min-width:100px">
-					<h:outputText value="#{recipe.blsCode}" />
-				</p:column>
+					<p:column headerText="BLS Code" sortBy="#{recipe.blsCode}"
+						style="width:100px;min-width:100px">
+						<h:outputText value="#{recipe.blsCode}" />
+					</p:column>
 
-				<p:column headerText="Name" sortBy="#{recipe.name}"
-					style="width:300px;min-width:300px">
-					<h:outputText value="#{recipe.name}" />
-				</p:column>
-			</p:dataTable>
-			<p:commandButton value="neues Rezept hinzufügen" action="#{createNutritionProtocolBean.addNewMealLine}" update="timespans"/>							
-		</p:panel>
-	</p:dialog>
+					<p:column headerText="Name" sortBy="#{recipe.name}"
+						style="width:300px;min-width:300px">
+						<h:outputText value="#{recipe.name}" />
+					</p:column>
+				</p:dataTable>
+				<p:commandButton onclick="dlg1.close()"
+					value="neues Rezept hinzufügen"
+					action="#{createNutritionProtocolBean.addNewMealLine}"
+					update="timespans" />
+			</p:panel>
+		</p:dialog>
 		<p:commandButton value="neuen Zeitraum hinzufügen"
 			action="#{createNutritionProtocolBean.addNewTimespan}"
-			update="timespans" />
+			update="timespans" /><br/>
+		<p:commandButton value="Ernährungsprotokoll speichern"
+			action="#{createNutritionProtocolBean.save}" />
+
 	</h:form>
 </h:body>
 </html>
