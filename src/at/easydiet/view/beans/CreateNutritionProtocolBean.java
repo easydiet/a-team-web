@@ -6,12 +6,16 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
 
+import at.easydiet.ControllerProvider;
 import at.easydiet.businessobjects.MealBO;
 import at.easydiet.businessobjects.MealLineBO;
 import at.easydiet.businessobjects.NutritionProtocolBO;
+import at.easydiet.businessobjects.ParameterDefinitionUnitBO;
 import at.easydiet.businessobjects.RecipeBO;
 import at.easydiet.businessobjects.TimeSpanBO;
+import at.easydiet.domainlogic.ParameterDefinitionUnitController;
 import at.easydiet.domainlogic.RecipeSearchController;
+import at.easydiet.model.ParameterDefinitionUnit;
 
 /**
  * This bean handles the communication between the UI and the controller for creating new nutritionprocotols
@@ -101,5 +105,10 @@ public class CreateNutritionProtocolBean
     public List<MealLineBO> getMealLines()
     {
     	return null;    	
+    }
+    
+    public List<ParameterDefinitionUnitBO> getRecipeUnits()
+    {
+        return ControllerBean.getParameterDefinitionUnitController().getUnits();
     }
 }

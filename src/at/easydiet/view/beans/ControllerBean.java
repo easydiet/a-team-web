@@ -10,6 +10,8 @@ import at.easydiet.businesslogic.DashboardViewController;
 import at.easydiet.businesslogic.DietPlanEditingController;
 import at.easydiet.businesslogic.DietTreatmentDetailViewController;
 import at.easydiet.businesslogic.PatientDetailViewController;
+import at.easydiet.domainlogic.ParameterDefinitionUnitController;
+import at.easydiet.domainlogic.RecipeSearchController;
 import at.easydiet.domainlogic.SystemUserController;
 import at.easydiet.view.BeanResolver;
 
@@ -87,5 +89,10 @@ public class ControllerBean
     public static ControllerBean getInstance()
     {
         return BeanResolver.resolveBean(FacesContext.getCurrentInstance(), "controllerBean");
+    }
+
+    public static ParameterDefinitionUnitController getParameterDefinitionUnitController()
+    {
+        return getInstance()._provider.getParameterDefinitionUnitController();
     }
 }

@@ -60,16 +60,44 @@
 									target="#{createNutritionProtocolBean.currentMeal}" />
 							</p:commandButton>
 
-
+							<p:growl id="messages" />
+							
 							<p:dataTable var="selRecipe" scrollable="true" height="300"
 								emptyMessage="Bitte fügen Sie die Rezepte hinzu" id="selTable"
-								value="#{meal.mealLines}">
-								<p:column headerText="Menge" style="width:50px;">
-									<h:outputText value="#{selRecipe.quantity}" />
+								value="#{meal.mealLines}" onRowEditUpdate="messages,selTable" >
+								
+								<p:column headerText="-" style="width:30px;">
+									<p:rowEditor />
+								</p:column>
+								
+								<p:column headerText="Menge" style="width:75px;">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{selRecipe.quantity}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:inputText value="#{selRecipe.quantity}" style="width:100%" />
+										</f:facet>
+									</p:cellEditor>
 								</p:column>
 
-								<p:column headerText="BLS Code" sortBy="#{selRecipe.recipe.blsCode}"
-									style="width:100px;">
+								<p:column headerText="Einheit" style="width:100px;">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{selRecipe.unit}" />
+										</f:facet>
+										<f:facet name="input">
+											<h:selectOneMenu value="#{selRecipe.unit}" style="width:100%">
+												<f:selectItems
+													value="#{createNutritionProtocolBean.recipeUnits}"
+													var="unit" itemLabel="#{unit}" itemValue="#{unit}" />
+											</h:selectOneMenu>
+										</f:facet>
+									</p:cellEditor>
+								</p:column>
+
+								<p:column headerText="BLS Code"
+									sortBy="#{selRecipe.recipe.blsCode}" style="width:100px;">
 									<h:outputText value="#{selRecipe.recipe.blsCode}" />
 								</p:column>
 
@@ -110,9 +138,10 @@
 						<h:outputText value="#{recipe.name}" />
 					</p:column>
 				</p:dataTable>
-				<p:commandButton onclick="dlg1.close()" value="neues Rezept hinzufügen"
+				<p:commandButton onclick="dlg1.close()"
+					value="neues Rezept hinzufügen"
 					action="#{createNutritionProtocolBean.addNewMealLine}"
-					update="timespans"/>
+					update="timespans" />
 			</p:panel>
 		</p:dialog>
 		<p:commandButton value="neuen Zeitraum hinzufügen"

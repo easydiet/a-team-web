@@ -31,7 +31,8 @@ public class ParameterDefinitionUnitController extends DomainLogicController
      * 
      * @return The instance of this {@link ParameterDefinitionUnitController}
      */
-    static ParameterDefinitionUnitController newInstance(DomainLogicProvider provider)
+    static ParameterDefinitionUnitController newInstance(
+            DomainLogicProvider provider)
     {
         if (_singleton == null)
         {
@@ -52,6 +53,23 @@ public class ParameterDefinitionUnitController extends DomainLogicController
             RecipeBO recipe)
     {
         // TODO: Check for available type converters with recipe.getUnit()
+        ParameterDefinitionUnitDAO dao = DAOFactory.getInstance()
+                .getParameterDefinitionUnitDAO();
+        List<ParameterDefinitionUnit> units = dao.findAll();
+        ArrayList<ParameterDefinitionUnitBO> bos = new ArrayList<ParameterDefinitionUnitBO>();
+        for (ParameterDefinitionUnit unit : units)
+        {
+            bos.add(new ParameterDefinitionUnitBO(unit));
+        }
+        return bos;
+    }
+
+    /**
+     * Get a list of {@link ParameterDefinitionUnitBO}
+     * @return
+     */
+    public List<ParameterDefinitionUnitBO> getUnits()
+    {
         ParameterDefinitionUnitDAO dao = DAOFactory.getInstance()
                 .getParameterDefinitionUnitDAO();
         List<ParameterDefinitionUnit> units = dao.findAll();
