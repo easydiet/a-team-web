@@ -24,8 +24,8 @@ public class ControllerProvider
     
     public ControllerProvider()
     {
-        _businessProvider = new BusinessLogicProvider(this);
         _domainProvider = new DomainLogicProvider(this);
+        _businessProvider = new BusinessLogicProvider(this);
     }
 
     /**
