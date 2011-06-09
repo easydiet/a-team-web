@@ -17,7 +17,12 @@
 			<p:menuitem value="Neues Ernährungsprotokoll" />
 		</p:breadCrumb>
 		<h1>Ernährungsprotokoll anlegen</h1>
-		TODO: A lot of work
+		<h2>Aus Diaetplan uebernehmen</h2>
+		Am: <p:calendar value="#{createNutritionProtocolBean.date}" showOn="button" selectListener="#{createNutritionProtocolBean.searchDietPlanMenues}"/> 
+		<p:commandButton action="#{createNutritionProtocolBean.searchDietPlanMenues}" value="Suchen" />
+		
+		
+		
 	</h:form>
 </h:body>
 </html>
