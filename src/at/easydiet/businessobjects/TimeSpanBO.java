@@ -248,6 +248,8 @@ public class TimeSpanBO implements IDietParameterizable
     @Override
     public int hashCode()
     {
+        if(_model.getTimeSpanId() == 0) return super.hashCode();
+        
         final int prime = 17;
         int result = 1;
         result = prime
@@ -255,21 +257,6 @@ public class TimeSpanBO implements IDietParameterizable
                 + (int) (_model.getTimeSpanId() ^ (_model.getTimeSpanId() >>> 32))
                 + super.hashCode();
         return result;
-    }
-
-    /**
-     * @see java.lang.Object#equals(java.lang.Object)
-     */
-    @Override
-    public boolean equals(Object obj)
-    {
-        if (this == obj) return true;
-        if (obj == null) return false;
-        if (!(obj instanceof TimeSpanBO)) return false;
-        TimeSpanBO other = (TimeSpanBO) obj;
-        if (_model.getTimeSpanId() != other._model.getTimeSpanId())
-            return false;
-        return true;
     }
 
     public String getDisplayText()

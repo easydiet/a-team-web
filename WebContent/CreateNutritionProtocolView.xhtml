@@ -19,6 +19,7 @@
 <h:form>
 		<strong>Hallo <h:outputText value="#{userBean.user.name}"/>,<p:commandLink action="${userBean.doLogout}" value="Ausloggen" />
 		</strong>
+		<p:ajaxStatus />
 		<p:breadCrumb>
 			<p:menuitem value="Dashboard" action="dashboard" />
 			<p:menuitem value="#{patientDetailViewBean.patientName}"
@@ -35,11 +36,15 @@
 
 		<p:dataGrid var="timespan" id="timespans"
 			value="#{createNutritionProtocolBean.timeSpans}" columns="1">
-			<p:column>
+			<p:column id="pnl">
 				<h:outputLabel value="Von" />
-				<p:calendar showOn="button" value="#{timespan.start}"></p:calendar>
+				<p:calendar showOn="button" value="#{timespan.start}">
+					<p:ajax event="dateSelect" update="pnl" />
+				</p:calendar>
 				<h:outputLabel value="Bis" />
-				<p:calendar showOn="button" value="#{timespan.end}"></p:calendar>
+				<p:calendar showOn="button" value="#{timespan.end}">
+					<p:ajax event="dateSelect" update="pnl" />
+				</p:calendar>
 				<h:outputText value="#{timepan.duration}"></h:outputText>
 				<p:commandLink value="Zeitraum entfernen"
 					actionListener="#{createNutritionProtocolBean.deleteTimespan}"
