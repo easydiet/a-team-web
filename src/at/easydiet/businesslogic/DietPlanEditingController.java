@@ -100,6 +100,7 @@ public class DietPlanEditingController extends BusinessLogicController
         {
             t.setStart(_dietPlan.getDietTreatment().getStart());
         }
+        t.setDietPlan(_dietPlan);
         _dietPlan.addTimeSpans(t);
         validateDietPlan();
         return t;
