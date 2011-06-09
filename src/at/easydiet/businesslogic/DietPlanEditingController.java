@@ -85,6 +85,21 @@ public class DietPlanEditingController extends BusinessLogicController
     public TimeSpanBO createTimeSpan()
     {
         TimeSpanBO t = new TimeSpanBO();
+        //set start date
+        if(!_dietPlan.getTimeSpans().isEmpty())
+        {
+            //milliseconds of a day
+            int day_millis = 1000 * 60 * 60 * 24;
+            
+            //calculate next day
+            Date nextDate = new Date(_dietPlan.getTimeSpans().get(_dietPlan.getTimeSpans().size() - 1).getEnd().getTime()+day_millis);
+            
+            t.setStart(nextDate);
+        }
+        else if (_dietPlan.getDietTreatment().getStart() != null)
+        {
+            t.setStart(_dietPlan.getDietTreatment().getStart());
+        }
         _dietPlan.addTimeSpans(t);
         validateDietPlan();
         return t;
@@ -140,6 +155,7 @@ public class DietPlanEditingController extends BusinessLogicController
     {
         MealLineBO line = new MealLineBO();
         line.setMeal(meal);
+        line.setUnit(recipe.getUnit());
         line.setRecipe(recipe);
         line.setQuantity(recipe.getAmount());
         meal.addMealLines(line);
@@ -179,6 +195,7 @@ public class DietPlanEditingController extends BusinessLogicController
     {
         MealLineBO alternative = new MealLineBO();
         alternative.setParent(mealLine);
+        alternative.setUnit(recipe.getUnit());
         alternative.setMeal(mealLine.getMeal());
         alternative.setRecipe(recipe);
         alternative.setQuantity(recipe.getAmount());
