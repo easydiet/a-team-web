@@ -13,6 +13,7 @@ import at.easydiet.businessobjects.PlanTypeBO;
 import at.easydiet.businessobjects.TimeSpanBO;
 import at.easydiet.model.DietPlan;
 import at.easydiet.model.PlanType;
+import at.easydiet.domainlogic.RecipeSearchController;
 
 /**
  * This Controller handles the Creation of NutritionProtocols
@@ -26,21 +27,30 @@ public class CreateNutritionProtocolController extends
     public static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
                                                             .getLogger(CreateNutritionProtocolController.class);
 
+    private RecipeSearchController              _recipeSearchController;
+
     /**
      * Gets a new instance of this class.
+     * 
      * @return a new instance for the current thread.
      */
-    static CreateNutritionProtocolController newInstance()
+    static CreateNutritionProtocolController newInstance(
+            BusinessLogicProvider currentProvider)
     {
-        return new CreateNutritionProtocolController();
+        return new CreateNutritionProtocolController(currentProvider);
     }
 
     /**
      * Initializes a new instance of the
      * {@link CreateNutritionProtocolController} class.
+     * 
+     * @param currentProvider
      */
-    protected CreateNutritionProtocolController()
+    private CreateNutritionProtocolController(
+            BusinessLogicProvider currentProvider)
     {
+        super(currentProvider);
+        _recipeSearchController = new RecipeSearchController();
         // hidden
     }
 
@@ -57,7 +67,7 @@ public class CreateNutritionProtocolController extends
         dietPlan.setDietTreatment(dietTreatment);
         setDietPlan(dietPlan);
     }
-    
+
     @Override
     public NutritionProtocolBO getDietPlan()
     {
@@ -103,4 +113,9 @@ public class CreateNutritionProtocolController extends
         throw new NotFoundException("No Meal found for this date on Diet: " + diet.getName()+", on Day: "+timeSpan.getStart());
     }
 
+
+    public RecipeSearchController getRecipeSearchController()
+    {
+        return _recipeSearchController;
+    }
 }

@@ -12,7 +12,7 @@ import at.easydiet.util.StringUtils;
 /**
  * Provides data and actions for the {@link DashboardView}.
  */
-public class DashboardViewController
+public class DashboardViewController extends BusinessLogicController
 {
     /**
      * Logger for debugging purposes
@@ -34,18 +34,18 @@ public class DashboardViewController
      * Gets a new instance of this class.
      * @return a new instance for the current thread.
      */
-    static DashboardViewController newInstance()
+    static DashboardViewController newInstance(BusinessLogicProvider provider)
     {
-        return new DashboardViewController();
+        return new DashboardViewController(provider);
     }
 
     /**
      * Initializes a new instance of the
      * {@link DashboardViewController} class.
      */
-    protected DashboardViewController()
+    protected DashboardViewController(BusinessLogicProvider provider)
     {
-        // hidden
+        super(provider);
     }
 
     /**
@@ -72,26 +72,38 @@ public class DashboardViewController
     public void refreshPatients()
     {
         LOG.trace("Refreshing Patients");
-        PatientDAO patientDao = DAOFactory.getInstance().getPatientDAO();
-        List<Patient> patients;
-
         _patients = new ArrayList<PatientBO>();
-        if (StringUtils.isNullOrWhitespaceOnly(_patientFilter))
+        
+
+        // check if a patient is logged in, he will only see himself
+        String username = getRootProvider().getSystemUserController().getCurrentUser().getUsername();
+        PatientBO currentPatient = getRootProvider().getPatientDetailViewController().getPatient();
+        if(currentPatient != null && username.equalsIgnoreCase(currentPatient.getInsuranceNumber()))
         {
-            LOG.trace("Loading all Patients (no filtering)");
-            patients = patientDao.findAll();
+            _patients.add(getRootProvider().getPatientDetailViewController().getPatient());
         }
         else
-        {
-            LOG.trace(String.format("Loading filtered Patients (%s)",
-                    _patientFilter));
-            patients = patientDao.findByQuery(_patientFilter);
-        }
-
-        LOG.trace("Setup loaded patients");
-        for (Patient patient : patients)
-        {
-            _patients.add(new PatientBO(patient));
+        {    
+            PatientDAO patientDao = DAOFactory.getInstance().getPatientDAO();
+            List<Patient> patients;
+    
+            if (StringUtils.isNullOrWhitespaceOnly(_patientFilter))
+            {
+                LOG.trace("Loading all Patients (no filtering)");
+                patients = patientDao.findAll();
+            }
+            else
+            {
+                LOG.trace(String.format("Loading filtered Patients (%s)",
+                        _patientFilter));
+                patients = patientDao.findByQuery(_patientFilter);
+            }
+    
+            LOG.trace("Setup loaded patients");
+            for (Patient patient : patients)
+            {
+                _patients.add(new PatientBO(patient));
+            }
         }
     }
 

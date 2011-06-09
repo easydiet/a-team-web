@@ -11,7 +11,7 @@ import at.easydiet.model.PatientLikeGrade;
 /**
  * Provides data and methods for
  */
-public class PatientLikeGradeController
+public class PatientLikeGradeController extends DomainLogicController
 {
     /**
      * Logger for debugging purposes
@@ -21,30 +21,23 @@ public class PatientLikeGradeController
                                                              .getLogger(PatientLikeGradeController.class);
 
     /**
-     * This is a unique instance, it is stored as this singleton
-     */
-    private static PatientLikeGradeController    _singleton;
-
-    /**
      * Get a Instance of this {@link PatientLikeGradeController}
      * 
      * @return The instance of this {@link PatientLikeGradeController}
      */
-    public static PatientLikeGradeController getInstance()
+    static PatientLikeGradeController newInstance(DomainLogicProvider provider)
     {
-        if (_singleton == null)
-        {
-            _singleton = new PatientLikeGradeController();
-        }
-        return _singleton;
+            return new PatientLikeGradeController(provider);
     }
 
     /**
      * Initializes a new instance of the {@link PatientLikeGradeController}
      * class.
      */
-    private PatientLikeGradeController()
-    {}
+    private PatientLikeGradeController(DomainLogicProvider provider)
+    {
+        super(provider);
+    }
 
     /**
      * Stores the grades

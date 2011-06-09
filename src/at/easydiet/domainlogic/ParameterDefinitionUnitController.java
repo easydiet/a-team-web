@@ -13,7 +13,7 @@ import at.easydiet.model.ParameterDefinitionUnit;
 /**
  * Provides data and methods for compatibility with recipes,...
  */
-public class ParameterDefinitionUnitController
+public class ParameterDefinitionUnitController extends DomainLogicController
 {
     /**
      * Logger for debugging purposes
@@ -31,11 +31,11 @@ public class ParameterDefinitionUnitController
      * 
      * @return The instance of this {@link ParameterDefinitionUnitController}
      */
-    public static ParameterDefinitionUnitController getInstance()
+    static ParameterDefinitionUnitController newInstance(DomainLogicProvider provider)
     {
         if (_singleton == null)
         {
-            _singleton = new ParameterDefinitionUnitController();
+            _singleton = new ParameterDefinitionUnitController(provider);
         }
         return _singleton;
     }
@@ -67,8 +67,10 @@ public class ParameterDefinitionUnitController
      * Initializes a new instance of the
      * {@link ParameterDefinitionUnitController} class.
      */
-    private ParameterDefinitionUnitController()
-    {}
+    private ParameterDefinitionUnitController(DomainLogicProvider provider)
+    {
+        super(provider);
+    }
 
     /**
      * Gets the default {@link ParameterDefinitionUnitBO}

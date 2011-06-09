@@ -4,12 +4,13 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.context.FacesContext;
 
-import at.easydiet.businesslogic.ControllerProvider;
+import at.easydiet.ControllerProvider;
 import at.easydiet.businesslogic.CreateNutritionProtocolController;
 import at.easydiet.businesslogic.DashboardViewController;
 import at.easydiet.businesslogic.DietPlanEditingController;
 import at.easydiet.businesslogic.DietTreatmentDetailViewController;
 import at.easydiet.businesslogic.PatientDetailViewController;
+import at.easydiet.domainlogic.SystemUserController;
 import at.easydiet.view.BeanResolver;
 
 /**
@@ -22,56 +23,65 @@ public class ControllerBean
     public static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
                                                             .getLogger(ControllerBean.class);
 
-    private ControllerProvider _controllerProvider;
+    private ControllerProvider _provider;
     
     public ControllerBean()
     {
-        _controllerProvider = new ControllerProvider();
+        _provider = new ControllerProvider();
+    }
+    
+    /**
+     * @return
+     * @see at.easydiet.domainlogic.DomainLogicProvider#getSystemUserController()
+     */
+    public static SystemUserController getSystemUserController()
+    {
+        return getInstance()._provider.getSystemUserController();
     }
 
     /**
      * @return
-     * @see at.easydiet.businesslogic.ControllerProvider#getCreateNutritionProtocolController()
+     * @see at.easydiet.businesslogic.BusinessLogicProvider#getCreateNutritionProtocolController()
      */
     public static CreateNutritionProtocolController getCreateNutritionProtocolController()
     {
-        return getInstance()._controllerProvider.getCreateNutritionProtocolController();
+        return getInstance()._provider.getCreateNutritionProtocolController();
     }
     
     /**
      * @return
-     * @see at.easydiet.businesslogic.ControllerProvider#getDashboardViewController()
+     * @see at.easydiet.businesslogic.BusinessLogicProvider#getDashboardViewController()
      */
     public static DashboardViewController getDashboardViewController()
     {
-        return getInstance()._controllerProvider.getDashboardViewController();
+        return getInstance()._provider.getDashboardViewController();
     }
     
     /**
      * @return
-     * @see at.easydiet.businesslogic.ControllerProvider#getDietPlanEditingController()
+     * @see at.easydiet.businesslogic.BusinessLogicProvider#getDietPlanEditingController()
      */
     public static DietPlanEditingController getDietPlanEditingController()
     {
-        return getInstance()._controllerProvider.getDietPlanEditingController();
+        return getInstance()._provider.getDietPlanEditingController();
     }
     
     /**
      * @return
-     * @see at.easydiet.businesslogic.ControllerProvider#getDietTreatmentDetailViewController()
+     * @see at.easydiet.businesslogic.BusinessLogicProvider#getDietTreatmentDetailViewController()
      */
     public static DietTreatmentDetailViewController getDietTreatmentDetailViewController()
     {
-        return getInstance()._controllerProvider.getDietTreatmentDetailViewController();
+        return getInstance()._provider.getDietTreatmentDetailViewController();
     }
     
     /**
      * @return
-     * @see at.easydiet.businesslogic.ControllerProvider#getPatientDetailViewController()
+     * @see at.easydiet.businesslogic.BusinessLogicProvider#getPatientDetailViewController()
      */
     public static PatientDetailViewController getPatientDetailViewController()
     {
-        return getInstance()._controllerProvider.getPatientDetailViewController();
+        return getInstance()._provider.getPatientDetailViewController();
     }
     
     public static ControllerBean getInstance()

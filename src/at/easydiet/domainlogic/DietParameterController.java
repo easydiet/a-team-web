@@ -21,7 +21,7 @@ import at.easydiet.businessobjects.TimeSpanBO;
 /**
  * Provides data and actions for validating Parameters.
  */
-public class DietParameterController
+public class DietParameterController extends DomainLogicController
 {
     /**
      * Logger for debugging purposes
@@ -32,27 +32,24 @@ public class DietParameterController
     /**
      * This is a unique instance, it is stored as this singleton
      */
-    private static DietParameterController       _singleton;
 
     /**
      * Get a instance of this controller
      * 
      * @return Instance of {@link DietParameterController}
      */
-    public static DietParameterController getInstance()
+    static DietParameterController newInstance(DomainLogicProvider provider)
     {
-        if (_singleton == null)
-        {
-            _singleton = new DietParameterController();
-        }
-        return _singleton;
+        return new DietParameterController(provider);
     }
 
     /**
      * Initializes a new instance of the {@link DietParameterController} class.
      */
-    private DietParameterController()
-    {}
+    private DietParameterController(DomainLogicProvider provider)
+    {
+        super(provider);
+    }
 
     /**
      * Validate the given dietplan if it matches the DietParameters defined
@@ -327,7 +324,7 @@ public class DietParameterController
                             .get(nutrimentParameter.getParameterDefinition())
                             .getParameterDefinitionUnit();
 
-                    if (DietParameterUnitController.getInstance().canConvert(
+                    if (getCurrentProvider().getDietParameterUnitController().canConvert(
                             nutrimentParameter.getUnit(), summingUnit))
                     {
                         try
@@ -338,8 +335,7 @@ public class DietParameterController
                             // step 1
                             // convert the recipeAmount from the recipeUnit to
                             // the mealLineUnit
-                            float recipeAmountInMealLineUnit = DietParameterUnitController
-                                    .getInstance().convert(
+                            float recipeAmountInMealLineUnit = getCurrentProvider().getDietParameterUnitController().convert(
                                             line.getRecipe().getUnit(),
                                             line.getUnit(),
                                             line.getRecipe().getAmount());
@@ -348,8 +344,7 @@ public class DietParameterController
                             // convert the nutritionParameterValue form the
                             // nutritionParameterUnit to the
                             // summingUnit
-                            float nutrimenAmountInSummingUnit = DietParameterUnitController
-                                    .getInstance().convert(
+                            float nutrimenAmountInSummingUnit = getCurrentProvider().getDietParameterUnitController().convert(
                                             nutrimentParameter.getUnit(),
                                             summingUnit, nutrimentAmount);
 

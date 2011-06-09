@@ -3,11 +3,16 @@ package at.easydiet.dao;
 import java.util.List;
 
 import org.apache.log4j.Logger;
+import org.hibernate.Criteria;
+import org.hibernate.criterion.Criterion;
 import org.hibernate.criterion.Example;
 import org.hibernate.criterion.MatchMode;
+import org.hibernate.criterion.Order;
 import org.hibernate.criterion.Restrictions;
 
 import at.easydiet.model.Patient;
+import at.easydiet.model.Recipe;
+import at.easydiet.util.StringUtils;
 import at.easydiet.validation.PatientValidator;
 
 /**
@@ -23,8 +28,7 @@ public class PatientDAO extends GenericHibernateDAO<Patient, Long>
     /**
      * Get a patient by forename, lastname and/or insurancenumber
      * 
-     * @param query
-     *            String with forename, lastname and/or insurancenumber
+     * @param query String with forename, lastname and/or insurancenumber
      *            seperated by whitespaces
      * @return List of all {@link Patient}s matching the query
      */
@@ -64,12 +68,9 @@ public class PatientDAO extends GenericHibernateDAO<Patient, Long>
     /**
      * Find a patient by data
      * 
-     * @param forename
-     *            The forename
-     * @param lastname
-     *            The lastname
-     * @param insuranceNumber
-     *            The insurancenumber
+     * @param forename The forename
+     * @param lastname The lastname
+     * @param insuranceNumber The insurancenumber
      * @return List of all {@link Patient} matching the data
      */
     public List<Patient> findByData(String forename, String lastname,
@@ -91,5 +92,19 @@ public class PatientDAO extends GenericHibernateDAO<Patient, Long>
                 .excludeZeroes().ignoreCase();
 
         return findByCriteria(Restrictions.or(ex, ex2));
+    }
+
+    public Patient findByInsuranceNumber(String username)
+    {
+        Patient template1 = new Patient();
+        template1.setInsuranceNumber(username);
+
+        Example ex = Example.create(template1).enableLike(MatchMode.EXACT)
+                .excludeZeroes().ignoreCase();
+        
+        Criteria crit = getSession().createCriteria(getPersistentClass())
+        .setMaxResults(200);
+        crit.add(ex);
+        return (Patient) crit.uniqueResult();
     }
 }
