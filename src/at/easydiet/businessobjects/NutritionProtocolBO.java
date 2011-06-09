@@ -16,9 +16,7 @@ public class NutritionProtocolBO extends DietPlanBO
      */
 	public NutritionProtocolBO()
 	{
-
-		// TODO: add default values
-		this(new NutritionProtocol());
+		this(new NutritionProtocol("", new Date(), PlanTypeBO.NUTRITION_PROTOCOL.getModel(), null, null, new Date()));
 	}
 	
     /**

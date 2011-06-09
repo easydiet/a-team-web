@@ -1,11 +1,6 @@
 package at.easydiet.view.beans;
 
-
-import java.util.Date;
 import java.util.List;
-
-import javassist.NotFoundException;
-
 
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
@@ -22,7 +17,6 @@ import org.primefaces.component.datatable.DataTable;
 import org.primefaces.event.DateSelectEvent;
 import at.easydiet.domainlogic.RecipeSearchController;
 
-
 /**
  * This bean handles the communication between the UI and the controller for creating new nutritionprocotols
  * @author Daniel
@@ -34,15 +28,20 @@ public class CreateNutritionProtocolBean
 {
     public static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
                                                             .getLogger(CreateNutritionProtocolBean.class);
-    private Date _date;
-    private List<MealBO> _meals;
     
     private MealBO _currentMeal;
-    private RecipeSearchController _recipeSearch = new RecipeSearchController();
+    private TimeSpanBO _currentTimespan;
+    
+	private RecipeSearchController _recipeSearch = new RecipeSearchController();
     private RecipeBO[] _selectedRecipes;
     
-    
-    
+    public TimeSpanBO CurrentTimespan() {
+		return _currentTimespan;
+	}
+
+	public void setCurrentTimespan(TimeSpanBO _currentTimespan) {
+		this._currentTimespan = _currentTimespan;
+	} 
     
 	public RecipeBO[] getSelectedRecipes() {
 		return _selectedRecipes;
@@ -88,63 +87,29 @@ public class CreateNutritionProtocolBean
         ControllerBean.getCreateNutritionProtocolController().createNew(ControllerBean.getDietTreatmentDetailViewController().getDietTreatment());
         ControllerBean.getCreateNutritionProtocolController().refresh();
     }
-
     
-    public void addTimeSpanByDate(DateSelectEvent e){
-        Date d = e.getDate();
-        TimeSpanBO timespan = ControllerBean.getCreateNutritionProtocolController().createTimeSpan();
-        timespan.setStart(d);
-        timespan.setDuration(0);
-        fillTimeSpanWithMeals(timespan);
-    }
-    
-    private void fillTimeSpanWithMeals(TimeSpanBO timeSpan)
-    {
-        try
-        {
-            ControllerBean.getCreateNutritionProtocolController().fillTimeSpanWithMeals(timeSpan);
-//            
-//            //Testen
-            for(MealBO meals2 : timeSpan.getMeals()){
-                System.out.println("getTimeSpanOfDay: "+meals2.getName());
-            }
-        }
-        catch (NotFoundException e)
-        {
-            System.out.println(e.getMessage());
-        }
-    }
-
-    
-    public void searchDietPlanMenues(){
-        TimeSpanBO timespan = ControllerBean.getCreateNutritionProtocolController().createTimeSpan();
-        timespan.setStart(_date);
-        timespan.setDuration(0);
-        fillTimeSpanWithMeals(timespan);
-        
-    }
-    
-    public void setDate(Date date){
-        _date = date;
-    }
-    
-    public Date getDate(){
-        return _date;
-    }
-    
-    public List<MealBO> getMeals(){
-        return _meals;
-    }
    
     public void addNewTimespan()
     {
     	ControllerBean.getCreateNutritionProtocolController().createTimeSpan();
     }
     
+    public void deleteTimespan(ActionEvent e)
+    {
+    	TimeSpanBO timespan = (TimeSpanBO) e.getComponent().getAttributes().get("timespan");
+    	ControllerBean.getCreateNutritionProtocolController().deleteTimeSpan(timespan);
+    }
+    
     public void addNewMeal(ActionEvent e)
     {
     	TimeSpanBO timespan = (TimeSpanBO) e.getComponent().getAttributes().get("timespan");
     	ControllerBean.getCreateNutritionProtocolController().createMeal(timespan);
+    }
+    
+    public void deleteMeal(ActionEvent e)
+    {
+    	MealBO meal = (MealBO) e.getComponent().getAttributes().get("meal");
+    	ControllerBean.getCreateNutritionProtocolController().deleteMeal(meal);
     }
     
     public void addNewMealLine()

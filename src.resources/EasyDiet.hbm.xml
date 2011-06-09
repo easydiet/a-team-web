@@ -199,10 +199,6 @@
 		<property name="duration" column="Duration" type="int" not-null="true" />
 		<property name="name" column="Name" type="string" not-null="true" />
 		<property name="shortDescription" column="ShortDescription" type="string" not-null="false" />
-		<set name="nutritionProtocols" lazy="true" inverse="true">
-			<key column="DietTreatmentId" not-null="true"/>
-			<one-to-many class="NutritionProtocol" />
-		</set>		
 		<set name="dietPlans" lazy="true" cascade="all,delete-orphan" inverse="true">
 			<key column="DietTreatmentId" />
 			<one-to-many class="DietPlan" />

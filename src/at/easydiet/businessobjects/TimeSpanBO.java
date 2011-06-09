@@ -299,8 +299,7 @@ public class TimeSpanBO implements IDietParameterizable
     public void getMealsofDay(Date date3){
         List<MealBO> meals = new ArrayList<MealBO>();
         for(MealBO m : _meals){
-            MealLineBO ml = new MealLineBO();
-            
+            MealLineBO ml = new MealLineBO();     
         }
     }
 

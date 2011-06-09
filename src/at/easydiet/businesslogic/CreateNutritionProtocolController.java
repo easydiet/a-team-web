@@ -17,21 +17,18 @@ import at.easydiet.model.PlanType;
 import at.easydiet.dao.HibernateUtil;
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import org.hibernate.HibernateException;
 
 import at.easydiet.EasyDietApplication;
 import at.easydiet.businessobjects.DietPlanBO;
 import at.easydiet.businessobjects.DietTreatmentBO;
-import at.easydiet.businessobjects.MealLineBO;
 import at.easydiet.businessobjects.NutritionProtocolBO;
+import at.easydiet.businessobjects.TimeSpanBO;
 import at.easydiet.dao.DAOFactory;
-import at.easydiet.dao.DietPlanDAO;
 import at.easydiet.dao.HibernateUtil;
 import at.easydiet.dao.NutritionProtocolDAO;
 import at.easydiet.domainlogic.RecipeSearchController;
-import at.easydiet.businessobjects.TimeSpanBO;
 
 /**
  * This Controller handles the Creation of NutritionProtocols
@@ -164,12 +161,14 @@ public class CreateNutritionProtocolController extends
         // update creator
         getDietPlan().setCreator(getRootProvider().getSystemUserController().getCurrentUser());
 
+        HibernateUtil.closeSession();
         try
         {
             HibernateUtil.currentSession().beginTransaction();
             NutritionProtocolDAO dao = DAOFactory.getInstance().getNutritionProtocolDAO();
             dao.makePersistent(getDietPlan().getModel());
             HibernateUtil.currentSession().getTransaction().commit();
+            getRootProvider().getDietTreatmentDetailViewController().refresh();
             return true;
         }
         catch (HibernateException e)
@@ -178,57 +177,5 @@ public class CreateNutritionProtocolController extends
             HibernateUtil.currentSession().getTransaction().rollback();
             return false;
         }
-    }
-
-    public void fillTimeSpanWithMeals(TimeSpanBO timeSpan) throws NotFoundException
-    {
-        DietTreatmentBO currentTreatment = getRootProvider().getDietTreatmentDetailViewController().getDietTreatment();
-        
-        timeSpan.clearMeals();
-        
-        for(DietPlanBO dietPlan : currentTreatment.getDietPlans())
-        {
-            if(dietPlan.getStart().compareTo(timeSpan.getStart()) <= 0 && dietPlan.getEnd().compareTo(timeSpan.getEnd()) >= 0 && dietPlan.getPlanType() != PlanTypeBO.NUTRITION_PROTOCOL)
-            {
-                for(TimeSpanBO ts : dietPlan.getTimeSpans())
-                {
-                    if(ts.getStart().compareTo(timeSpan.getStart()) <= 0 && ts.getEnd().compareTo(timeSpan.getEnd()) >= 0)
-                    {
-                        for(MealBO me : ts.getMeals())
-                        {
-                            timeSpan.addMeals(cloneMeal(me));
-                        }
-                        return;
-                    }
-                }
-            }
-        }
-        throw new NotFoundException("No Meal found for this date on Diet: " + currentTreatment.getName()+", on Day: "+timeSpan.getStart());
-    }
-
-    private MealBO cloneMeal(MealBO me)
-    {
-        MealBO newMeal = new MealBO();
-        newMeal.setCode(me.getCode());
-        newMeal.setName(me.getName());
-        
-        for (MealLineBO mealLine : me.getMealLines())
-        {
-            MealLineBO newMealLine = cloneMealLine(mealLine);
-            newMealLine.setMeal(newMeal);
-            newMeal.addMealLines(newMealLine);
-        }
-        
-        return newMeal;
-    }
-
-    private MealLineBO cloneMealLine(MealLineBO mealLine)
-    {
-        MealLineBO newMealLine = new MealLineBO();
-        newMealLine.setInfo(mealLine.getInfo());
-        newMealLine.setQuantity(0);
-        newMealLine.setRecipe(mealLine.getRecipe());
-        newMealLine.setUnit(mealLine.getUnit());
-        return newMealLine;
-    }
+    }    
 }
