@@ -12,39 +12,32 @@ import at.easydiet.businessobjects.TimeSpanBO;
 /**
  * Provides data and methods for handling {@link TimeSpanBO}s
  */
-public class TimeSpanController
+public class TimeSpanController extends DomainLogicProvider
 {
     /**
      * Logger for debugging purposes
      */
     @SuppressWarnings("unused")
     private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
-                                                            .getLogger(TimeSpanController.class);
-
-    /**
-     * This is a unique instance, it is stored as this singleton
-     */
-    private static TimeSpanController           _singleton;
+                                                             .getLogger(TimeSpanController.class);
 
     /**
      * Get a Instance of this {@link TimeSpanController}
      * 
      * @return The instance of this {@link TimeSpanController}
      */
-    public static TimeSpanController getInstance()
+    static TimeSpanController newInstance(DomainLogicProvider provider)
     {
-        if (_singleton == null)
-        {
-            _singleton = new TimeSpanController();
-        }
-        return _singleton;
+        return new TimeSpanController(provider);
     }
 
     /**
      * Initializes a new instance of the {@link TimeSpanController} class.
      */
-    private TimeSpanController()
-    {}
+    private TimeSpanController(DomainLogicProvider provider)
+    {
+        super(provider);
+    }
 
     /**
      * Checks if the specified timespan collides with any other elements within
@@ -60,8 +53,11 @@ public class TimeSpanController
         List<TimeSpanBO> timeSpans = timespan.getDietPlan().getTimeSpans();
         for (TimeSpanBO other : timeSpans)
         {
-            if (other == timespan || (timespan.getTimeSpanId() > 0 && timespan.equals(other))) continue;
-            if (isCollision(timespan.getStart(), timespan.getEnd(), other.getStart(), other.getEnd()))
+            if (other == timespan
+                    || (timespan.getTimeSpanId() > 0 && timespan.equals(other)))
+                continue;
+            if (isCollision(timespan.getStart(), timespan.getEnd(),
+                    other.getStart(), other.getEnd()))
             {
                 collisions.add(other);
             }
@@ -73,23 +69,27 @@ public class TimeSpanController
         for (DietPlanBO other : plans)
         {
             if (other.equals(timespan.getDietPlan())) continue;
-            if (isCollision(timespan.getStart(), timespan.getEnd(), other.getStart(), other.getEnd()))
+            if (isCollision(timespan.getStart(), timespan.getEnd(),
+                    other.getStart(), other.getEnd()))
             {
                 collisions.add(other);
             }
         }
-        
+
         // collision with any other treaments
-        List<DietTreatmentBO> treatments = timespan.getDietPlan().getDietTreatment().getPatient().getTreatments();
+        List<DietTreatmentBO> treatments = timespan.getDietPlan()
+                .getDietTreatment().getPatient().getTreatments();
         for (DietTreatmentBO other : treatments)
         {
-            if (other.equals(timespan.getDietPlan().getDietTreatment())) continue;
-            if (isCollision(timespan.getStart(), timespan.getEnd(), other.getStart(), other.getEnd()))
+            if (other.equals(timespan.getDietPlan().getDietTreatment()))
+                continue;
+            if (isCollision(timespan.getStart(), timespan.getEnd(),
+                    other.getStart(), other.getEnd()))
             {
                 collisions.add(other);
             }
         }
-        
+
         return collisions;
     }
 
@@ -101,8 +101,10 @@ public class TimeSpanController
      * @param otherEnd
      * @return True if there is a collision
      */
-    private boolean isCollision(Date currentStart, Date currentEnd, Date otherStart, Date otherEnd)
+    private boolean isCollision(Date currentStart, Date currentEnd,
+            Date otherStart, Date otherEnd)
     {
-        return currentStart.compareTo(otherEnd) <= 0 && otherStart.compareTo(currentEnd) <= 0;
+        return currentStart.compareTo(otherEnd) <= 0
+                && otherStart.compareTo(currentEnd) <= 0;
     }
 }

@@ -10,13 +10,16 @@ import at.easydiet.businessobjects.LaborReportBO;
 import at.easydiet.businessobjects.PatientBO;
 import at.easydiet.businessobjects.PatientStateBO;
 import at.easydiet.businessobjects.PatientStateTypeBO;
+import at.easydiet.businessobjects.SystemUserBO;
 import at.easydiet.dao.DAOFactory;
 import at.easydiet.dao.PatientDAO;
+import at.easydiet.domainlogic.SystemUserController.SystemUserLoginListener;
+import at.easydiet.model.Patient;
 
 /**
  * Provides data and actions for the {@link PatientDetailView}.
  */
-public class PatientDetailViewController extends BusinessLogicController
+public class PatientDetailViewController extends BusinessLogicController implements SystemUserLoginListener
 {
     /**
      * Logger for debugging purposes
@@ -167,5 +170,23 @@ public class PatientDetailViewController extends BusinessLogicController
         }
 
         return list;
+    }
+
+    @Override
+    public void onUserLogin(SystemUserBO user)
+    {
+        // try to find the according patient
+        PatientDAO dao = DAOFactory.getInstance().getPatientDAO();
+        Patient patient = dao.findByInsuranceNumber(user.getUsername());
+        if(patient != null)
+        {
+            setPatient(new PatientBO(patient));
+        }
+    }
+
+    @Override
+    public void onUserLogout(SystemUserBO user)
+    {
+        setPatient(null);
     }
 }

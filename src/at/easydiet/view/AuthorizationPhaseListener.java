@@ -32,8 +32,8 @@ public class AuthorizationPhaseListener implements PhaseListener
 
     static
     {
-        // add login and registration pagese
         PUBLIC_SITES.add("Login");
+        PUBLIC_SITES.add("Test");
     }
 
     /**

@@ -72,26 +72,38 @@ public class DashboardViewController extends BusinessLogicController
     public void refreshPatients()
     {
         LOG.trace("Refreshing Patients");
-        PatientDAO patientDao = DAOFactory.getInstance().getPatientDAO();
-        List<Patient> patients;
-
         _patients = new ArrayList<PatientBO>();
-        if (StringUtils.isNullOrWhitespaceOnly(_patientFilter))
+        
+
+        // check if a patient is logged in, he will only see himself
+        String username = getRootProvider().getSystemUserController().getCurrentUser().getUsername();
+        PatientBO currentPatient = getRootProvider().getPatientDetailViewController().getPatient();
+        if(currentPatient != null && username.equalsIgnoreCase(currentPatient.getInsuranceNumber()))
         {
-            LOG.trace("Loading all Patients (no filtering)");
-            patients = patientDao.findAll();
+            _patients.add(getRootProvider().getPatientDetailViewController().getPatient());
         }
         else
-        {
-            LOG.trace(String.format("Loading filtered Patients (%s)",
-                    _patientFilter));
-            patients = patientDao.findByQuery(_patientFilter);
-        }
-
-        LOG.trace("Setup loaded patients");
-        for (Patient patient : patients)
-        {
-            _patients.add(new PatientBO(patient));
+        {    
+            PatientDAO patientDao = DAOFactory.getInstance().getPatientDAO();
+            List<Patient> patients;
+    
+            if (StringUtils.isNullOrWhitespaceOnly(_patientFilter))
+            {
+                LOG.trace("Loading all Patients (no filtering)");
+                patients = patientDao.findAll();
+            }
+            else
+            {
+                LOG.trace(String.format("Loading filtered Patients (%s)",
+                        _patientFilter));
+                patients = patientDao.findByQuery(_patientFilter);
+            }
+    
+            LOG.trace("Setup loaded patients");
+            for (Patient patient : patients)
+            {
+                _patients.add(new PatientBO(patient));
+            }
         }
     }
 

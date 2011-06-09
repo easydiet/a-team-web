@@ -13,7 +13,7 @@ import at.easydiet.model.SystemUser;
 /**
  * Provides data and methods for handling system users
  */
-public class SystemUserController
+public class SystemUserController extends DomainLogicController
 {
     /**
      * Logger for debugging purposes
@@ -26,9 +26,9 @@ public class SystemUserController
      * Gets a new instance of this class.
      * @return a new instance for the current thread.
      */
-    static SystemUserController newInstance()
+    static SystemUserController newInstance(DomainLogicProvider provider)
     {
-        return new SystemUserController();
+        return new SystemUserController(provider);
     }
 
     /**
@@ -49,8 +49,9 @@ public class SystemUserController
     /**
      * Initializes a new instance of the {@link SystemUserController} class.
      */
-    private SystemUserController()
+    private SystemUserController(DomainLogicProvider provider)
     {
+        super(provider);
     }
     /**
      * Get all registered {@link SystemUserBO}s
@@ -92,6 +93,7 @@ public class SystemUserController
         }
         
         _currentUser = user;
+        onUserLogin(_currentUser);
     }
 
     private static String md5(String input)
@@ -110,13 +112,63 @@ public class SystemUserController
         }
     }
 
-    public void logout(String username, String password)
+    public void logout()
     {
+        onUserLogout(_currentUser);
         _currentUser = null;
     }
 
     public boolean isAuthenticated()
     {
         return _currentUser != null;
+    }
+    
+    public interface SystemUserLoginListener
+    {
+        public void onUserLogin(SystemUserBO user);
+        public void onUserLogout(SystemUserBO user);
+        
+        public class Adapter implements SystemUserLoginListener
+        {
+            @Override
+            public void onUserLogin(SystemUserBO user)
+            {}
+
+            @Override
+            public void onUserLogout(SystemUserBO user)
+            {}
+        }
+    }
+    private List<SystemUserLoginListener> _loginListeners = new ArrayList<SystemUserLoginListener>();
+    
+    private void onUserLogin(SystemUserBO user)
+    {
+        for (SystemUserLoginListener listener : _loginListeners)
+        {
+            if(listener != null)
+            {
+                listener.onUserLogin(user);
+            }
+        }
+    }
+    private void onUserLogout(SystemUserBO user)
+    {
+        for (SystemUserLoginListener listener : _loginListeners)
+        {
+            if(listener != null)
+            {
+                listener.onUserLogout(user);
+            }
+        }
+    }
+    
+    public void addLoginListener(SystemUserLoginListener listener)
+    {
+        _loginListeners.add(listener);
+    }
+    
+    public void removeLoginListener(SystemUserLoginListener listener)
+    {
+        _loginListeners.remove(listener);
     }
 }

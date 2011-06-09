@@ -13,7 +13,7 @@
 	<h:form>
 		<strong>Hallo <h:outputText value="#{userBean.user.name}" /></strong>,  <p:commandLink action="${userBean.doLogout}" value="Ausloggen" />
 		<p:breadCrumb>
-			<p:menuitem value="Dashboard" action="dashboard" />
+			<p:menuitem value="Dashboard" action="dashboardView" />
 			<p:menuitem value="#{patientDetailViewBean.patientName}" action="patientDetailView" />
 			<p:menuitem value="#{dietTreatmentDetailViewBean.treatmentName}" />
 		</p:breadCrumb>
