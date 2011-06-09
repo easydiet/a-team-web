@@ -22,6 +22,7 @@ public class BusinessLogicProvider extends ControllerProviderBase
     public BusinessLogicProvider(ControllerProvider rootProvider)
     {
         super(rootProvider);
+        getRootProvider().getSystemUserController().addLoginListener(getPatientDetailViewController());
     }
 
     /**
@@ -90,7 +91,6 @@ public class BusinessLogicProvider extends ControllerProviderBase
         if(_patientDetailViewController == null)
         {
             _patientDetailViewController = PatientDetailViewController.newInstance(this);
-            getRootProvider().getSystemUserController().addLoginListener(_patientDetailViewController);
         }
         return _patientDetailViewController;
     }

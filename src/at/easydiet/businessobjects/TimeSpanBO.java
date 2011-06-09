@@ -7,10 +7,6 @@ import java.util.Date;
 import java.util.List;
 import java.util.ArrayList;
 
-import javax.transaction.NotSupportedException;
-
-import sun.reflect.generics.reflectiveObjects.NotImplementedException;
-
 import at.easydiet.EasyDietApplication;
 import at.easydiet.model.DietParameter;
 import at.easydiet.model.Meal;
@@ -240,13 +236,12 @@ public class TimeSpanBO implements IDietParameterizable
     
     public void setEnd(Date end)
     {
-    	long time = end.getTime() - getStart().getTime();  // Differenz in ms
-    	int days = (int)Math.round( (double)time / (24. * 60.*60.*1000.) );// Differenz in Tagen
-    	setDuration(days);
+      long time = end.getTime() - getStart().getTime();  // Differenz in ms
+      int days = (int)Math.round( (double)time / (24. * 60.*60.*1000.) );// Differenz in Tagen
+      setDuration(days);
     }
-    
-    
 
+    
     /**
      * @see java.lang.Object#hashCode()
      */
