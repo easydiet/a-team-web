@@ -8,6 +8,7 @@ import javassist.NotFoundException;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import org.primefaces.event.DateSelectEvent;
 import org.primefaces.event.SelectEvent;
 
 import at.easydiet.businesslogic.CreateNutritionProtocolController;
@@ -52,8 +53,8 @@ public class CreateNutritionProtocolBean
         ControllerBean.getCreateNutritionProtocolController().refresh();
     }
     
-    public void searchDietPlanMenues(SelectEvent e){
-        Date d = (Date) e.getObject();
+    public void addTimeSpanByDate(DateSelectEvent e){
+        Date d = e.getDate();
         TimeSpanBO timespan = ControllerBean.getCreateNutritionProtocolController().createTimeSpan();
         timespan.setStart(d);
         timespan.setDuration(0);
@@ -67,16 +68,9 @@ public class CreateNutritionProtocolBean
             ControllerBean.getCreateNutritionProtocolController().fillTimeSpanWithMeals(timeSpan);
 //            
 //            //Testen
-//            for(MealBO meals2 : timeSpan.getMeals()){
-//                System.out.println("getTimeSpanOfDay: "+meals2.getName());
-//            }
-//            if(meals == null || meals.size() == 0){
-//                System.out.println("Keine Mahlzeit vorhanden!");
-//            }
-//            for(int i = 0; i < meals.size(); i++){
-//                System.out.println("getMealsOfDay: "+meals.get(i).getName());
-//            }
-//            _meals = meals;
+            for(MealBO meals2 : timeSpan.getMeals()){
+                System.out.println("getTimeSpanOfDay: "+meals2.getName());
+            }
         }
         catch (NotFoundException e)
         {
@@ -84,32 +78,13 @@ public class CreateNutritionProtocolBean
         }
     }
 
+    
     public void searchDietPlanMenues(){
-        DietTreatmentBO dt = ControllerBean.getDietTreatmentDetailViewController().getDietTreatment();
-        TimeSpanBO timeSpan = new TimeSpanBO();
-        timeSpan.setStart(_date);
-        timeSpan.setDuration(1);
-        try
-        {
-            List<MealBO> meals = ControllerBean.getCreateNutritionProtocolController().getMealsOfDay(_date, dt);
-            timeSpan = ControllerBean.getCreateNutritionProtocolController().getTimeSpanOfDay(timeSpan, dt);
-            
-            //Testen
-            for(MealBO meals2 : timeSpan.getMeals()){
-                System.out.println("getTimeSpanOfDay: "+meals2.getName());
-            }
-            if(meals == null || meals.size() == 0){
-                System.out.println("Keine Mahlzeit vorhanden!");
-            }
-            for(int i = 0; i < meals.size(); i++){
-                System.out.println("getMealsOfDay: "+meals.get(i).getName());
-            }
-            _meals = meals;
-        }
-        catch (NotFoundException e)
-        {
-            System.out.println(e.getMessage());
-        }
+        TimeSpanBO timespan = ControllerBean.getCreateNutritionProtocolController().createTimeSpan();
+        timespan.setStart(_date);
+        timespan.setDuration(0);
+        fillTimeSpanWithMeals(timespan);
+        
     }
     
     public void setDate(Date date){

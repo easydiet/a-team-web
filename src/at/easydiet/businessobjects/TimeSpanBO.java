@@ -296,5 +296,13 @@ public class TimeSpanBO implements IDietParameterizable
         }
     }
 
+    public void clearMeals()
+    {
+        while(getMeals().size() > 0)
+        {
+            removeMeals(getMeals().get(0));
+        }
+    }
+
 
 }
