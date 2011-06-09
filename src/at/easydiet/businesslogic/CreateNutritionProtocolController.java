@@ -1,5 +1,20 @@
 package at.easydiet.businesslogic;
 
+import java.util.Date;
+import java.util.List;
+
+import javassist.NotFoundException;
+
+import at.easydiet.businessobjects.DietPlanBO;
+import at.easydiet.businessobjects.DietTreatmentBO;
+import at.easydiet.businessobjects.MealBO;
+import at.easydiet.businessobjects.MealLineBO;
+import at.easydiet.businessobjects.NutritionProtocolBO;
+import at.easydiet.businessobjects.PlanTypeBO;
+import at.easydiet.businessobjects.TimeSpanBO;
+import at.easydiet.model.DietPlan;
+import at.easydiet.model.PlanType;
+import at.easydiet.dao.HibernateUtil;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
@@ -74,6 +89,46 @@ public class CreateNutritionProtocolController extends
         return (NutritionProtocolBO) super.getDietPlan();
     }
     
+
+    public List<MealBO> getMealsOfDay(Date day, DietTreatmentBO diet) throws NotFoundException
+    {
+        for(DietPlanBO dp : diet.getDietPlans())
+        {
+            if(dp.getStart().compareTo(day) <= 0 && dp.getEnd().compareTo(day) >= 0 && dp.getPlanType() != PlanTypeBO.NUTRITION_PROTOCOL)
+            {
+                for(TimeSpanBO ts : dp.getTimeSpans())
+                {
+                    if(ts.getStart().compareTo(day) <= 0 && ts.getEnd().compareTo(day) >= 0)
+                    {
+                        return ts.getMeals();
+                    }
+                }
+            }
+        }
+        throw new NotFoundException("No Meal found for this date on Diet: " + diet.getName()+", on Day: "+day);
+    }
+    
+    public TimeSpanBO getTimeSpanOfDay(TimeSpanBO timeSpan, DietTreatmentBO diet) throws NotFoundException
+    {
+        for(DietPlanBO dp : diet.getDietPlans())
+        {
+            if(dp.getStart().compareTo(timeSpan.getStart()) <= 0 && dp.getEnd().compareTo(timeSpan.getEnd()) >= 0 && dp.getPlanType() != PlanTypeBO.NUTRITION_PROTOCOL)
+            {
+                for(TimeSpanBO ts : dp.getTimeSpans())
+                {
+                    if(ts.getStart().compareTo(timeSpan.getStart()) <= 0 && ts.getEnd().compareTo(timeSpan.getEnd()) >= 0)
+                    {
+                        for(MealBO me : ts.getMeals()){
+                            timeSpan.addMeals(me);
+                        }
+                        return timeSpan;
+                    }
+                }
+            }
+        }
+        throw new NotFoundException("No Meal found for this date on Diet: " + diet.getName()+", on Day: "+timeSpan.getStart());
+    }
+
     public void createNewTimeSpan(DietPlanBO dietPlan)
     {
         TimeSpanBO span = new TimeSpanBO();

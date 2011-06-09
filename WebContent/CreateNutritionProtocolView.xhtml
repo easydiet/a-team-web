@@ -9,11 +9,11 @@
 	<title>Ernaehrungsprotokoll anlegen</title>
 	<link rel="stylesheet" href="styles.css" />
 	<script type="text/javascript">
-		function preventSubmit(evt) {
-			var k = evt.keyCode || evt.which;
-			return k != 13;
-		}
-	</script>
+            function preventSubmit(evt) {
+                  var k = evt.keyCode || evt.which;
+                  return k != 13;
+            }
+      </script>
 </h:head>
 <h:body>
 <h:form>
@@ -29,7 +29,7 @@
 			<p:menuitem value="Neues Ernährungsprotokoll" />
 		</p:breadCrumb>
 		<h1>Ernährungsprotokoll anlegen</h1>
-		
+
 		<p:commandButton value="neuen Zeitraum hinzufügen"
 			action="#{createNutritionProtocolBean.addNewTimespan}"
 			update="timespans" />
@@ -78,18 +78,23 @@
 							</p:commandButton>
 
 							<p:growl id="messages" />
-							
+
 							<p:dataTable var="selRecipe" scrollable="true" height="300"
 								emptyMessage="Bitte fügen Sie die Rezepte hinzu" id="selTable"
-								value="#{meal.mealLines}" onRowEditUpdate="messages" >
-								
+								value="#{meal.mealLines}" onRowEditUpdate="messages">
+
+								<p:column headerText="-" style="width:30px;">
+									<p:rowEditor />
+								</p:column>
+
 								<p:column headerText="Menge" style="width:75px;">
 									<p:cellEditor>
 										<f:facet name="output">
 											<h:outputText value="#{selRecipe.quantity}" />
 										</f:facet>
 										<f:facet name="input">
-											<p:spinner value="#{selRecipe.quantity}" style="width:100%" min="0"  />
+											<p:spinner value="#{selRecipe.quantity}" style="width:100%"
+												min="0" />
 										</f:facet>
 									</p:cellEditor>
 								</p:column>
@@ -107,7 +112,7 @@
 													var="unit" itemLabel="#{unit}" itemValue="#{unit}" />
 											</h:selectOneMenu>
 										</f:facet>
-									</p:cellEditor>							
+									</p:cellEditor>
 								</p:column>
 
 								<p:column headerText="BLS Code"
@@ -119,10 +124,7 @@
 									style="width:300px;">
 									<h:outputText value="#{selRecipe.recipe.name}" />
 								</p:column>
-								<p:column headerText="-" style="width:30px;">
-									<p:rowEditor />
-								</p:column>
-								
+
 							</p:dataTable>
 						</p:panel>
 					</p:column>
