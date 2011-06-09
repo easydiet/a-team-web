@@ -16,9 +16,9 @@
       </script>
 </h:head>
 <h:body>
-<h:form>
-		<strong>Hallo <h:outputText value="#{userBean.user.name}"/>,<p:commandLink action="${userBean.doLogout}" value="Ausloggen" />
-		</strong>
+	<h:form>
+		<strong>Hallo <h:outputText value="#{userBean.user.name}" />,<p:commandLink
+				action="${userBean.doLogout}" value="Ausloggen" /> </strong>
 		<p:ajaxStatus />
 		<p:breadCrumb>
 			<p:menuitem value="Dashboard" action="dashboard" />
@@ -32,107 +32,126 @@
 
 		<p:commandButton value="neuen Zeitraum hinzufügen"
 			action="#{createNutritionProtocolBean.addNewTimespan}"
-			update="timespans" />
+			update="timespans" /> 
+	    <p:commandButton value="Aus Diätplan übernehmen" onclick="addTimespanFromPlanDlg.show();" type="button"/>  
 
 		<p:dataGrid var="timespan" id="timespans"
 			value="#{createNutritionProtocolBean.timeSpans}" columns="1">
-			<p:column id="pnl">
-				<h:outputLabel value="Von" />
-				<p:calendar showOn="button" value="#{timespan.start}">
-					<p:ajax event="dateSelect" update="pnl" />
-				</p:calendar>
-				<h:outputLabel value="Bis" />
-				<p:calendar showOn="button" value="#{timespan.end}">
-					<p:ajax event="dateSelect" update="pnl" />
-				</p:calendar>
-				<h:outputText value="#{timepan.duration}"></h:outputText>
-				<p:commandLink value="Zeitraum entfernen"
-					actionListener="#{createNutritionProtocolBean.deleteTimespan}"
-					update="timespans">
-					<f:attribute name="timespan" value="#{timespan}" />
-				</p:commandLink>
-				<br />
-				<p:commandButton value="neue Mahlzeit hinzufügen"
-					actionListener="#{createNutritionProtocolBean.addNewMeal}"
-					update="timespans">
-					<f:attribute name="timespan" value="#{timespan}" />
-				</p:commandButton>
-				<p:dataGrid var="meal" id="meals" value="#{timespan.meals}"
-					columns="1">
-					<p:column>
-						<p:panel>
-							<h:outputLabel value="Code" />
-							<p:inputText size="2" value="#{meal.code}" />
-							<h:outputLabel value="Bezeichnung" />
-							<p:inputText value="#{meal.name}" />
-							<p:commandLink value="Mahlzeit entfernen"
-								actionListener="#{createNutritionProtocolBean.deleteMeal}"
-								update="meals">
-								<f:attribute name="meal" value="#{meal}" />
-							</p:commandLink>
-							<br />
-							<p:commandButton value="Rezept hinzufügen"
-								oncomplete="dlg1.show();" update="dlg1">
-								<f:setPropertyActionListener value="#{meal}"
-									target="#{createNutritionProtocolBean.currentMeal}" />
-							</p:commandButton>
+			<p:column>
+				<p:panel id="pnl">
+					<h:outputLabel value="Von" />
+					<p:calendar showOn="button" value="#{timespan.start}">
+						<p:ajax event="dateSelect" update="pnl" />
+					</p:calendar>
+					<h:outputLabel value="Bis" />
+					<p:calendar showOn="button" value="#{timespan.end}">
+						<p:ajax event="dateSelect" update="pnl" />
+					</p:calendar>
+					<h:outputText value="#{timepan.duration}"></h:outputText>
+					<p:commandLink value="Zeitraum entfernen"
+						actionListener="#{createNutritionProtocolBean.deleteTimespan}"
+						update="timespans">
+						<f:attribute name="timespan" value="#{timespan}" />
+					</p:commandLink>
+					<br />
+					<hr />
+					<br />
+					<p:commandButton value="neue Mahlzeit hinzufügen"
+						actionListener="#{createNutritionProtocolBean.addNewMeal}"
+						update="timespans">
+						<f:attribute name="timespan" value="#{timespan}" />
+					</p:commandButton>
+					<p:dataGrid var="meal" id="meals" value="#{timespan.meals}"
+						columns="1">
+						<p:column>
+							<p:panel>
+								<h:outputLabel value="Code" />
+								<p:inputText size="2" value="#{meal.code}" />
+								<h:outputLabel value="Bezeichnung" />
+								<p:inputText value="#{meal.name}" />
+								<p:commandLink value="Mahlzeit entfernen"
+									actionListener="#{createNutritionProtocolBean.deleteMeal}"
+									update="meals">
+									<f:attribute name="meal" value="#{meal}" />
+								</p:commandLink>
+								<br />
+								<p:commandButton value="Rezept hinzufügen"
+									oncomplete="dlg1.show();" update="dlg1">
+									<f:setPropertyActionListener value="#{meal}"
+										target="#{createNutritionProtocolBean.currentMeal}" />
+								</p:commandButton>
 
-							<p:growl id="messages" />
+								<p:growl id="messages" />
 
-							<p:dataTable var="selRecipe" scrollable="true" height="300"
-								emptyMessage="Bitte fügen Sie die Rezepte hinzu" id="selTable"
-								value="#{meal.mealLines}" onRowEditUpdate="messages">
+								<p:dataTable var="selRecipe" scrollable="true" height="300"
+									emptyMessage="Bitte fügen Sie die Rezepte hinzu" id="selTable"
+									value="#{meal.mealLines}" onRowEditUpdate="messages"
+									style="width:800px;min-width:800px"
+									>
 
-								<p:column headerText="-" style="width:30px;">
-									<p:rowEditor />
-								</p:column>
+									<p:column headerText="-" style="width:30px;">
+										<p:rowEditor />
+									</p:column>
 
-								<p:column headerText="Menge" style="width:75px;">
-									<p:cellEditor>
-										<f:facet name="output">
-											<h:outputText value="#{selRecipe.quantity}" />
-										</f:facet>
-										<f:facet name="input">
-											<p:spinner value="#{selRecipe.quantity}" style="width:100%"
-												min="0" />
-										</f:facet>
-									</p:cellEditor>
-								</p:column>
+									<p:column headerText="Menge" style="width:75px;">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{selRecipe.quantity}" />
+											</f:facet>
+											<f:facet name="input">
+												<p:inputText value="#{selRecipe.quantity}"
+													style="width:100%">
+													<f:convertNumber maxFractionDigits="2" />
+												</p:inputText>
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
 
-								<p:column headerText="Einheit" style="width:100px;">
-									<p:cellEditor>
-										<f:facet name="output">
-											<h:outputText value="#{selRecipe.unit}" />
-										</f:facet>
-										<f:facet name="input">
-											<h:selectOneMenu value="#{selRecipe.unit}" style="width:100%">
-												<f:converter converterId="string2unit" />
-												<f:selectItems
-													value="#{createNutritionProtocolBean.recipeUnits}"
-													var="unit" itemLabel="#{unit}" itemValue="#{unit}" />
-											</h:selectOneMenu>
-										</f:facet>
-									</p:cellEditor>
-								</p:column>
+									<p:column headerText="Einheit" style="width:100px;">
+										<p:cellEditor>
+											<f:facet name="output">
+												<h:outputText value="#{selRecipe.unit}" />
+											</f:facet>
+											<f:facet name="input">
+												<h:selectOneMenu value="#{selRecipe.unit}"
+													style="width:100%">
+													<f:converter converterId="string2unit" />
+													<f:selectItems
+														value="#{createNutritionProtocolBean.recipeUnits}"
+														var="unit" itemLabel="#{unit}" itemValue="#{unit}" />
+												</h:selectOneMenu>
+											</f:facet>
+										</p:cellEditor>
+									</p:column>
 
-								<p:column headerText="BLS Code"
-									sortBy="#{selRecipe.recipe.blsCode}" style="width:100px;">
-									<h:outputText value="#{selRecipe.recipe.blsCode}" />
-								</p:column>
+									<p:column headerText="BLS Code"
+										style="width:150px;">
+										<h:outputText value="#{selRecipe.recipe.blsCode}" />
+									</p:column>
 
-								<p:column headerText="Name" sortBy="#{selRecipe.recipe.name}"
-									style="width:300px;">
-									<h:outputText value="#{selRecipe.recipe.name}" />
-								</p:column>
+									<p:column headerText="Name" 
+										style="width:500px;">
+										<h:outputText value="#{selRecipe.recipe.name}" />
+									</p:column>
 
-							</p:dataTable>
-						</p:panel>
-					</p:column>
-				</p:dataGrid>
+									<p:column headerText="X" style="width:25px;">
+										<h:commandLink value="X"
+											styleClass="ui-icon ui-icon-trash"
+											actionListener="#{createNutritionProtocolBean.deleteMealLine}"
+											update="selTable">
+											<f:attribute name="mealLine" value="#{selRecipe}" />
+										</h:commandLink>
+									</p:column>
+
+								</p:dataTable>
+							</p:panel>
+						</p:column>
+					</p:dataGrid>
+				</p:panel>
 			</p:column>
 		</p:dataGrid>
 
-		<p:dialog header="Rezept hinzufügen" widgetVar="dlg1" id="dlg1">
+		<p:dialog header="Rezept hinzufügen" widgetVar="dlg1" id="dlg1" width="550" height="500">
 			<h:outputText value="Geben Sie einen Suchbegriff ein:" />
 			<h:inputText
 				value="#{createNutritionProtocolBean.recipeSearch.queryString}"
@@ -145,7 +164,7 @@
 					value="#{createNutritionProtocolBean.recipeSearch.recipes}"
 					selectionMode="multiple"
 					selection="#{createNutritionProtocolBean.selectedRecipes}"
-					scrollable="true" height="150" style="width:500px;min-width:500px;"
+					scrollable="true" height="350" style="width:460px;min-width:460px;"
 					emptyMessage="Bitte verwenden Sie die Suchfunktion." id="table">
 
 					<p:column headerText="BLS Code" sortBy="#{recipe.blsCode}"
@@ -164,9 +183,20 @@
 					update="timespans" />
 			</p:panel>
 		</p:dialog>
+		
+		<p:dialog header="Zeitpunkt auswählen" widgetVar="addTimespanFromPlanDlg" modal="true" width="800" height="400">
+			<h:outputText value="Wählen Sie den Zeitpunkt des gewünschten Diätplans aus:" />
+			<p:calendar value="#{createNutritionProtocolBean.date}" mode="inline" pages="3" />
+			<p:commandButton action="#{createNutritionProtocolBean.searchDietPlanMenues}" value="Mahlzeiten übernehmen" onclick="addTimespanFromPlanDlg.close()"
+			update="timespans">
+			</p:commandButton>
+		</p:dialog>
+		
+		
 		<p:commandButton value="neuen Zeitraum hinzufügen"
 			action="#{createNutritionProtocolBean.addNewTimespan}"
-			update="timespans" />
+			update="timespans" /> 
+	    <p:commandButton value="Aus Diätplan übernehmen" onclick="addTimespanFromPlanDlg.show();" type="button"/>  
 		<br />
 		<p:commandButton value="Ernährungsprotokoll speichern"
 			action="#{createNutritionProtocolBean.save}" />

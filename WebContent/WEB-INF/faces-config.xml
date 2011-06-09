@@ -38,6 +38,11 @@
 		<converter-id>string2unit</converter-id>
 		<converter-class>at.easydiet.view.StringToUnitConverter</converter-class>
 	</converter>
+	<converter>
+		<display-name>dietPlan2timeString</display-name>
+		<converter-id>dietPlan2timeString</converter-id>
+		<converter-class>at.easydiet.view.DietPlanToTimeStringConverter</converter-class>
+	</converter>
 
 	<lifecycle>
 		<phase-listener>at.easydiet.view.AuthorizationPhaseListener</phase-listener>

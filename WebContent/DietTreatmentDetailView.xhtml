@@ -27,11 +27,14 @@
 			emptyMessage="Keine Ernährungsprotokolle gefunden">
 
 			<p:column headerText="Angelegt am" sortBy="#{nutritionProtocol.createOn}">
-				<h:outputText value="#{nutritionProtocol.createdOn}" />
+				<h:outputText value="#{nutritionProtocol.createdOn}">
+					<f:convertDateTime pattern="dd.MM.yyyy HH:mm" />
+				</h:outputText>
 			</p:column>
 			
 			<p:column headerText="Zeitraum" sortBy="#{nutritionProtocol.start}">
 				<h:outputText value="#{nutritionProtocol}">
+					<f:converter converterId="dietPlan2timeString" />
 					<!-- add a Converter which renders the timerange depending on TimeSpans (11.10.2011 - 12.10.2011) -->
 				</h:outputText>
 			</p:column>
