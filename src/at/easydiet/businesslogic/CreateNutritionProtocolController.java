@@ -1,6 +1,5 @@
 package at.easydiet.businesslogic;
 
-<<<<<<< HEAD
 import java.util.Date;
 import java.util.List;
 
@@ -16,7 +15,6 @@ import at.easydiet.businessobjects.TimeSpanBO;
 import at.easydiet.model.DietPlan;
 import at.easydiet.model.PlanType;
 import at.easydiet.dao.HibernateUtil;
-=======
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -32,7 +30,6 @@ import at.easydiet.dao.DAOFactory;
 import at.easydiet.dao.DietPlanDAO;
 import at.easydiet.dao.HibernateUtil;
 import at.easydiet.dao.NutritionProtocolDAO;
->>>>>>> bfdf83ddf56ef6c0116f60fa69e54f34953cabc6
 import at.easydiet.domainlogic.RecipeSearchController;
 import at.easydiet.businessobjects.TimeSpanBO;
 
@@ -95,7 +92,7 @@ public class CreateNutritionProtocolController extends
         return (NutritionProtocolBO) super.getDietPlan();
     }
     
-<<<<<<< HEAD
+
     public List<MealBO> getMealsOfDay(Date day, DietTreatmentBO diet) throws NotFoundException
     {
         for(DietPlanBO dp : diet.getDietPlans())
@@ -135,14 +132,12 @@ public class CreateNutritionProtocolController extends
         throw new NotFoundException("No Meal found for this date on Diet: " + diet.getName()+", on Day: "+timeSpan.getStart());
     }
 
-=======
     public void createNewTimeSpan(DietPlanBO dietPlan)
     {
         TimeSpanBO span = new TimeSpanBO();
         span.setDietPlan(dietPlan);
         
     }
->>>>>>> bfdf83ddf56ef6c0116f60fa69e54f34953cabc6
 
     public RecipeSearchController getRecipeSearchController()
     {
