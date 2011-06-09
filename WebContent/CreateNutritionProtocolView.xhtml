@@ -68,8 +68,8 @@
 									<h:outputText value="#{selRecipe.quantity}" />
 								</p:column>
 
-								<p:column headerText="BLS Code" sortBy="#{selRecipe.recipe.blsCode}"
-									style="width:100px;">
+								<p:column headerText="BLS Code"
+									sortBy="#{selRecipe.recipe.blsCode}" style="width:100px;">
 									<h:outputText value="#{selRecipe.recipe.blsCode}" />
 								</p:column>
 
@@ -110,14 +110,18 @@
 						<h:outputText value="#{recipe.name}" />
 					</p:column>
 				</p:dataTable>
-				<p:commandButton onclick="dlg1.close()" value="neues Rezept hinzufügen"
+				<p:commandButton onclick="dlg1.close()"
+					value="neues Rezept hinzufügen"
 					action="#{createNutritionProtocolBean.addNewMealLine}"
-					update="timespans"/>
+					update="timespans" />
 			</p:panel>
 		</p:dialog>
 		<p:commandButton value="neuen Zeitraum hinzufügen"
 			action="#{createNutritionProtocolBean.addNewTimespan}"
-			update="timespans" />
+			update="timespans" /><br/>
+		<p:commandButton value="Ernährungsprotokoll speichern"
+			action="#{createNutritionProtocolBean.save}" />
+
 	</h:form>
 </h:body>
 </html>

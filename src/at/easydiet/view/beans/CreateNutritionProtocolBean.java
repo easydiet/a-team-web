@@ -6,11 +6,16 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
 
+import org.hibernate.HibernateException;
+
 import at.easydiet.businessobjects.MealBO;
-import at.easydiet.businessobjects.MealLineBO;
 import at.easydiet.businessobjects.NutritionProtocolBO;
 import at.easydiet.businessobjects.RecipeBO;
 import at.easydiet.businessobjects.TimeSpanBO;
+import at.easydiet.dao.DAOFactory;
+import at.easydiet.dao.DietPlanDAO;
+import at.easydiet.dao.HibernateUtil;
+import at.easydiet.dao.NutritionProtocolDAO;
 import at.easydiet.domainlogic.RecipeSearchController;
 
 /**
@@ -98,8 +103,12 @@ public class CreateNutritionProtocolBean
 		}
    }
     
-    public List<MealLineBO> getMealLines()
+    public String save()
     {
-    	return null;    	
+    	if(ControllerBean.getCreateNutritionProtocolController().saveDietPlan())
+    	{
+    		return "dietTreatmentDetailView";
+    	}
+    	return null;
     }
 }

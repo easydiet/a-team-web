@@ -1,11 +1,20 @@
 package at.easydiet.businesslogic;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
+import org.hibernate.HibernateException;
+
+import at.easydiet.EasyDietApplication;
 import at.easydiet.businessobjects.DietPlanBO;
 import at.easydiet.businessobjects.DietTreatmentBO;
 import at.easydiet.businessobjects.MealLineBO;
 import at.easydiet.businessobjects.NutritionProtocolBO;
+import at.easydiet.dao.DAOFactory;
+import at.easydiet.dao.DietPlanDAO;
+import at.easydiet.dao.HibernateUtil;
+import at.easydiet.dao.NutritionProtocolDAO;
 import at.easydiet.domainlogic.RecipeSearchController;
 import at.easydiet.businessobjects.TimeSpanBO;
 
@@ -79,4 +88,40 @@ public class CreateNutritionProtocolController extends
     {
         return _recipeSearchController;
     }    
+    
+    public boolean saveDietPlan()
+    {
+        validateDietPlan(true);
+
+        if (getErrors().size() > 0) return false;
+
+        SimpleDateFormat formatter = new SimpleDateFormat(
+                EasyDietApplication.DATETIME_FORMAT);
+        // generate a good name if it's a new plan
+        if (getDietPlan().getDietPlanId() <= 0)
+        {
+        	getDietPlan().setCreatedOn(new Date());
+            String name = String.format("Ernährungsprotokoll vom %s",
+                    formatter.format(getDietPlan().getCreatedOn()));
+            getDietPlan().setName(name);
+        }
+
+        // update creator
+        getDietPlan().setCreator(getRootProvider().getSystemUserController().getCurrentUser());
+
+        try
+        {
+            HibernateUtil.currentSession().beginTransaction();
+            NutritionProtocolDAO dao = DAOFactory.getInstance().getNutritionProtocolDAO();
+            dao.makePersistent(getDietPlan().getModel());
+            HibernateUtil.currentSession().getTransaction().commit();
+            return true;
+        }
+        catch (HibernateException e)
+        {
+            LOG.error("Could not save NP", e);
+            HibernateUtil.currentSession().getTransaction().rollback();
+            return false;
+        }
+    }
 }
