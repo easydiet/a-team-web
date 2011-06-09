@@ -122,7 +122,5 @@ public class CreateNutritionProtocolController extends
             HibernateUtil.currentSession().getTransaction().rollback();
             return false;
         }
-    }
-    
-    
+    }    
 }

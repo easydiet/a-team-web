@@ -8,6 +8,7 @@ import javax.faces.event.ActionEvent;
 
 import at.easydiet.businessobjects.MealBO;
 import at.easydiet.businessobjects.NutritionProtocolBO;
+import at.easydiet.businessobjects.ParameterDefinitionUnitBO;
 import at.easydiet.businessobjects.RecipeBO;
 import at.easydiet.businessobjects.TimeSpanBO;
 import at.easydiet.domainlogic.RecipeSearchController;
@@ -30,7 +31,7 @@ public class CreateNutritionProtocolBean
 	private RecipeSearchController _recipeSearch = new RecipeSearchController();
     private RecipeBO[] _selectedRecipes;
     
-    public TimeSpanBO getCurrentTimespan() {
+    public TimeSpanBO CurrentTimespan() {
 		return _currentTimespan;
 	}
 
@@ -124,5 +125,10 @@ public class CreateNutritionProtocolBean
     		return "dietTreatmentDetailView";
     	}
     	return null;
+    }
+    
+    public List<ParameterDefinitionUnitBO> getRecipeUnits()
+    {
+        return ControllerBean.getParameterDefinitionUnitController().getUnits();
     }
 }

@@ -4,7 +4,6 @@ import java.sql.Clob;
 import java.util.Date;
 
 import at.easydiet.model.NutritionProtocol;
-import at.easydiet.model.PlanType;
 
 /**
  * This class encapsules a NutritionProtocol instance.

@@ -16,11 +16,9 @@
 	</script>
 </h:head>
 <h:body>
-	<h:form id="frm">
-		<strong>Hallo <h:outputText value="#{userBean.user.name}" /></strong>,  <p:commandLink action="${userBean.doLogout}" value="Ausloggen" />
-	<h:form>
-		<strong>Hallo <h:outputText value="#{userBean.user.name}" />
-		</strong>,  <p:commandLink action="${userBean.doLogout}" value="Ausloggen" />
+<h:form>
+		<strong>Hallo <h:outputText value="#{userBean.user.name}"/>,<p:commandLink action="${userBean.doLogout}" value="Ausloggen" />
+		</strong>
 		<p:breadCrumb>
 			<p:menuitem value="Dashboard" action="dashboard" />
 			<p:menuitem value="#{patientDetailViewBean.patientName}"
@@ -30,12 +28,6 @@
 			<p:menuitem value="Neues Ernährungsprotokoll" />
 		</p:breadCrumb>
 		<h1>Ernährungsprotokoll anlegen</h1>
-		<h2>Aus Diaetplan uebernehmen</h2>
-		Am: 
-		<p:calendar value="#{createNutritionProtocolBean.date}" mode="inline">
-			<p:ajax event="dateSelect" listener="#{createNutritionProtocolBean.addTimeSpanByDate}" update="frm" />  
-		</p:calendar>
-		<p:commandButton action="#{createNutritionProtocolBean.searchDietPlanMenues}" value="Suchen" />
 		
 		<p:commandButton value="neuen Zeitraum hinzufügen"
 			action="#{createNutritionProtocolBean.addNewTimespan}"
@@ -171,7 +163,6 @@
 		<br />
 		<p:commandButton value="Ernährungsprotokoll speichern"
 			action="#{createNutritionProtocolBean.save}" />
-
 	</h:form>
 </h:body>
 </html>
