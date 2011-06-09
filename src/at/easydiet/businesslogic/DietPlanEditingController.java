@@ -85,6 +85,7 @@ public class DietPlanEditingController extends BusinessLogicController
     public TimeSpanBO createTimeSpan()
     {
         TimeSpanBO t = new TimeSpanBO();
+        t.setDietPlan(_dietPlan);
         _dietPlan.addTimeSpans(t);
         validateDietPlan();
         return t;
