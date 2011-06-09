@@ -2,21 +2,18 @@ package at.easydiet.businesslogic;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 import org.hibernate.HibernateException;
 
 import at.easydiet.EasyDietApplication;
 import at.easydiet.businessobjects.DietPlanBO;
 import at.easydiet.businessobjects.DietTreatmentBO;
-import at.easydiet.businessobjects.MealLineBO;
 import at.easydiet.businessobjects.NutritionProtocolBO;
+import at.easydiet.businessobjects.TimeSpanBO;
 import at.easydiet.dao.DAOFactory;
-import at.easydiet.dao.DietPlanDAO;
 import at.easydiet.dao.HibernateUtil;
 import at.easydiet.dao.NutritionProtocolDAO;
 import at.easydiet.domainlogic.RecipeSearchController;
-import at.easydiet.businessobjects.TimeSpanBO;
 
 /**
  * This Controller handles the Creation of NutritionProtocols
@@ -109,12 +106,14 @@ public class CreateNutritionProtocolController extends
         // update creator
         getDietPlan().setCreator(getRootProvider().getSystemUserController().getCurrentUser());
 
+        HibernateUtil.closeSession();
         try
         {
             HibernateUtil.currentSession().beginTransaction();
             NutritionProtocolDAO dao = DAOFactory.getInstance().getNutritionProtocolDAO();
             dao.makePersistent(getDietPlan().getModel());
             HibernateUtil.currentSession().getTransaction().commit();
+            getRootProvider().getDietTreatmentDetailViewController().refresh();
             return true;
         }
         catch (HibernateException e)
@@ -124,4 +123,6 @@ public class CreateNutritionProtocolController extends
             return false;
         }
     }
+    
+    
 }

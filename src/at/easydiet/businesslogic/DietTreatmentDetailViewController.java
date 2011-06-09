@@ -1,8 +1,14 @@
 package at.easydiet.businesslogic;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import at.easydiet.businessobjects.DietTreatmentBO;
+import at.easydiet.businessobjects.NutritionProtocolBO;
 import at.easydiet.dao.DAOFactory;
 import at.easydiet.dao.DietTreatmentDAO;
+import at.easydiet.dao.NutritionProtocolDAO;
+import at.easydiet.model.NutritionProtocol;
 
 /**
  * This controller provides data and functions for the
@@ -20,6 +26,7 @@ public class DietTreatmentDetailViewController extends BusinessLogicController
      * The current opened diet treatment
      */
     private DietTreatmentBO                                             _dietTreatment;
+    private List<NutritionProtocolBO> 									_nutritionProtocols;
 
     /**
      * Gets a new instance of this class.
@@ -62,7 +69,7 @@ public class DietTreatmentDetailViewController extends BusinessLogicController
         reloadTreatmentData();
     }
 
-    /**
+	/**
      * Updates the cached lists of the dietTreatment
      */
     private void reloadTreatmentData()
@@ -71,10 +78,24 @@ public class DietTreatmentDetailViewController extends BusinessLogicController
         _dietTreatment.updateContactJournalsCache();
         _dietTreatment.updateDietParametersCache();
         _dietTreatment.updateDietPlansCache();
-        _dietTreatment.updateNutritionProtocolsCache();
         _dietTreatment.updatePatientStatesCache();
         _dietTreatment.updateSystemUsersCache();
+        
+        // load nutritionprotocols
+        NutritionProtocolDAO dao = DAOFactory.getInstance().getNutritionProtocolDAO();
+        List<NutritionProtocol> nps = dao.findByDietTreatment(_dietTreatment.getModel());
+        _nutritionProtocols = new ArrayList<NutritionProtocolBO>();
+        for (NutritionProtocol nutritionProtocol : nps) 
+        {
+        	_nutritionProtocols.add(new NutritionProtocolBO(nutritionProtocol));
+		}
+        
     }
+    
+    public List<NutritionProtocolBO> getNutritionProtocols() 
+    {
+		return _nutritionProtocols;
+	}
 
     /**
      * Refreshes the currently loaded diettreamtent and it's data.

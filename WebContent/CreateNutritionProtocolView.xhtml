@@ -40,6 +40,11 @@
 				<h:outputLabel value="Bis" />
 				<p:calendar showOn="button" value="#{timespan.end}"></p:calendar>
 				<h:outputText value="#{timepan.duration}"></h:outputText>
+				<p:commandLink value="Zeitraum entfernen"
+					actionListener="#{createNutritionProtocolBean.deleteTimespan}"
+					update="timespans">
+					<f:attribute name="timespan" value="#{timespan}" />
+				</p:commandLink>
 				<br />
 				<p:commandButton value="neue Mahlzeit hinzufügen"
 					actionListener="#{createNutritionProtocolBean.addNewMeal}"
@@ -54,6 +59,12 @@
 							<p:inputText size="2" value="#{meal.code}" />
 							<h:outputLabel value="Bezeichnung" />
 							<p:inputText value="#{meal.name}" />
+							<p:commandLink value="Mahlzeit entfernen"
+								actionListener="#{createNutritionProtocolBean.deleteMeal}"
+								update="meals">
+								<f:attribute name="meal" value="#{meal}" />
+							</p:commandLink>
+							<br />
 							<p:commandButton value="Rezept hinzufügen"
 								oncomplete="dlg1.show();" update="dlg1">
 								<f:setPropertyActionListener value="#{meal}"
@@ -118,7 +129,8 @@
 		</p:dialog>
 		<p:commandButton value="neuen Zeitraum hinzufügen"
 			action="#{createNutritionProtocolBean.addNewTimespan}"
-			update="timespans" /><br/>
+			update="timespans" />
+		<br />
 		<p:commandButton value="Ernährungsprotokoll speichern"
 			action="#{createNutritionProtocolBean.save}" />
 

@@ -6,16 +6,10 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
 
-import org.hibernate.HibernateException;
-
 import at.easydiet.businessobjects.MealBO;
 import at.easydiet.businessobjects.NutritionProtocolBO;
 import at.easydiet.businessobjects.RecipeBO;
 import at.easydiet.businessobjects.TimeSpanBO;
-import at.easydiet.dao.DAOFactory;
-import at.easydiet.dao.DietPlanDAO;
-import at.easydiet.dao.HibernateUtil;
-import at.easydiet.dao.NutritionProtocolDAO;
 import at.easydiet.domainlogic.RecipeSearchController;
 
 /**
@@ -31,11 +25,18 @@ public class CreateNutritionProtocolBean
                                                             .getLogger(CreateNutritionProtocolBean.class);
     
     private MealBO _currentMeal;
-    private RecipeSearchController _recipeSearch = new RecipeSearchController();
+    private TimeSpanBO _currentTimespan;
+    
+	private RecipeSearchController _recipeSearch = new RecipeSearchController();
     private RecipeBO[] _selectedRecipes;
     
-    
-    
+    public TimeSpanBO getCurrentTimespan() {
+		return _currentTimespan;
+	}
+
+	public void setCurrentTimespan(TimeSpanBO _currentTimespan) {
+		this._currentTimespan = _currentTimespan;
+	} 
     
 	public RecipeBO[] getSelectedRecipes() {
 		return _selectedRecipes;
@@ -81,16 +82,29 @@ public class CreateNutritionProtocolBean
         ControllerBean.getCreateNutritionProtocolController().createNew(ControllerBean.getDietTreatmentDetailViewController().getDietTreatment());
         ControllerBean.getCreateNutritionProtocolController().refresh();
     }
+    
    
     public void addNewTimespan()
     {
     	ControllerBean.getCreateNutritionProtocolController().createTimeSpan();
     }
     
+    public void deleteTimespan(ActionEvent e)
+    {
+    	TimeSpanBO timespan = (TimeSpanBO) e.getComponent().getAttributes().get("timespan");
+    	ControllerBean.getCreateNutritionProtocolController().deleteTimeSpan(timespan);
+    }
+    
     public void addNewMeal(ActionEvent e)
     {
     	TimeSpanBO timespan = (TimeSpanBO) e.getComponent().getAttributes().get("timespan");
     	ControllerBean.getCreateNutritionProtocolController().createMeal(timespan);
+    }
+    
+    public void deleteMeal(ActionEvent e)
+    {
+    	MealBO meal = (MealBO) e.getComponent().getAttributes().get("meal");
+    	ControllerBean.getCreateNutritionProtocolController().deleteMeal(meal);
     }
     
     public void addNewMealLine()

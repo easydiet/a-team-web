@@ -4,6 +4,7 @@ import java.sql.Clob;
 import java.util.Date;
 
 import at.easydiet.model.NutritionProtocol;
+import at.easydiet.model.PlanType;
 
 /**
  * This class encapsules a NutritionProtocol instance.
@@ -16,9 +17,7 @@ public class NutritionProtocolBO extends DietPlanBO
      */
 	public NutritionProtocolBO()
 	{
-
-		// TODO: add default values
-		this(new NutritionProtocol());
+		this(new NutritionProtocol("", new Date(), PlanTypeBO.NUTRITION_PROTOCOL.getModel(), null, null, new Date()));
 	}
 	
     /**

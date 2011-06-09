@@ -14,4 +14,15 @@
         <appender-ref ref="console" /> 
     </root>
     
+   	 <category name="org.hibernate.SQL">
+       <priority value="TRACE"/>
+       <appender-ref ref="console"/>
+   </category>
+
+   <category name="org.hibernate.type">
+       <priority value="TRACE"/>
+       <appender-ref ref="CONSOLE"/>
+   </category>
+   	
+    
 </log4j:configuration>

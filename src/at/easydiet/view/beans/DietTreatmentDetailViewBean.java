@@ -21,7 +21,7 @@ public class DietTreatmentDetailViewBean
     
     public List<NutritionProtocolBO> getNutritionProtocols()
     {
-        return ControllerBean.getDietTreatmentDetailViewController().getDietTreatment().getNutritionProtocols();        
+        return ControllerBean.getDietTreatmentDetailViewController().getNutritionProtocols();        
     }
     
     public String createNutritionProtocol()
