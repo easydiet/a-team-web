@@ -97,8 +97,13 @@ public class ParameterDefinitionUnitController extends DomainLogicController
      */
     public ParameterDefinitionUnitBO getDefault()
     {
+        return getByName("g");
+    }
+
+    public ParameterDefinitionUnitBO getByName(String name)
+    {
         ParameterDefinitionUnitDAO dao = DAOFactory.getInstance()
-                .getParameterDefinitionUnitDAO();
-        return new ParameterDefinitionUnitBO(dao.findByName("g"));
+        .getParameterDefinitionUnitDAO();
+        return new ParameterDefinitionUnitBO(dao.findByName(name));
     }
 }

@@ -33,6 +33,11 @@
 			<redirect />
 		</navigation-case>
 	</navigation-rule>
+	
+	<converter>
+		<converter-id>string2unit</converter-id>
+		<converter-class>at.easydiet.view.StringToUnitConverter</converter-class>
+	</converter>
 
 	<lifecycle>
 		<phase-listener>at.easydiet.view.AuthorizationPhaseListener</phase-listener>

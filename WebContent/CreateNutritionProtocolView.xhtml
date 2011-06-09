@@ -64,11 +64,7 @@
 							
 							<p:dataTable var="selRecipe" scrollable="true" height="300"
 								emptyMessage="Bitte fügen Sie die Rezepte hinzu" id="selTable"
-								value="#{meal.mealLines}" onRowEditUpdate="messages,selTable" >
-								
-								<p:column headerText="-" style="width:30px;">
-									<p:rowEditor />
-								</p:column>
+								value="#{meal.mealLines}" onRowEditUpdate="messages" >
 								
 								<p:column headerText="Menge" style="width:75px;">
 									<p:cellEditor>
@@ -76,7 +72,7 @@
 											<h:outputText value="#{selRecipe.quantity}" />
 										</f:facet>
 										<f:facet name="input">
-											<p:inputText value="#{selRecipe.quantity}" style="width:100%" />
+											<p:spinner value="#{selRecipe.quantity}" style="width:100%" min="0"  />
 										</f:facet>
 									</p:cellEditor>
 								</p:column>
@@ -88,12 +84,13 @@
 										</f:facet>
 										<f:facet name="input">
 											<h:selectOneMenu value="#{selRecipe.unit}" style="width:100%">
+												<f:converter converterId="string2unit" />
 												<f:selectItems
 													value="#{createNutritionProtocolBean.recipeUnits}"
 													var="unit" itemLabel="#{unit}" itemValue="#{unit}" />
 											</h:selectOneMenu>
 										</f:facet>
-									</p:cellEditor>
+									</p:cellEditor>							
 								</p:column>
 
 								<p:column headerText="BLS Code"
@@ -105,6 +102,10 @@
 									style="width:300px;">
 									<h:outputText value="#{selRecipe.recipe.name}" />
 								</p:column>
+								<p:column headerText="-" style="width:30px;">
+									<p:rowEditor />
+								</p:column>
+								
 							</p:dataTable>
 						</p:panel>
 					</p:column>
