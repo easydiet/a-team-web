@@ -12,7 +12,7 @@ import at.easydiet.businessobjects.TimeSpanBO;
 /**
  * Provides data and methods for handling {@link TimeSpanBO}s
  */
-public class TimeSpanController extends DomainLogicProvider
+public class TimeSpanController extends DomainLogicController
 {
     /**
      * Logger for debugging purposes

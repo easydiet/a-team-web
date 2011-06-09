@@ -1,6 +1,5 @@
 package at.easydiet.view.beans;
 
-import java.util.Collection;
 import java.util.List;
 
 import javax.faces.bean.ManagedBean;
@@ -8,6 +7,7 @@ import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
 
 import at.easydiet.businessobjects.MealBO;
+import at.easydiet.businessobjects.MealLineBO;
 import at.easydiet.businessobjects.NutritionProtocolBO;
 import at.easydiet.businessobjects.RecipeBO;
 import at.easydiet.businessobjects.TimeSpanBO;
@@ -97,4 +97,9 @@ public class CreateNutritionProtocolBean
     	  	ControllerBean.getCreateNutritionProtocolController().addRecipeToMeal(meal, recipe);
 		}
    }
+    
+    public List<MealLineBO> getMealLines()
+    {
+    	return null;    	
+    }
 }

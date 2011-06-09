@@ -21,7 +21,7 @@ import at.easydiet.businessobjects.TimeSpanBO;
 /**
  * Provides data and actions for validating Parameters.
  */
-public class DietParameterController extends DomainLogicProvider
+public class DietParameterController extends DomainLogicController
 {
     /**
      * Logger for debugging purposes
