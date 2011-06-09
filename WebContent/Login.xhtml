@@ -11,18 +11,19 @@
 </h:head>
 <h:body>
 
-	<h:form id="loginform">
-		<p:messages />
-	    <h:outputLabel for="username">Benutzername:</h:outputLabel>
-	    <p:inputText id="username" value="#{userBean.username}" required="true" requiredMessage="Sie müssen einen Benutzernamen angeben!" />
-	    <p:message for="username" />
-	    <br />
-	    <h:outputLabel for="password">Passwort:</h:outputLabel>
-	    <p:password id="password" value="#{userBean.password}"  required="true" requiredMessage="Sie müssen ein Passwort angeben!" />
-   	    <p:message for="password" />
-	    <br />
-	    <p:commandButton value="Login" action="#{userBean.doLogin}" update="loginform" />
-	</h:form>
-
+	<p:panel styleClass="loginPanel" header="Einloggen">
+		<h:form id="loginform" styleClass="loginForm">
+			<p:messages />
+		    <h:outputLabel for="username">Benutzername:</h:outputLabel>
+		    <p:inputText id="username" value="#{userBean.username}" required="true" requiredMessage="Sie müssen einen Benutzernamen angeben!" />
+		    <p:message for="username" />
+		    <br />
+		    <h:outputLabel for="password">Passwort:</h:outputLabel>
+		    <p:password id="password" value="#{userBean.password}"  required="true" requiredMessage="Sie müssen ein Passwort angeben!" />
+	   	    <p:message for="password" />
+		    <br />
+		    <p:commandButton value="Login" action="#{userBean.doLogin}" update="loginform" />
+		</h:form>
+	</p:panel>
 </h:body>
 </html>

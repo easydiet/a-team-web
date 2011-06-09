@@ -5,6 +5,7 @@ import java.util.List;
 import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 
+import at.easydiet.businessobjects.DietTreatmentBO;
 import at.easydiet.businessobjects.NutritionProtocolBO;
 
 @ManagedBean
@@ -29,5 +30,6 @@ public class DietTreatmentDetailViewBean
         ControllerBean.getCreateNutritionProtocolController().createNew(ControllerBean.getDietTreatmentDetailViewController().getDietTreatment());
         return "createNutritionProtocolView";
     }
+
 
 }

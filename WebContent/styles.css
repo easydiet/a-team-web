@@ -4,4 +4,25 @@
 
 body {
 	font-family:Arial, sans-serif;	
+	background:url('images/background.gif') repeat-x;
+}
+
+.loginPanel {
+	width:600px;
+	min-height:200px;
+	margin:0 auto;
+}
+
+.loginForm {
+	padding:0 100px;
+}
+
+.loginPanel label {
+	font-weight:bold;
+	width:100px;
+	display:inline-block;	
+}
+
+.loginPanel .ui-button-text {
+	margin:0 auto;	
 }

@@ -269,7 +269,7 @@ public class RecipeBO implements IDietParameterizable
         _unit = unit;
         _model.setUnit(unit.getModel());
     }
-
+    
     private List<RecipeIngredientBO> _ingredients;
 
 /**

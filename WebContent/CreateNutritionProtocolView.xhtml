@@ -16,6 +16,8 @@
 	</script>
 </h:head>
 <h:body>
+	<h:form id="frm">
+		<strong>Hallo <h:outputText value="#{userBean.user.name}" /></strong>,  <p:commandLink action="${userBean.doLogout}" value="Ausloggen" />
 	<h:form>
 		<strong>Hallo <h:outputText value="#{userBean.user.name}" />
 		</strong>,  <p:commandLink action="${userBean.doLogout}" value="Ausloggen" />
@@ -28,6 +30,13 @@
 			<p:menuitem value="Neues Ernährungsprotokoll" />
 		</p:breadCrumb>
 		<h1>Ernährungsprotokoll anlegen</h1>
+		<h2>Aus Diaetplan uebernehmen</h2>
+		Am: 
+		<p:calendar value="#{createNutritionProtocolBean.date}" mode="inline">
+			<p:ajax event="dateSelect" listener="#{createNutritionProtocolBean.addTimeSpanByDate}" update="frm" />  
+		</p:calendar>
+		<p:commandButton action="#{createNutritionProtocolBean.searchDietPlanMenues}" value="Suchen" />
+		
 		<p:commandButton value="neuen Zeitraum hinzufügen"
 			action="#{createNutritionProtocolBean.addNewTimespan}"
 			update="timespans" />
@@ -71,12 +80,37 @@
 									target="#{createNutritionProtocolBean.currentMeal}" />
 							</p:commandButton>
 
-
+							<p:growl id="messages" />
+							
 							<p:dataTable var="selRecipe" scrollable="true" height="300"
 								emptyMessage="Bitte fügen Sie die Rezepte hinzu" id="selTable"
-								value="#{meal.mealLines}">
-								<p:column headerText="Menge" style="width:50px;">
-									<h:outputText value="#{selRecipe.quantity}" />
+								value="#{meal.mealLines}" onRowEditUpdate="messages" >
+								
+								<p:column headerText="Menge" style="width:75px;">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{selRecipe.quantity}" />
+										</f:facet>
+										<f:facet name="input">
+											<p:spinner value="#{selRecipe.quantity}" style="width:100%" min="0"  />
+										</f:facet>
+									</p:cellEditor>
+								</p:column>
+
+								<p:column headerText="Einheit" style="width:100px;">
+									<p:cellEditor>
+										<f:facet name="output">
+											<h:outputText value="#{selRecipe.unit}" />
+										</f:facet>
+										<f:facet name="input">
+											<h:selectOneMenu value="#{selRecipe.unit}" style="width:100%">
+												<f:converter converterId="string2unit" />
+												<f:selectItems
+													value="#{createNutritionProtocolBean.recipeUnits}"
+													var="unit" itemLabel="#{unit}" itemValue="#{unit}" />
+											</h:selectOneMenu>
+										</f:facet>
+									</p:cellEditor>							
 								</p:column>
 
 								<p:column headerText="BLS Code"
@@ -88,6 +122,10 @@
 									style="width:300px;">
 									<h:outputText value="#{selRecipe.recipe.name}" />
 								</p:column>
+								<p:column headerText="-" style="width:30px;">
+									<p:rowEditor />
+								</p:column>
+								
 							</p:dataTable>
 						</p:panel>
 					</p:column>

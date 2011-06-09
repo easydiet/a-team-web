@@ -31,7 +31,8 @@ public class ParameterDefinitionUnitController extends DomainLogicController
      * 
      * @return The instance of this {@link ParameterDefinitionUnitController}
      */
-    static ParameterDefinitionUnitController newInstance(DomainLogicProvider provider)
+    static ParameterDefinitionUnitController newInstance(
+            DomainLogicProvider provider)
     {
         if (_singleton == null)
         {
@@ -64,6 +65,23 @@ public class ParameterDefinitionUnitController extends DomainLogicController
     }
 
     /**
+     * Get a list of {@link ParameterDefinitionUnitBO}
+     * @return
+     */
+    public List<ParameterDefinitionUnitBO> getUnits()
+    {
+        ParameterDefinitionUnitDAO dao = DAOFactory.getInstance()
+                .getParameterDefinitionUnitDAO();
+        List<ParameterDefinitionUnit> units = dao.findAll();
+        ArrayList<ParameterDefinitionUnitBO> bos = new ArrayList<ParameterDefinitionUnitBO>();
+        for (ParameterDefinitionUnit unit : units)
+        {
+            bos.add(new ParameterDefinitionUnitBO(unit));
+        }
+        return bos;
+    }
+
+    /**
      * Initializes a new instance of the
      * {@link ParameterDefinitionUnitController} class.
      */
@@ -79,8 +97,13 @@ public class ParameterDefinitionUnitController extends DomainLogicController
      */
     public ParameterDefinitionUnitBO getDefault()
     {
+        return getByName("g");
+    }
+
+    public ParameterDefinitionUnitBO getByName(String name)
+    {
         ParameterDefinitionUnitDAO dao = DAOFactory.getInstance()
-                .getParameterDefinitionUnitDAO();
-        return new ParameterDefinitionUnitBO(dao.findByName("g"));
+        .getParameterDefinitionUnitDAO();
+        return new ParameterDefinitionUnitBO(dao.findByName(name));
     }
 }

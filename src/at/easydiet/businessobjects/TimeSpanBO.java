@@ -296,4 +296,21 @@ public class TimeSpanBO implements IDietParameterizable
         removeDietParameters((DietParameterBO) parameter);
     }
 
+    public void getMealsofDay(Date date3){
+        List<MealBO> meals = new ArrayList<MealBO>();
+        for(MealBO m : _meals){
+            MealLineBO ml = new MealLineBO();
+            
+        }
+    }
+
+    public void clearMeals()
+    {
+        while(getMeals().size() > 0)
+        {
+            removeMeals(getMeals().get(0));
+        }
+    }
+
+
 }
