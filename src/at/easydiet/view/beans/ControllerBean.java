@@ -11,7 +11,6 @@ import at.easydiet.businesslogic.DietPlanEditingController;
 import at.easydiet.businesslogic.DietTreatmentDetailViewController;
 import at.easydiet.businesslogic.PatientDetailViewController;
 import at.easydiet.domainlogic.ParameterDefinitionUnitController;
-import at.easydiet.domainlogic.RecipeSearchController;
 import at.easydiet.domainlogic.SystemUserController;
 import at.easydiet.view.BeanResolver;
 
