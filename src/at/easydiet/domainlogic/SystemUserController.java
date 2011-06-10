@@ -72,6 +72,11 @@ public class SystemUserController extends DomainLogicController
         return list;
     }
 
+    /**
+     * Gets the {@link SystemUserBO} by it's username
+     * @param username The username of the {@link SystemUserBO}
+     * @return The {@link SystemUserBO}
+     */
     public SystemUserBO getSystemUserByUsername(String username)
     {
         SystemUserDAO dao = DAOFactory.getInstance().getSystemUserDAO();
@@ -79,6 +84,13 @@ public class SystemUserController extends DomainLogicController
         return user == null ? null : new SystemUserBO(user);
     }
 
+    /**
+     * Tries to log in a user
+     * @param username username of the user
+     * @param password non-md5 password
+     * @throws InvalidPasswordException Thrown when an invalid password is detected
+     * @throws UserNotFoundException Thrown when the user is not found
+     */
     public void login(String username, String password) throws InvalidPasswordException, UserNotFoundException
     {
         SystemUserBO user = getSystemUserByUsername(username);
@@ -112,22 +124,45 @@ public class SystemUserController extends DomainLogicController
         }
     }
 
+    /**
+     * Logout the current user
+     */
     public void logout()
     {
         onUserLogout(_currentUser);
         _currentUser = null;
     }
 
+    /**
+     * Checks whether the user is authenticated or not
+     * @return True if the user is logged in.
+     */
     public boolean isAuthenticated()
     {
         return _currentUser != null;
     }
     
+    
+    /**
+     * Implements a listener for the login
+     */
     public interface SystemUserLoginListener
     {
+        /**
+         * When the user logs in
+         * @param user User who logs in
+         */
         public void onUserLogin(SystemUserBO user);
+        
+        /**
+         * When the user logs out
+         * @param user User who logs out
+         */
         public void onUserLogout(SystemUserBO user);
         
+        /**
+         * Adapter pattern
+         */
         public class Adapter implements SystemUserLoginListener
         {
             @Override
@@ -162,11 +197,19 @@ public class SystemUserController extends DomainLogicController
         }
     }
     
+    /**
+     * Add a login listener
+     * @param listener Listener to add
+     */
     public void addLoginListener(SystemUserLoginListener listener)
     {
         _loginListeners.add(listener);
     }
     
+    /**
+     * Remove a login listener
+     * @param listener Listener to remove
+     */
     public void removeLoginListener(SystemUserLoginListener listener)
     {
         _loginListeners.remove(listener);

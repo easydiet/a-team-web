@@ -1,8 +1,13 @@
 package at.easydiet;
 
+/**
+ * Root class for ControllerProvider. Stores controllers.
+ *
+ */
 public abstract class ControllerProviderBase
 {
-    public static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
+    @SuppressWarnings({ "unused" })
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
                                                             .getLogger(ControllerProviderBase.class);
 
     private ControllerProvider _rootProvider;
@@ -18,7 +23,7 @@ public abstract class ControllerProviderBase
 
     /** 
      * Initializes a new instance of the {@link ControllerProviderBase} class. 
-     * @param rootProvider
+     * @param rootProvider The root provider
      */
     protected ControllerProviderBase(ControllerProvider rootProvider)
     {

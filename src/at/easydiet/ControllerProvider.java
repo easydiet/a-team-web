@@ -14,14 +14,22 @@ import at.easydiet.domainlogic.PatientLikeGradeController;
 import at.easydiet.domainlogic.SystemUserController;
 import at.easydiet.domainlogic.TimeSpanController;
 
+/**
+ * Provides access to the implementations of the {@link ControllerProviderBase} classes.
+ *
+ */
 public class ControllerProvider
 {
-    public static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
+    @SuppressWarnings("unused")
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
                                                             .getLogger(ControllerProvider.class);
 
     private BusinessLogicProvider _businessProvider;
     private DomainLogicProvider _domainProvider;
     
+    /**
+     * Initializes a new instance of the {@link ControllerProvider} class.
+     */
     public ControllerProvider()
     {
         _domainProvider = new DomainLogicProvider(this);
@@ -29,7 +37,7 @@ public class ControllerProvider
     }
 
     /**
-     * @return
+     * @return The {@link CreateNutritionProtocolController} for this session
      * @see at.easydiet.businesslogic.BusinessLogicProvider#getCreateNutritionProtocolController()
      */
     public CreateNutritionProtocolController getCreateNutritionProtocolController()
@@ -38,7 +46,7 @@ public class ControllerProvider
     }
 
     /**
-     * @return
+     * @return The {@link DashboardViewController} for this session
      * @see at.easydiet.businesslogic.BusinessLogicProvider#getDashboardViewController()
      */
     public DashboardViewController getDashboardViewController()
@@ -47,7 +55,7 @@ public class ControllerProvider
     }
 
     /**
-     * @return
+     * @return The {@link DietPlanEditingController} for this session
      * @see at.easydiet.businesslogic.BusinessLogicProvider#getDietPlanEditingController()
      */
     public DietPlanEditingController getDietPlanEditingController()
@@ -56,7 +64,7 @@ public class ControllerProvider
     }
 
     /**
-     * @return
+     * @return The {@link DietTreatmentDetailViewController} for this session
      * @see at.easydiet.businesslogic.BusinessLogicProvider#getDietTreatmentDetailViewController()
      */
     public DietTreatmentDetailViewController getDietTreatmentDetailViewController()
@@ -65,7 +73,7 @@ public class ControllerProvider
     }
 
     /**
-     * @return
+     * @return The {@link PatientDetailViewController} for this session
      * @see at.easydiet.businesslogic.BusinessLogicProvider#getPatientDetailViewController()
      */
     public PatientDetailViewController getPatientDetailViewController()
@@ -74,7 +82,7 @@ public class ControllerProvider
     }
 
     /**
-     * @return
+     * @return The {@link SystemUserController} for this session
      * @see at.easydiet.domainlogic.DomainLogicProvider#getSystemUserController()
      */
     public SystemUserController getSystemUserController()
@@ -83,7 +91,7 @@ public class ControllerProvider
     }
 
     /**
-     * @return
+     * @return The {@link DietParameterController} for this session
      * @see at.easydiet.domainlogic.DomainLogicProvider#getDietParameterController()
      */
     public DietParameterController getDietParameterController()
@@ -92,7 +100,7 @@ public class ControllerProvider
     }
 
     /**
-     * @return
+     * @return The {@link DietParameterUnitController} for this session
      * @see at.easydiet.domainlogic.DomainLogicProvider#getDietParameterUnitController()
      */
     public DietParameterUnitController getDietParameterUnitController()
@@ -101,7 +109,7 @@ public class ControllerProvider
     }
 
     /**
-     * @return
+     * @return The {@link ParameterDefinitionUnitController} for this session
      * @see at.easydiet.domainlogic.DomainLogicProvider#getParameterDefinitionUnitController()
      */
     public ParameterDefinitionUnitController getParameterDefinitionUnitController()
@@ -110,7 +118,7 @@ public class ControllerProvider
     }
 
     /**
-     * @return
+     * @return The {@link PatientLikeGradeController} for this session
      * @see at.easydiet.domainlogic.DomainLogicProvider#getPatientLikeGradeController()
      */
     public PatientLikeGradeController getPatientLikeGradeController()
@@ -119,7 +127,7 @@ public class ControllerProvider
     }
 
     /**
-     * @return
+     * @return The {@link TimeSpanController} for this session
      * @see at.easydiet.domainlogic.DomainLogicProvider#getTimeSpanController()
      */
     public TimeSpanController getTimeSpanController()

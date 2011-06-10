@@ -7,9 +7,14 @@ import javax.faces.convert.Converter;
 import at.easydiet.businessobjects.ParameterDefinitionUnitBO;
 import at.easydiet.view.beans.ControllerBean;
 
+/**
+ * Converts between string and {@link ParameterDefinitionUnitBO}
+ *
+ */
 public class StringToUnitConverter implements Converter
 {
-    public static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger
+    @SuppressWarnings("unused")
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger
                                                                .getLogger(StringToUnitConverter.class);
 
     @Override

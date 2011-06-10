@@ -3,14 +3,22 @@ package at.easydiet.domainlogic;
 import at.easydiet.ControllerProvider;
 import at.easydiet.ControllerProviderBase;
 
+/**
+ * Provides access to all {@link DomainLogicController}s
+ */
 public class DomainLogicProvider extends ControllerProviderBase
 {
+    /**
+     * Initializes a new instance of the {@link DomainLogicProvider} class. 
+     * @param rootProvider the rootProvider
+     */
     public DomainLogicProvider(ControllerProvider rootProvider)
     {
         super(rootProvider);
     }
 
-    public static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
+    @SuppressWarnings("unused")
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
                                                             .getLogger(DomainLogicProvider.class);
 
     private DietParameterController _dietParameterController;
@@ -20,6 +28,10 @@ public class DomainLogicProvider extends ControllerProviderBase
     private SystemUserController _systemUserController;
     private TimeSpanController _timeSpanController;
     
+    /**
+     * Gets the {@link SystemUserController}
+     * @return The {@link SystemUserController} for this instance
+     */
     public SystemUserController getSystemUserController()
     {
         if(_systemUserController == null)

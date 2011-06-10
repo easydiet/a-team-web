@@ -10,7 +10,7 @@ import at.easydiet.model.Patient;
 import at.easydiet.util.StringUtils;
 
 /**
- * Provides data and actions for the {@link DashboardView}.
+ * Provides data and actions for the DashboardView.
  */
 public class DashboardViewController extends BusinessLogicController
 {
@@ -42,6 +42,7 @@ public class DashboardViewController extends BusinessLogicController
     /**
      * Initializes a new instance of the
      * {@link DashboardViewController} class.
+     * @param provider The {@link BusinessLogicProvider} which holds this instance
      */
     protected DashboardViewController(BusinessLogicProvider provider)
     {

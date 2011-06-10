@@ -8,12 +8,14 @@ import javax.faces.convert.Converter;
 
 import at.easydiet.EasyDietApplication;
 import at.easydiet.businessobjects.DietPlanBO;
-import at.easydiet.businessobjects.ParameterDefinitionUnitBO;
-import at.easydiet.view.beans.ControllerBean;
 
+/**
+ * Converts a {@link DietPlanBO} to a TimeString
+ */
 public class DietPlanToTimeStringConverter implements Converter
 {
-    public static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger
+    @SuppressWarnings("unused")
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger
                                                                .getLogger(DietPlanToTimeStringConverter.class);
 
     @Override

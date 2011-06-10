@@ -9,6 +9,7 @@ import javax.faces.bean.ManagedBean;
 import javax.faces.bean.SessionScoped;
 import javax.faces.event.ActionEvent;
 
+import at.easydiet.businessobjects.DietTreatmentBO;
 import at.easydiet.businessobjects.MealBO;
 import at.easydiet.businessobjects.MealLineBO;
 import at.easydiet.businessobjects.NutritionProtocolBO;
@@ -21,14 +22,13 @@ import at.easydiet.domainlogic.RecipeSearchController;
 /**
  * This bean handles the communication between the UI and the controller for
  * creating new nutritionprocotols
- * @author Daniel
- * 
  */
 @ManagedBean
 @SessionScoped
 public class CreateNutritionProtocolBean
 {
-    public static final org.apache.log4j.Logger LOG           = org.apache.log4j.Logger
+    @SuppressWarnings("unused")
+    private static final org.apache.log4j.Logger LOG           = org.apache.log4j.Logger
                                                                       .getLogger(CreateNutritionProtocolBean.class);
 
     private Date                                _date         = new Date();
@@ -38,56 +38,99 @@ public class CreateNutritionProtocolBean
     private RecipeSearchController              _recipeSearch = new RecipeSearchController();
     private RecipeBO[]                          _selectedRecipes;
 
-    public TimeSpanBO CurrentTimespan()
+    /**
+     * Get the current {@link TimeSpanBO}
+     * @return The current {@link TimeSpanBO}
+     */
+    public TimeSpanBO getCurrentTimespan()
     {
         return _currentTimespan;
     }
 
-    public void setCurrentTimespan(TimeSpanBO _currentTimespan)
+    /**
+     * Sets the current timespan
+     * @param currentTimespan The new {@link TimeSpanBO}
+     */
+    public void setCurrentTimespan(TimeSpanBO currentTimespan)
     {
-        this._currentTimespan = _currentTimespan;
+        this._currentTimespan = currentTimespan;
     }
 
+    /**
+     * Gets selected Recipes
+     * @return Array of {@link RecipeBO}
+     */
     public RecipeBO[] getSelectedRecipes()
     {
         return _selectedRecipes;
     }
 
+    /**
+     * Sets selected {@link RecipeBO}s
+     * @param selectedRecipes The new array of {@link RecipeBO}s
+     */
     public void setSelectedRecipes(RecipeBO[] selectedRecipes)
     {
         this._selectedRecipes = selectedRecipes;
     }
 
+    /**
+     * Gets the {@link RecipeSearchController}
+     * @return The {@link RecipeSearchController}
+     */
     public RecipeSearchController getRecipeSearch()
     {
         return _recipeSearch;
     }
 
+    /**
+     * Get the current {@link MealBO}
+     * @return The current {@link MealBO}
+     */
     public MealBO getCurrentMeal()
     {
         return _currentMeal;
     }
 
+    /**
+     * Set the current {@link MealBO}
+     * @param currentMeal The new {@link MealBO}
+     */
     public void setCurrentMeal(MealBO currentMeal)
     {
         this._currentMeal = currentMeal;
     }
 
+    /**
+     * Initializes a new instance of the {@link CreateNutritionProtocolBean} class.
+     */
     public CreateNutritionProtocolBean()
     {
         createNewProtocol();
     }
 
+    /**
+     * Sets the Date
+     * @param date The new {@link Date}
+     */
     public void setDate(Date date)
     {
         _date = date;
     }
 
+    /**
+     * Gets the Date
+     * @return {@link Date}
+     */
     public Date getDate()
     {
         return _date;
     }
 
+    /**
+     * Gets the {@link NutritionProtocolBO}
+     * @return The current {@link NutritionProtocolBO}
+     */
     public NutritionProtocolBO getNutritionProtocol()
     {
         if (ControllerBean.getCreateNutritionProtocolController().getDietPlan() == null)
@@ -98,6 +141,10 @@ public class CreateNutritionProtocolBean
                 .getDietPlan();
     }
 
+    /**
+     * Gets the {@link TimeSpanBO}s
+     * @return List of all {@link TimeSpanBO}s
+     */
     public List<TimeSpanBO> getTimeSpans()
     {
         return ControllerBean.getCreateNutritionProtocolController()
@@ -112,11 +159,18 @@ public class CreateNutritionProtocolBean
         ControllerBean.getCreateNutritionProtocolController().refresh();
     }
 
+    /**
+     * Adds a new {@link TimeSpanBO}
+     */
     public void addNewTimespan()
     {
         ControllerBean.getCreateNutritionProtocolController().createTimeSpan();
     }
 
+    /**
+     * Deletes a {@link TimeSpanBO}
+     * @param e {@link ActionEvent}
+     */
     public void deleteTimespan(ActionEvent e)
     {
         TimeSpanBO timespan = (TimeSpanBO) e.getComponent().getAttributes()
@@ -125,6 +179,10 @@ public class CreateNutritionProtocolBean
                 timespan);
     }
 
+    /**
+     * Delete {@link MealLineBO}
+     * @param e {@link ActionEvent}
+     */
     public void deleteMealLine(ActionEvent e)
     {
         MealLineBO mealLine = (MealLineBO) e.getComponent().getAttributes()
@@ -133,6 +191,10 @@ public class CreateNutritionProtocolBean
                 mealLine);
     }
 
+    /**
+     * Add a new {@link MealBO}
+     * @param e {@link ActionEvent}
+     */
     public void addNewMeal(ActionEvent e)
     {
         TimeSpanBO timespan = (TimeSpanBO) e.getComponent().getAttributes()
@@ -141,12 +203,19 @@ public class CreateNutritionProtocolBean
                 timespan);
     }
 
+    /**
+     * Delete a {@link MealBO}
+     * @param e {@link ActionEvent}
+     */
     public void deleteMeal(ActionEvent e)
     {
         MealBO meal = (MealBO) e.getComponent().getAttributes().get("meal");
         ControllerBean.getCreateNutritionProtocolController().deleteMeal(meal);
     }
 
+    /**
+     * Add a new {@link MealLineBO}
+     */
     public void addNewMealLine()
     {
         if (_selectedRecipes == null) return;
@@ -158,6 +227,10 @@ public class CreateNutritionProtocolBean
         }
     }
 
+    /**
+     * Save the {@link NutritionProtocolBO}
+     * @return Destination link
+     */
     public String save()
     {
         if (ControllerBean.getCreateNutritionProtocolController()
@@ -168,11 +241,18 @@ public class CreateNutritionProtocolBean
         return null;
     }
 
+    /**
+     * Gets {@link ParameterDefinitionUnitBO} for recipes
+     * @return List of {@link ParameterDefinitionUnitBO}s
+     */
     public List<ParameterDefinitionUnitBO> getRecipeUnits()
     {
         return ControllerBean.getParameterDefinitionUnitController().getUnits();
     }
     
+    /**
+     * Fills a new {@link TimeSpanBO} with the Meals of the corresponding {@link TimeSpanBO} from the {@link DietTreatmentBO} 
+     */
     public void searchDietPlanMenues(){
         TimeSpanBO timespan = ControllerBean.getCreateNutritionProtocolController().createTimeSpan();
         timespan.setStart(_date);
@@ -180,16 +260,15 @@ public class CreateNutritionProtocolBean
         fillTimeSpanWithMeals(timespan);
     }
 
+    /**
+     * Fill a {@link TimeSpanBO} with {@link MealBO}
+     * @param timeSpan The {@link TimeSpanBO} to fill
+     */
     private void fillTimeSpanWithMeals(TimeSpanBO timeSpan)
     {
         try
         {
             ControllerBean.getCreateNutritionProtocolController().fillTimeSpanWithMeals(timeSpan);
-            
-            //Testen
-            for(MealBO meals2 : timeSpan.getMeals()){
-                System.out.println("getTimeSpanOfDay: "+meals2.getName());
-            }
         }
         catch (NotFoundException e)
         {
