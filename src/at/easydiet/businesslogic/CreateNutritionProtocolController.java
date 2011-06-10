@@ -117,7 +117,7 @@ public class CreateNutritionProtocolController extends
 
         // update creator
         getDietPlan().setCreator(getRootProvider().getSystemUserController().getCurrentUser());
-
+        
         HibernateUtil.closeSession();
         try
         {

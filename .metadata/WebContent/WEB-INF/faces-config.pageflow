@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf13072881987771" configfile="/a-diet-web/WebContent/WEB-INF/faces-config.xml">
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf13072881987771" configfile="/EasyDietWeb/WebContent/WEB-INF/faces-config.xml">
   <nodes xsi:type="pageflow:PFPage" name="Global" x="122" y="754" id="pf13072882757283" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf13072882757284 pf13072923855466 pf13073526601190 pf13073526601191 pf13073526601192" path="*"/>
   <nodes xsi:type="pageflow:PFPage" name="PatientDetailView.xhtml" x="338" y="178" id="pf13072882757285" referenceLink="//@navigationRule.0/@navigationCase.1/@toViewId|" inlinks="pf13072882757284" path="/DashboardView.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="PatientDetailView.xhtml" x="338" y="562" id="pf13072923855467" referenceLink="//@navigationRule.0/@navigationCase.2/@toViewId|" inlinks="pf13072923855466" path="/PatientDetailView.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="DietTreatmentDetailView.xhtml" x="338" y="946" id="pf13073526601193" referenceLink="//@navigationRule.0/@navigationCase.3/@toViewId|" inlinks="pf13073526601190" path="/DietTreatmentDetailView.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="CreateNutritionProtocolView.xhtml" x="338" y="1330" id="pf13073526601194" referenceLink="//@navigationRule.0/@navigationCase.4/@toViewId|" inlinks="pf13073526601191" path="/CreateNutritionProtocolView.xhtml"/>
   <nodes xsi:type="pageflow:PFPage" name="Login.xhtml" id="pf13073526601195" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf13073526601192" path="/Login.xhtml"/>
-  <links id="pf13072882757284" target="pf13072882757285" source="pf13072882757283" outcome="dashboardView" redirect="true"/>
-  <links id="pf13072923855466" target="pf13072923855467" source="pf13072882757283" outcome="patientDetailView" redirect="true"/>
-  <links id="pf13073526601190" target="pf13073526601193" source="pf13072882757283" outcome="dietTreatmentDetailView" redirect="true"/>
-  <links id="pf13073526601191" target="pf13073526601194" source="pf13072882757283" outcome="createNutritionProtocolView" redirect="true"/>
-  <links id="pf13073526601192" target="pf13073526601195" source="pf13072882757283" outcome="login" redirect="true"/>
+  <links id="pf13072882757284" target="pf13072882757285" source="pf13072882757283"/>
+  <links id="pf13072923855466" target="pf13072923855467" source="pf13072882757283"/>
+  <links id="pf13073526601190" target="pf13073526601193" source="pf13072882757283"/>
+  <links id="pf13073526601191" target="pf13073526601194" source="pf13072882757283"/>
+  <links id="pf13073526601192" target="pf13073526601195" source="pf13072882757283"/>
 </pageflow:Pageflow>
