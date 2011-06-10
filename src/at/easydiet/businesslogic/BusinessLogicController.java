@@ -2,9 +2,13 @@ package at.easydiet.businesslogic;
 
 import at.easydiet.ControllerProvider;
 
+/**
+ * Root class for all {@link BusinessLogicController}s
+ */
 public abstract class BusinessLogicController 
 {
-    public static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
+    @SuppressWarnings("unused")
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
                                                             .getLogger(BusinessLogicController.class);
 
     private BusinessLogicProvider _currentProvider;
@@ -18,6 +22,10 @@ public abstract class BusinessLogicController
         return _currentProvider;
     }
     
+    /**
+     * Gets the rootProvider
+     * @return the rootProvider
+     */
     public ControllerProvider getRootProvider()
     {
         return _currentProvider.getRootProvider();
@@ -25,7 +33,7 @@ public abstract class BusinessLogicController
 
     /** 
      * Initializes a new instance of the {@link BusinessLogicController} class. 
-     * @param currentProvider
+     * @param currentProvider the currentProvider
      */
     protected BusinessLogicController(BusinessLogicProvider currentProvider)
     {

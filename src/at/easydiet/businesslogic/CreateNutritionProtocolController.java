@@ -2,8 +2,6 @@ package at.easydiet.businesslogic;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
-
 import javassist.NotFoundException;
 
 import org.hibernate.HibernateException;
@@ -23,14 +21,11 @@ import at.easydiet.domainlogic.RecipeSearchController;
 
 /**
  * This Controller handles the Creation of NutritionProtocols
- * 
- * @author Daniel
- * 
  */
 public class CreateNutritionProtocolController extends
         DietPlanEditingController
 {
-    public static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
                                                             .getLogger(CreateNutritionProtocolController.class);
 
     private RecipeSearchController              _recipeSearchController;
@@ -63,7 +58,7 @@ public class CreateNutritionProtocolController extends
     @Override
     public void validateDietPlan(boolean checkForEmpty)
     {
-        // No validateion
+        // No validation
     }
 
     @Override
@@ -79,47 +74,11 @@ public class CreateNutritionProtocolController extends
     {
         return (NutritionProtocolBO) super.getDietPlan();
     }
-    
 
-    public List<MealBO> getMealsOfDay(Date day, DietTreatmentBO diet) throws NotFoundException
-    {
-        for(DietPlanBO dp : diet.getDietPlans())
-        {
-            if(dp.getStart().compareTo(day) <= 0 && dp.getEnd().compareTo(day) >= 0 && dp.getPlanType() != PlanTypeBO.NUTRITION_PROTOCOL)
-            {
-                for(TimeSpanBO ts : dp.getTimeSpans())
-                {
-                    if(ts.getStart().compareTo(day) <= 0 && ts.getEnd().compareTo(day) >= 0)
-                    {
-                        return ts.getMeals();
-                    }
-                }
-            }
-        }
-        throw new NotFoundException("No Meal found for this date on Diet: " + diet.getName()+", on Day: "+day);
-    }
-    
-    public TimeSpanBO getTimeSpanOfDay(TimeSpanBO timeSpan, DietTreatmentBO diet) throws NotFoundException
-    {
-        for(DietPlanBO dp : diet.getDietPlans())
-        {
-            if(dp.getStart().compareTo(timeSpan.getStart()) <= 0 && dp.getEnd().compareTo(timeSpan.getEnd()) >= 0 && dp.getPlanType() != PlanTypeBO.NUTRITION_PROTOCOL)
-            {
-                for(TimeSpanBO ts : dp.getTimeSpans())
-                {
-                    if(ts.getStart().compareTo(timeSpan.getStart()) <= 0 && ts.getEnd().compareTo(timeSpan.getEnd()) >= 0)
-                    {
-                        for(MealBO me : ts.getMeals()){
-                            timeSpan.addMeals(me);
-                        }
-                        return timeSpan;
-                    }
-                }
-            }
-        }
-        throw new NotFoundException("No Meal found for this date on Diet: " + diet.getName()+", on Day: "+timeSpan.getStart());
-    }
-
+    /**
+     * Creates a new {@link TimeSpanBO}
+     * @param dietPlan The {@link DietPlanBO} which holds the new {@link TimeSpanBO}
+     */
     public void createNewTimeSpan(DietPlanBO dietPlan)
     {
         TimeSpanBO span = new TimeSpanBO();
@@ -127,11 +86,18 @@ public class CreateNutritionProtocolController extends
         
     }
 
+    /**
+     * Gets the {@link RecipeSearchController}
+     * @return the {@link RecipeSearchController}
+     */
     public RecipeSearchController getRecipeSearchController()
     {
         return _recipeSearchController;
     }    
     
+    /**
+     * @see at.easydiet.businesslogic.DietPlanEditingController#saveDietPlan()
+     */
     public boolean saveDietPlan()
     {
         validateDietPlan(true);
@@ -151,7 +117,7 @@ public class CreateNutritionProtocolController extends
 
         // update creator
         getDietPlan().setCreator(getRootProvider().getSystemUserController().getCurrentUser());
-
+        
         HibernateUtil.closeSession();
         try
         {
@@ -170,6 +136,11 @@ public class CreateNutritionProtocolController extends
         }
     }  
     
+    /**
+     * Fill a {@link TimeSpanBO} with meals
+     * @param timeSpan The {@link TimeSpanBO} to fill
+     * @throws NotFoundException if no meal was found
+     */
     public void fillTimeSpanWithMeals(TimeSpanBO timeSpan) throws NotFoundException
     {
         DietTreatmentBO currentTreatment = getRootProvider().getDietTreatmentDetailViewController().getDietTreatment();

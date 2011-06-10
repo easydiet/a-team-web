@@ -12,7 +12,7 @@ import at.easydiet.model.NutritionProtocol;
 
 /**
  * This controller provides data and functions for the
- * {@link DietTreatmentDetailView}
+ * DietTreatmentDetailView
  */
 public class DietTreatmentDetailViewController extends BusinessLogicController 
 {
@@ -40,6 +40,7 @@ public class DietTreatmentDetailViewController extends BusinessLogicController
     /**
      * Initializes a new instance of the
      * {@link DietTreatmentDetailViewController} class.
+     * @param provider The {@link BusinessLogicProvider} which holds this instance
      */
     protected DietTreatmentDetailViewController(BusinessLogicProvider provider)
     {
@@ -61,7 +62,7 @@ public class DietTreatmentDetailViewController extends BusinessLogicController
     /**
      * Sets the selected {@link DietTreatmentBO} within this application.
      * 
-     * @param dietTreatment
+     * @param dietTreatment the new {@link DietTreatmentBO}
      */
     public void setDietTreatment(DietTreatmentBO dietTreatment)
     {
@@ -92,13 +93,17 @@ public class DietTreatmentDetailViewController extends BusinessLogicController
         
     }
     
+    /**
+     * Gets a list of all {@link NutritionProtocolBO}s
+     * @return List of {@link NutritionProtocolBO} of the current {@link DietTreatmentBO}
+     */
     public List<NutritionProtocolBO> getNutritionProtocols() 
     {
 		return _nutritionProtocols;
 	}
 
     /**
-     * Refreshes the currently loaded diettreamtent and it's data.
+     * Refreshes the currently loaded diet treatment and it's data.
      */
     public void refresh()
     {

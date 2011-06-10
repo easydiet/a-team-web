@@ -18,7 +18,8 @@ public class ParameterDefinitionUnitController extends DomainLogicController
     /**
      * Logger for debugging purposes
      */
-    public static final org.apache.log4j.Logger      LOG = org.apache.log4j.Logger
+    @SuppressWarnings("unused")
+    private static final org.apache.log4j.Logger      LOG = org.apache.log4j.Logger
                                                                  .getLogger(ParameterDefinitionUnitController.class);
 
     /**
@@ -66,7 +67,7 @@ public class ParameterDefinitionUnitController extends DomainLogicController
 
     /**
      * Get a list of {@link ParameterDefinitionUnitBO}
-     * @return
+     * @return List of all {@link ParameterDefinitionUnitBO}s
      */
     public List<ParameterDefinitionUnitBO> getUnits()
     {
@@ -100,6 +101,11 @@ public class ParameterDefinitionUnitController extends DomainLogicController
         return getByName("g");
     }
 
+    /**
+     * Gets the {@link ParameterDefinitionUnitBO} for the name
+     * @param name The name of the {@link ParameterDefinitionUnitBO}
+     * @return The {@link ParameterDefinitionUnitBO}
+     */
     public ParameterDefinitionUnitBO getByName(String name)
     {
         ParameterDefinitionUnitDAO dao = DAOFactory.getInstance()

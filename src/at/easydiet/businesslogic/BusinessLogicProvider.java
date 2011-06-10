@@ -3,9 +3,13 @@ package at.easydiet.businesslogic;
 import at.easydiet.ControllerProvider;
 import at.easydiet.ControllerProviderBase;
 
+/**
+ * Provides access to all {@link BusinessLogicController}s
+ */
 public class BusinessLogicProvider extends ControllerProviderBase
 {
-    public static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
+    @SuppressWarnings("unused")
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
                                                             .getLogger(BusinessLogicProvider.class);
 
     private CreateNutritionProtocolController   _createNutritionProtocolController;
@@ -17,7 +21,7 @@ public class BusinessLogicProvider extends ControllerProviderBase
 
     /** 
      * Initializes a new instance of the {@link BusinessLogicProvider} class. 
-     * @param rootProvider
+     * @param rootProvider the rootProvider
      */
     public BusinessLogicProvider(ControllerProvider rootProvider)
     {

@@ -10,7 +10,11 @@ import javax.servlet.ServletException;
 import org.apache.log4j.Logger;
 
 import at.easydiet.businessobjects.SystemUserBO;
+import at.easydiet.domainlogic.SystemUserController;
 
+/**
+ * Bean for the User
+ */
 @ManagedBean
 @SessionScoped
 public class UserBean
@@ -18,6 +22,10 @@ public class UserBean
     @SuppressWarnings("unused")
     private static final Logger LOG = Logger.getLogger(UserBean.class);
 
+    /**
+     * Gets the user
+     * @return {@link SystemUserBO}
+     */
     public SystemUserBO getUser()
     {
         return ControllerBean.getSystemUserController().getCurrentUser();
@@ -62,6 +70,10 @@ public class UserBean
         _password = password;
     }
 
+    /**
+     * Tries to login
+     * @return destination
+     */
     public String doLogin()
     {
         try
@@ -91,6 +103,11 @@ public class UserBean
         }
     }
 
+    /**
+     * Logs out the user
+     * @return destination
+     * @throws ServletException When something went wrong
+     */
     public String doLogout() throws ServletException
     {
         ControllerBean.getSystemUserController().logout();
@@ -99,6 +116,10 @@ public class UserBean
         return "login";
     }
 
+    /**
+     * @see SystemUserController#isAuthenticated()
+     * @return True if user is logged in
+     */
     public boolean isAuthenticated()
     {
         return ControllerBean.getSystemUserController().isAuthenticated();

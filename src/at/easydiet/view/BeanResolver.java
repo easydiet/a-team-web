@@ -4,16 +4,20 @@ import javax.el.ELContext;
 import javax.faces.context.FacesContext;
 
 /**
- * A utlity for resolving beans.
+ * A utility for resolving beans.
  */
 public class BeanResolver
 {
-    public static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger
+    @SuppressWarnings("unused")
+    private static final org.apache.log4j.Logger LOGGER = org.apache.log4j.Logger
                                                                .getLogger(BeanResolver.class);
 
     /**
-     * @param string
-     * @return
+     * Resolves a beanname to a bean
+     * @param ctx The JavaFaces context
+     * @param <T> The type of the bean
+     * @param beanName Bean name
+     * @return a bean
      */
     @SuppressWarnings("unchecked")
     public static <T> T resolveBean(FacesContext ctx, String beanName)

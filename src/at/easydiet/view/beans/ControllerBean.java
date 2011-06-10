@@ -11,7 +11,6 @@ import at.easydiet.businesslogic.DietPlanEditingController;
 import at.easydiet.businesslogic.DietTreatmentDetailViewController;
 import at.easydiet.businesslogic.PatientDetailViewController;
 import at.easydiet.domainlogic.ParameterDefinitionUnitController;
-import at.easydiet.domainlogic.RecipeSearchController;
 import at.easydiet.domainlogic.SystemUserController;
 import at.easydiet.view.BeanResolver;
 
@@ -22,18 +21,22 @@ import at.easydiet.view.BeanResolver;
 @SessionScoped
 public class ControllerBean
 {
-    public static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
+    @SuppressWarnings("unused")
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
                                                             .getLogger(ControllerBean.class);
 
     private ControllerProvider _provider;
     
+    /** 
+     * Initializes a new instance of the {@link ControllerBean} class. 
+     */
     public ControllerBean()
     {
         _provider = new ControllerProvider();
     }
     
     /**
-     * @return
+     * @return The {@link SystemUserController}
      * @see at.easydiet.domainlogic.DomainLogicProvider#getSystemUserController()
      */
     public static SystemUserController getSystemUserController()
@@ -42,7 +45,7 @@ public class ControllerBean
     }
 
     /**
-     * @return
+     * @return The {@link CreateNutritionProtocolController}
      * @see at.easydiet.businesslogic.BusinessLogicProvider#getCreateNutritionProtocolController()
      */
     public static CreateNutritionProtocolController getCreateNutritionProtocolController()
@@ -51,7 +54,7 @@ public class ControllerBean
     }
     
     /**
-     * @return
+     * @return The {@link DashboardViewController}
      * @see at.easydiet.businesslogic.BusinessLogicProvider#getDashboardViewController()
      */
     public static DashboardViewController getDashboardViewController()
@@ -60,7 +63,7 @@ public class ControllerBean
     }
     
     /**
-     * @return
+     * @return The {@link DietPlanEditingController}
      * @see at.easydiet.businesslogic.BusinessLogicProvider#getDietPlanEditingController()
      */
     public static DietPlanEditingController getDietPlanEditingController()
@@ -69,7 +72,7 @@ public class ControllerBean
     }
     
     /**
-     * @return
+     * @return The {@link DietTreatmentDetailViewController}
      * @see at.easydiet.businesslogic.BusinessLogicProvider#getDietTreatmentDetailViewController()
      */
     public static DietTreatmentDetailViewController getDietTreatmentDetailViewController()
@@ -78,7 +81,7 @@ public class ControllerBean
     }
     
     /**
-     * @return
+     * @return The {@link PatientDetailViewController}
      * @see at.easydiet.businesslogic.BusinessLogicProvider#getPatientDetailViewController()
      */
     public static PatientDetailViewController getPatientDetailViewController()
@@ -86,11 +89,20 @@ public class ControllerBean
         return getInstance()._provider.getPatientDetailViewController();
     }
     
+    
+    /**
+     * Get an Instance of this object.
+     * @return Instance of {@link ControllerBean}
+     */
     public static ControllerBean getInstance()
     {
         return BeanResolver.resolveBean(FacesContext.getCurrentInstance(), "controllerBean");
     }
 
+    /**
+     * Get the {@link ParameterDefinitionUnitController}
+     * @return The {@link ParameterDefinitionUnitController}
+     */
     public static ParameterDefinitionUnitController getParameterDefinitionUnitController()
     {
         return getInstance()._provider.getParameterDefinitionUnitController();

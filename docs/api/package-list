@@ -1,0 +1,11 @@
+at.easydiet
+at.easydiet.businesslogic
+at.easydiet.businessobjects
+at.easydiet.dao
+at.easydiet.domainlogic
+at.easydiet.model
+at.easydiet.util
+at.easydiet.validation
+at.easydiet.view
+at.easydiet.view.beans
+at.easydiet.web

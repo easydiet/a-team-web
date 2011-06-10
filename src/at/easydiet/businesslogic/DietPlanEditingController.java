@@ -27,7 +27,7 @@ import at.easydiet.util.StringUtils;
 import at.easydiet.validation.ParameterTemplateValidator;
 
 /**
- * Provides data and methods for the {@link DietPlanManagementView}
+ * Provides data and methods for the DietPlanManagementView
  */
 public class DietPlanEditingController extends BusinessLogicController
 {
@@ -490,7 +490,7 @@ public class DietPlanEditingController extends BusinessLogicController
 
     /** 
      * Initializes a new instance of the {@link DietPlanEditingController} class. 
-     * @param currentProvider
+     * @param currentProvider The {@link BusinessLogicProvider} which holds this instance
      */
     protected DietPlanEditingController(BusinessLogicProvider currentProvider)
     {

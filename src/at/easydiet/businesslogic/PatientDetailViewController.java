@@ -17,7 +17,7 @@ import at.easydiet.domainlogic.SystemUserController.SystemUserLoginListener;
 import at.easydiet.model.Patient;
 
 /**
- * Provides data and actions for the {@link PatientDetailView}.
+ * Provides data and actions for the PatientDetailView.
  */
 public class PatientDetailViewController extends BusinessLogicController implements SystemUserLoginListener
 {
@@ -59,6 +59,7 @@ public class PatientDetailViewController extends BusinessLogicController impleme
     /**
      * Initializes a new instance of the {@link PatientDetailViewController}
      * class.
+     * @param provider The {@link BusinessLogicProvider} which holds this instance
      */
     protected PatientDetailViewController(BusinessLogicProvider provider)
     {

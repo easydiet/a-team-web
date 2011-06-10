@@ -3,9 +3,13 @@ package at.easydiet.domainlogic;
 import at.easydiet.ControllerProvider;
 import at.easydiet.businesslogic.BusinessLogicController;
 
+/**
+ * Root class for all {@link DomainLogicController}s
+ */
 public abstract class DomainLogicController
 {
-    public static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
+    @SuppressWarnings("unused")
+    private static final org.apache.log4j.Logger LOG = org.apache.log4j.Logger
                                                             .getLogger(DomainLogicController.class);
 
     private DomainLogicProvider               _currentProvider;
@@ -19,6 +23,10 @@ public abstract class DomainLogicController
         return _currentProvider;
     }
 
+    /**
+     * Gets the rootProvider
+     * @return the rootProvider
+     */
     public ControllerProvider getRootProvider()
     {
         return _currentProvider.getRootProvider();
@@ -26,7 +34,7 @@ public abstract class DomainLogicController
 
     /**
      * Initializes a new instance of the {@link BusinessLogicController} class.
-     * @param currentProvider
+     * @param currentProvider the currentProvider
      */
     protected DomainLogicController(DomainLogicProvider currentProvider)
     {
